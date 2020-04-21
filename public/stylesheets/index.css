@@ -1,0 +1,148 @@
+button {
+    padding: 4px 16px;
+}
+
+
+
+        #main {
+            /*height: 600px;*/
+            /*height: 100%;*/
+            /*border: 1px solid blue;*/
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        #top {
+            background: white;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        #central {
+            background: white;
+            flex-grow: 1;
+
+            display: flex;
+            flex-direction: column;
+        }
+            #editors {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: row;
+                /*background: black;*/
+            }
+                #file-tree {
+                    padding: 5px 5px 5px 0px;
+                    background: lightgray;
+                    width: 200px;
+                    font: 14px "Calibri", "Lucida Grande", Helvetica, Arial, sans-serif;
+                }
+                #editors-java {
+                    flex-grow: 1;
+                    /*background: #00B7FF;*/
+
+                    display: flex;
+                    flex-direction: column;
+                }
+                    #tabs {
+                        height: 30px;
+                        background: white;
+                        font: 14px "Calibri", "Lucida Grande", Helvetica, Arial, sans-serif;
+                    }
+                    #tab-content {
+                        /*background: darkred;*/
+
+                        flex-grow: 1;
+                    }
+
+
+                #editor-3d {
+                    /*background: darkblue;*/
+                    width: 400px;
+                }
+            #outputs {
+                height: 150px;
+                background: #cecece;
+            }
+                #consoleTextArea {
+                    width: 90%;
+                    height: 100%;
+                }
+
+
+        #bottom {
+            /*display: none;*/
+
+            /*height: 100px;*/
+            background: black;
+        }
+
+        .tree-element {
+            cursor: default;
+            white-space: nowrap;
+
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .tree-element:hover {
+            background: skyblue;
+        }
+        .tree-element-active {
+            background: blue;
+            color: white;
+        }
+        .tab {
+            display: inline-block;
+            background: lightgray;
+
+            padding: 5px 10px;
+            margin: 0px 1px;
+            border-width: 1px 1px 0px 1px;
+            border-color: lightgray;
+            border-style: solid;
+            cursor: default;
+        }
+        .tab:hover {
+            background: aliceblue;
+        }
+        .tab-active {
+            background: white;
+
+        }
+
+
+
+        .ace_gutter-cell.ace_breakpoint{
+            border-radius: 20px 0px 0px 20px;
+            box-shadow: 0px 0px 1px 1px red inset;
+        }
+
+
+        #errorsDiv {
+            display: none;
+
+            position: fixed;
+            width: 1200px;
+            height: 200px;
+            right: 0px;
+            bottom: 0px;
+            z-index: 10;
+            background: #f0f0f0;
+
+        }
+
+        #errorsDiv table {
+            border-collapse: collapse;
+        }
+
+        #errorsDiv table, #errorsDiv th, #errorsDiv td {
+            border: 1px solid black;
+        }

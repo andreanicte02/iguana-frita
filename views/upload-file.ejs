@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subir Archivos</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+
+</head>
+<body>
+
+<div>
+<%= err %>
+</div>
+
+<h2>Subir Carpeta</h2>
+<form method="POST" action="/upload-file" enctype='multipart/form-data' >
+    <input type="file" name="document" webkitdirectory directory multiple />
+    <!--            webkitdirectory directory multiple -->
+    <input type="submit" />
+</form>
+
+<h2>Subir Archivos</h2>
+<form method="POST" action="/upload-file" enctype='multipart/form-data' >
+    <input type="file" name="document" multiple />
+    <!--            webkitdirectory directory multiple -->
+    <input type="submit" />
+</form>
+
+
+</body>
+</html>
