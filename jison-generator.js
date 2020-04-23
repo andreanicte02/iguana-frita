@@ -4,8 +4,8 @@ const execSync = require('child_process').execSync;
 const DIR = "./public/javascripts/parser/";
 //nombre del archivo
 //salida del archivo
-const JISON_FILE = "Parser.jison";
-const OUT_FILE = "Parser.js";
+const JISON_FILE = "parser.jison";
+const OUT_FILE = "parser.js";
 
 
 try {
