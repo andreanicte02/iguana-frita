@@ -14,8 +14,6 @@
 "^^"                  return '^^'
 "!"                   return '!'
 "%"                   return '%'
-"("                   return '('
-")"                   return ')'
 ","                   return ','
 ";"                   return ';'
 ":="                  return ':='
@@ -34,17 +32,21 @@
 "--"                  return '--'
 "{"                   return '{'
 "}"                   return '}'
+
+"["[" "]*"]"                  return '[]'
 "["                   return '['
 "]"                   return ']'
+
+"var"                return 'var'
+"global"             return 'global'
+"const"              return 'const'
+
 
 "import"             return 'import'
 "integer"            return 'integer'
 "double"             return 'double'
 "char"               return 'char'
 "boolean"            return 'boolean'
-"var"                return 'var'
-"global"             return 'global'
-"const"              return 'const'
 "true"               return 'true'
 "false"              return 'false'
 "if"                 return 'if'
@@ -61,13 +63,21 @@
 "return"             return 'return'
 "void"               return 'void'
 "strc"               return 'strc'
+"define"             return 'define'
+"as"                 return 'as'
+
+"("                   return '('
+")"                   return ')'
 
 
 [0-9]+"."[0-9]+       return 'deci'
 [0-9]+                return 'num'
-[A-Za-z|_]+([A-Za-z|0-9|_]+)?               return 'id'
+
 "\""[^\"]*"\""                              return 'cadena'
 [']([^\n]|[\\][0-9][0-9]?[0-9]?)[']         return 'caracter'
+
+[a-zA-Z_][a-zA-Z0-9_]*    return 'id';
+
 
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
@@ -75,157 +85,176 @@
 /lex
 
 /* operator associations and precedence */
+
 %left '=' ':='
+%left '++' '--'
 %left '==' '!='
 %left '+' '-'
-%left '*' '/' '%'
-%left '^^'
-%right '!' UMINUS
-%left '[' ']' '.'
 
+%left '*' '/' '%'
+
+%right '!' UMINUS
+%right 'strc'
+
+%left '['  PELA '('
+%token PREFIX SUFFIX
 %start init
 
 %% /* language grammar */
 
 
 init
-    : lPSentences  EOF
+    : listGlobalSentences  EOF
     ;
 
-lPSentences
-    : sentences
-    | %empty
+listGlobalSentences
+    : globalSentences
+    |
     ;
 
-sentences
-    : sentences sentence
-    | sentence
+globalSentences
+    : globalSentences globalSentence
+    | globalSentence
     ;
 
-sentence
-    : sentImport
-    | dVars  ';'
-    | assign ';'
-    | decFunction
-    | callFunction ';'
+globalSentence
+    : declareVariable pComa
+    | functionDefinition
     ;
 
 
-dVars
-    : type idList
-    | type idList '=' e
-    | global  id ':=' e
-    | var     id ':=' e
-    | const   id ':=' e
-    ;
 
-assign
-    : id '=' e
-    ;
+declareVariable
+    : pType decType idVariable '=' e
+    | id  decType idVariable '=' e
 
-idList
-    : idList ',' id
-    | id
-    ;
 
-type
-    : id arrayDec
-    | tipe arrayDec
-    ;
 
-arrType
-    : tipe
-    | id
-    ;
+    | pType decType idVariable
+    | id  decType idVariable
 
-arrayDec
-    : '[' ']'
-    | %empty
+    | 'var' id ':=' e
+
+    | 'const' id ':=' e
+
+    | 'global' id ':=' e
+
     ;
 
 
-tipe
-    : integer
-    | double
-    | char
-    | boolean
-    | void
+functionDefinition
+    : pType decType id '(' listParameters ')' '{' listFunctionSentences '}'
+    | id decType id '('  listParameters ')' '{' listFunctionSentences  '}'
     ;
 
 
-sentImport
-    : sentImport ',' id
-    | import id
-    ;
-
-decFunction
-    : type id '(' decParameter ')' '{' lPSentences'}'
-    ;
-
-
-decParameter
+listParameters
     : parameters
-    | %empty
+    |
     ;
 
 parameters
-    : parameters parameter
+    : parameters ',' parameter
     | parameter
     ;
 
 parameter
-    : type id
+    : id decType id
+    | pType decType id
+    ;
+
+listFunctionSentences
+    : functionSentences
+    |
+    ;
+
+functionSentences
+    : functionSentences functionSentence
+    | functionSentence
+    ;
+
+functionSentence
+    : assign pComa
+    | declareVariable pComa
+    | callFunction pComa
+    | aumento pComa
+
+    ;
+
+assign
+    : expLeft '=' e
+    ;
+
+expLeft
+    : id
+    | expLeft '[' e ']'
+    ;
+
+
+idVariable
+    : idVariable ','  id
+    |  id
+    ;
+
+decType
+    : '[]'
+    |
+    ;
+
+type
+    : id
+    | pType
+    ;
+
+
+pType
+    : 'integer'
+    | 'double'
+    | 'char'
+    | 'boolean'
     ;
 
 e
     : e '+' e
-
-    | e '-' e
-
-    | e '*' e
-
-    | e '/' e
-
-    | e '^^' e
-
-    | e '==' e
-
-    | e '%'
-
-    | '-' e %prec UMINUS
-
     | '(' e ')'
-
-    | num
-
-    | deci
-
     | id
-
-    | cadena
-
-    | caracter
-
-    | true
-
-    | false
-
-    | arrayInit
-
-    | arrayAccess
-
     | callFunction
+    | e '[' e ']'
+    | num
+    | deci
+    | aumento
+    | arrayInstance
+
 
     ;
 
 callFunction
     : id '(' arguments ')'
+    | id '(' ')'
     ;
 
 arguments
-    :exps
-    |argumentsType2
-    | %empty
+    : arguments ',' argument
+    | argument
+
+    ;
+
+argument
+    : e
+    | e '=' e
+    ;
+
+arrayInstance
+    : 'strc' pType '[' exp ']'
+    | 'strc' id '[' exp ']'
+    | '{' listExp '}'
+
+    ;
+
+
+listExp
+    : exps
+    |
     ;
 
 exps
@@ -233,17 +262,14 @@ exps
     | e
     ;
 
-argumentsType2
-    : argumentsType1 ',' assign
-    | assign
+
+
+aumento
+    : id '++'
+    | id '--'
     ;
 
-arrayInit
-    : strc arrType '[' exp ']'
-    | '{' exps '}'
-    | '{' '}'
-    ;
-
-arrayAccess
-    : e '[' e ']'
+pComa
+    : ';'
+    |
     ;

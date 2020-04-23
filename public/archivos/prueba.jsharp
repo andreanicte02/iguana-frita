@@ -1,5 +1,9 @@
-import sdf,asdf,a
+char a = 3;
+char [ ] asd  ;
+var e := 3;
 
-double sd = 22.5;
-
-var e = 1;
+int funcion (){
+    a=2;
+    a[a][a]=4;
+    char[] caracts = {2,3}
+}
