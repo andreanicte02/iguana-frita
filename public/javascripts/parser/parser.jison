@@ -36,6 +36,7 @@
 "["[" "]*"]"                  return '[]'
 "["                   return '['
 "]"                   return ']'
+"."                   return '.'
 
 "var"                return 'var'
 "global"             return 'global'
@@ -96,7 +97,7 @@
 %right '!' UMINUS
 %right 'strc'
 
-%left '['  PELA '('
+%left '['  '.'  '('
 %token PREFIX SUFFIX
 %start init
 
@@ -177,7 +178,10 @@ functionSentence
     : assign pComa
     | declareVariable pComa
     | callFunction pComa
+    | callFunctionPro pComa
     | aumento pComa
+    | defineStruct pComa
+    | ifSentence
 
     ;
 
@@ -188,8 +192,12 @@ assign
 expLeft
     : id
     | expLeft '[' e ']'
+    | expLeft '.' id
     ;
 
+callFunctionPro
+    : expLeft '.' id '(' listArguments ')'
+    ;
 
 idVariable
     : idVariable ','  id
@@ -212,6 +220,7 @@ pType
     | 'double'
     | 'char'
     | 'boolean'
+    | 'void'
     ;
 
 e
@@ -219,18 +228,28 @@ e
     | '(' e ')'
     | id
     | callFunction
+    | e '.'  id  '(' listArguments ')'
     | e '[' e ']'
     | num
     | deci
     | aumento
     | arrayInstance
+    | structInstance
+    | e '.' id
+
 
 
     ;
 
 callFunction
-    : id '(' arguments ')'
-    | id '(' ')'
+    : id '(' listArguments ')'
+    ;
+
+
+
+listArguments
+    :
+    | arguments
     ;
 
 arguments
@@ -244,6 +263,10 @@ argument
     | e '=' e
     ;
 
+structInstance
+    : 'strc' id '(' ')'
+    ;
+
 arrayInstance
     : 'strc' pType '[' exp ']'
     | 'strc' id '[' exp ']'
@@ -251,6 +274,22 @@ arrayInstance
 
     ;
 
+defineStruct
+    : 'define' id 'as' '[' structAttributes ']'
+    | 'define' id 'as' '[' ']'
+    ;
+
+structAttributes
+    : structAttributes structAttribute
+    | structAttribute
+    ;
+
+structAttribute
+    : pType decType
+    | id decType
+    | pType decType '=' e
+    | id decType '=' e
+    ;
 
 listExp
     : exps
@@ -262,11 +301,20 @@ exps
     | e
     ;
 
-
-
 aumento
     : id '++'
     | id '--'
+    ;
+
+
+ifSentence
+    : 'if' '(' e ')' ifBlock
+    | 'if' '(' e ')' ifBlock 'else' ifBlock
+    | 'if' '(' e ')' ifSentence
+    ;
+
+ifBlock
+    : '{' listFunctionSentences '}'
     ;
 
 pComa
