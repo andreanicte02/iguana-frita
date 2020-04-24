@@ -37,6 +37,7 @@
 "["                   return '['
 "]"                   return ']'
 "."                   return '.'
+":"                   return ':'
 
 "var"                return 'var'
 "global"             return 'global'
@@ -121,6 +122,7 @@ globalSentences
 globalSentence
     : declareVariable pComa
     | functionDefinition
+    | defineStruct
     ;
 
 
@@ -182,7 +184,19 @@ functionSentence
     | aumento pComa
     | defineStruct pComa
     | ifSentence
+    | switchSentence
+    | whileSentence
+    | doWhileSentence pComa
+    | forSentence
+    | 'break' pComa
+    | 'continue' pComa
+    | sentReturn
 
+    ;
+
+sentReturn
+    : 'return' e pComa
+    | 'return' ';'
     ;
 
 assign
@@ -308,12 +322,62 @@ aumento
 
 
 ifSentence
-    : 'if' '(' e ')' ifBlock
-    | 'if' '(' e ')' ifBlock 'else' ifBlock
+    : 'if' '(' e ')' blockSentence
+    | 'if' '(' e ')' blockSentence 'else' blockSentence
     | 'if' '(' e ')' ifSentence
     ;
 
-ifBlock
+whileSentence
+    : 'while' '(' e ')' blockSentence
+    ;
+
+doWhileSentence
+    :'do' blockSentence 'while' '(' e ')'
+    ;
+
+forSentence
+    : 'for' '(' forInit ';' forCondition ';' forFinal ')' blockSentence
+    ;
+
+ forInit
+    : declareVariable
+    | assign
+    |
+    ;
+
+forCondition
+    : e
+    |
+    ;
+
+forFinal
+    :assign
+    |aumento
+    |
+    ;
+
+switchSentence
+    : 'switch' '(' e ')' '{' '}'
+    | 'switch' '(' e ')' '{' casesSent '}'
+    | 'switch' '(' e ')' '{' casesSent defaultSent '}'
+    | 'switch' '(' e ')' '{' defaultSent '}'
+    ;
+
+
+defaultSent
+    : 'default' ':' listFunctionSentences
+    ;
+
+casesSent
+    : casesSent caseSent
+    | caseSent
+    ;
+
+caseSent
+    : 'case' e ':' listFunctionSentences
+    ;
+
+blockSentence
     : '{' listFunctionSentences '}'
     ;
 
