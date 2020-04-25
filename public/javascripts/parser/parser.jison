@@ -67,6 +67,9 @@
 "strc"               return 'strc'
 "define"             return 'define'
 "as"                 return 'as'
+"try"                return 'try'
+"catch"              return 'catch'
+
 
 "("                   return '('
 ")"                   return ')'
@@ -242,6 +245,7 @@ e
     | '(' e ')'
     | id
     | callFunction
+    | explicitCast
     | e '.'  id  '(' listArguments ')'
     | e '[' e ']'
     | num
@@ -251,8 +255,12 @@ e
     | structInstance
     | e '.' id
 
+    ;
 
-
+explicitCast
+    : '(' 'char' ')' e
+    | '(' 'integer' ')' e
+    | '(' 'double' ')' e
     ;
 
 callFunction
@@ -380,6 +388,18 @@ caseSent
 blockSentence
     : '{' listFunctionSentences '}'
     ;
+
+
+
+throwSentence
+    : 'throw' e
+    ;
+
+trySentence
+    : 'try' blockSentence catch '(' declareVariable ')' blockSentence
+    ;
+
+
 
 pComa
     : ';'

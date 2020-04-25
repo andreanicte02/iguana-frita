@@ -6,4 +6,6 @@ int funcion (){
     a=2;
     a[a][a]=4;
     char[] caracts = {2,3}
+    id.length();
+    id[3].id.id.id[3].length();
 }
