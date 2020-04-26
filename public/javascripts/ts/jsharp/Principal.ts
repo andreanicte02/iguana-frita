@@ -1,4 +1,4 @@
-let parser = require('../../parser/Parser');
+let parser = require('../../parser/parser');
 
 class Principal {
 

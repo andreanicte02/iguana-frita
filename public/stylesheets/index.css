@@ -2,8 +2,6 @@ button {
     padding: 4px 16px;
 }
 
-
-
         #main {
             /*height: 600px;*/
             /*height: 100%;*/
@@ -97,7 +95,7 @@ button {
         }
         .tree-element-active {
             background: blue;
-            color: white;
+            color: red;
         }
         .tab {
             display: inline-block;

@@ -381,62 +381,46 @@ function process3d(sentences){
 
 
 
-
 const compileButton = $("#compileButton");
 compileButton.click(()=>{
 
     clearErrors();
 
     if (currenOpenFile === null) {
-        alert("No hay ningun archivo abierto");
+        console.log(".....")
+        alert("No hay ningun archivo abierto...");
     }
     else {
-        const javaText = editor.getValue(); // or session.getValue
 
-        //asdf
-
-        javaParser.yy.paths = [];
-        javaParser.yy.last = () => { return javaParser.yy.paths[javaParser.yy.paths.length - 1]; };
-        const relativePath = getPublicPath(currenOpenFile.path);
+        const jText = editor.getValue(); // or session.getValue
+        //const relativePath = getPublicPath(currenOpenFile.path);
+        //console.log(relativePath)
 
         try {
-            const sentences = getSentencesWithLocation(relativePath, javaText);
-            const result = ast.process(sentences);
-            editor3d.setValue(result);
-            editor3d.clearSelection();
+
+            console.log(jText)
+            parser.parse(jText)
+
+            //editor3d.setValue(result);
+            //editor3d.clearSelection();
         }
         catch (e) {
-            if (e._semanticError){
-                console.log(e._semanticError);
-                alert(e.message);
 
-                addErrorRow("Semantico", relativePath, e._p.first_line, e._p.first_column, e._semanticError.message);
-            }
-            else {
-                console.log(e);
-                alert(e.message);
-                jj = e;
-
-                if (e.hash) {
-                    addErrorRow("Sintactico", relativePath, e.hash.line, 0, e.message);
-                }
-                else {
-                    addErrorRow("?Sintactico", relativePath, 0, 0, e.message);
-                }
-
-
-            }
+            console.log(e);
+            alert(e.message);
+            jj = e;
 
         }
 
     }
 });
 
+
 function getSentencesWithLocation(relativePath, content) {
-    javaParser.yy.paths.push(relativePath);
-    const sentences = javaParser.parse(content);
-    javaParser.yy.paths.pop(relativePath);
-    return sentences;
+    //javaParser.yy.paths.push(relativePath);
+    //const sentences = javaParser.parse(content);
+    //javaParser.yy.paths.pop(relativePath);
+    //return sentences;
 }
 
 const saveButton = $("#saveButton");
