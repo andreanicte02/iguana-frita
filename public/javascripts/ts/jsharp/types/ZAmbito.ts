@@ -11,6 +11,7 @@ class NFuncion {
 export class ZAmbito {
 
     private readonly tipos = new Map<string, NTipo>();
+    //tipos declarados
     private readonly propiedades = new Map<string, NTipoVar>();
     private readonly funciones = new Map<string, NFuncion>();
     public readonly padre?: ZAmbito;
