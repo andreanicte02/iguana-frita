@@ -21,37 +21,37 @@ export class ZAmbito {
     }
 
     public declararTipo(nombre: string, tipo: NTipo ): void {
-        if (this.tipos.has(nombre)) {
-            // TODO: es case-sensitive?
+        if (this.tipos.has(nombre.toLowerCase())) {
             throw new SemanticError(`Tipo ${nombre} ya declarado`);
         }
-        this.tipos.set(nombre, tipo);
+        this.tipos.set(nombre.toLowerCase(), tipo);
     }
     public declararPropiedad(nombre: string, tipo: NTipoVar): void {
-
-        if (this.propiedades.has(nombre)) {
-            // TODO: es case-sensitive?
+        if (this.propiedades.has(nombre.toLowerCase())) {
             throw new SemanticError(`Propiedad ${nombre} ya declarado`);
         }
-
-        this.propiedades.set(name, tipo);
+        this.propiedades.set(nombre.toLowerCase(), tipo);
     }
 
     public buscarPropiedadConDireccionRelativa(nombreBuscado: string): [number, NTipoVar | undefined] {
-        if (!this.propiedades.has(nombreBuscado)) {
+        const tipoVar = this.propiedades.get(nombreBuscado);
+
+        if (tipoVar === undefined) {
             return [-1, undefined];
         }
         const nombres = [...this.propiedades.keys()];
-        const indice = nombres.findIndex(nombre => nombre === nombreBuscado);
-        return [indice, this.propiedades.get(nombreBuscado)!];
+        const indice = nombres.findIndex(
+            (nombre) => nombre === nombreBuscado.toLowerCase()
+        );
+        return [indice, tipoVar];
     }
 
-    public obtenerTipoDeclarado(name: string): NTipo {
-
-        if (!this.tipos.has(name)) {
-            throw new SemanticError('Tipo no existe');
+    public obtenerTipoDeclarado(nombre: string): NTipo {
+        const tipoVar = this.tipos.get(nombre.toLowerCase());
+        if (tipoVar === undefined) {
+            throw new SemanticError(`Tipo ${nombre} no existe`);
         }
-        return this.tipos.get(name)!;
+        return tipoVar;
     }
 }
 
