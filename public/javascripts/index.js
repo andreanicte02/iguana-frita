@@ -398,8 +398,9 @@ compileButton.click(()=>{
 
         try {
 
-            console.log(jText)
-            parser.parse(jText)
+            console.log(jText);
+            const salida = parser.parse(jText);
+            console.log(salida);
 
             //editor3d.setValue(result);
             //editor3d.clearSelection();

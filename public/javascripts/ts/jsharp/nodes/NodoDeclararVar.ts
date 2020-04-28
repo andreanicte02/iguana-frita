@@ -6,7 +6,7 @@ import {ZAmbito} from "../types/ZAmbito.js";
 
 export class NodoDeclararVar extends NodoAstPro {
     private readonly nombre: string;
-    private readonly nodoObtenerTipo: NodoAst;
+    private nodoObtenerTipo: NodoAst;
 
     constructor(fileLocation: FileLocation, nombre: string, nodoObtenerTipo: NodoAst) {
         super(fileLocation);
@@ -20,6 +20,7 @@ export class NodoDeclararVar extends NodoAstPro {
             // ojo: este no es un SemanticError, se lanza para proteger durante desarrollo
             throw new Error('Nodo suministrado no posee tipo');
         }
+        //solo un declaraicon
 
         ambito.declararPropiedad(this.nombre, new NTipoVar(codigoTipo.tipo));
 
@@ -27,4 +28,12 @@ export class NodoDeclararVar extends NodoAstPro {
         return Codigo.vacio;
     }
 
+    definirTipo(nodoObtenerTipo: NodoAst): void{
+
+        this.nodoObtenerTipo = nodoObtenerTipo;
+
+    }
+
 }
+
+///odo que represente la declacion de una o varias variables

@@ -102,48 +102,48 @@
 %right 'strc'
 
 %left '['  '.'  '('
-%token PREFIX SUFFIX
 %start init
 
 %% /* language grammar */
 
 
 init
-    : listGlobalSentences  EOF
+    : listGlobalSentences  EOF { return $1; }
     ;
 
 listGlobalSentences
-    : globalSentences
-    |
+    : globalSentences   {  $$ = $1; console.log($1); }
+    |                   { $$ = []; }
     ;
 
 globalSentences
-    : globalSentences globalSentence
-    | globalSentence
+    : globalSentences globalSentence {  $$ = $1; $1.push($2); }
+    | globalSentence  { $$ = [$1]; }
     ;
 
 globalSentence
-    : declareVariable pComa
-    | functionDefinition
-    | defineStruct
+    : declareVariable pComa {  $$= $1; }
+    //| functionDefinition
+    //| defineStruct
     ;
 
 
 
 declareVariable
-    : pType decType idVariable '=' e
-    | id  decType idVariable '=' e
+    :
+    pType decType idVariable '=' e
+    //| id  decType idVariable '=' e
 
 
 
-    | pType decType idVariable
-    | id  decType idVariable
+    | pType decType idVariable { $$= new ast.NodoDeclararVarTipo5(new ast.FileLocation('path', @1.first_column, @1.first_line), $1, $2, $3); }
+    //| id  decType idVariable
 
-    | 'var' id ':=' e
+    //| 'var' id ':=' e
 
-    | 'const' id ':=' e
+    //| 'const' id ':=' e
 
-    | 'global' id ':=' e
+    //| 'global' id ':=' e
 
     ;
 
@@ -217,13 +217,20 @@ callFunctionPro
     ;
 
 idVariable
-    : idVariable ','  id
-    |  id
+    : idVariable ','  idVarsDeclaration {  $$ = $1; $1.push($3); }
+    |  idVarsDeclaration { $$=[$1]; }
     ;
 
+idVarsDeclaration
+    : id {  console.log($1);
+            new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 , new ast.NodoObtenerTipoInt(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ) ;
+         }
+    ;
+
+
 decType
-    : '[]'
-    |
+    : '[]' {$$=true;}
+    | {$$=false; }
     ;
 
 type
@@ -233,10 +240,10 @@ type
 
 
 pType
-    : 'integer'
-    | 'double'
-    | 'char'
-    | 'boolean'
+    : 'integer' { $$ = new ast.NodoObtenerTipoInt(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
+    | 'double'  { $$ = new ast.NodoObtenerTipoDouble(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
+    | 'char'    { $$ = new ast.NodoObtenerTipoChar(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
+    | 'boolean' { $$ = new ast.NodoObtenerTipoBoolean(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
     | 'void'
     ;
 
