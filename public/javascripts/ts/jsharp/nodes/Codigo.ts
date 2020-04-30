@@ -12,6 +12,14 @@ export class Codigo {
   // aqui guardaremos el 'acceso' a stack o heap, ejemplo: stack[t93]
   public acceso = "";
 
+  //etiquetas verdaderas etiquetas falasas
+
+  public eTrue: string | undefined;
+
+  public eFalse: string | undefined;
+
+  public eSalida: string | undefined;
+
   public tipo: NTipo = nTipoComodin;
 
   private readonly lineas: string[] = [];

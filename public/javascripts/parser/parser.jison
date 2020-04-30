@@ -112,7 +112,7 @@ init
     ;
 
 listGlobalSentences
-    : globalSentences   {  $$ = $1; console.log($1); }
+    : globalSentences   {  $$ = $1;  }
     |                   { $$ = []; }
     ;
 
@@ -123,6 +123,7 @@ globalSentences
 
 globalSentence
     : declareVariable pComa {  $$= $1; }
+    | assign pComa { $$ = $1; console.log($1 + "------------"); }
     //| functionDefinition
     //| defineStruct
     ;
@@ -203,13 +204,13 @@ sentReturn
     ;
 
 assign
-    : expLeft '=' e
+    : expLeft '=' e { $$= new ast.NodoAsignar(new ast.FileLocation(('path'), @1.first_column, @1.first_line), $1, $3); }
     ;
 
 expLeft
-    : id
-    | expLeft '[' e ']'
-    | expLeft '.' id
+    : id { new ast.NodoObtenerVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 ); }
+    //| expLeft '[' e ']'
+    //| expLeft '.' id
     ;
 
 callFunctionPro
@@ -222,8 +223,8 @@ idVariable
     ;
 
 idVarsDeclaration
-    : id {  console.log($1);
-            new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 , new ast.NodoObtenerTipoInt(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ) ;
+    : id {
+            new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1  ) ;
          }
     ;
 
@@ -248,14 +249,14 @@ pType
     ;
 
 e
-    : e '+' e
-    | '(' e ')'
+    : e '+' e { $$= new ast.NodoSuma(new ast.FileLocation('path',  @1.first_column, @1.first_line), $1, $3);}
+    | '(' e ')' { $$ = $1; }
     | id
     | callFunction
     | explicitCast
     | e '.'  id  '(' listArguments ')'
     | e '[' e ']'
-    | num
+    | num  { $$ = new ast.NodoCrearInt(new ast.FileLocation('path',  @1.first_column, @1.first_line), $1 );}
     | deci
     | aumento
     | arrayInstance
