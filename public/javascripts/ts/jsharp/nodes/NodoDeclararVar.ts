@@ -6,16 +6,21 @@ import {ZAmbito} from "../types/ZAmbito.js";
 
 export class NodoDeclararVar extends NodoAstPro {
     private readonly nombre: string;
-    private nodoObtenerTipo: NodoAst;
+    private nodoObtenerTipo: NodoAst | undefined;
 
-    constructor(fileLocation: FileLocation, nombre: string, nodoObtenerTipo: NodoAst) {
+    constructor(fileLocation: FileLocation, nombre: string) {
         super(fileLocation);
         this.nombre = nombre;
-        this.nodoObtenerTipo = nodoObtenerTipo;
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
-        const codigoTipo = this.nodoObtenerTipo.generarCodigo(ambito);
+
+        if(this.nodoObtenerTipo === undefined){
+            return Codigo.vacio;
+        }
+        
+        const codigoTipo = this.nodoObtenerTipo.generarCodigo(ambito) ;
+
         if (codigoTipo.tipo === undefined) {
             // ojo: este no es un SemanticError, se lanza para proteger durante desarrollo
             throw new Error('Nodo suministrado no posee tipo');

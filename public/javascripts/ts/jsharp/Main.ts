@@ -4,8 +4,11 @@ import {ZAmbito} from "./types/ZAmbito.js";
 export { NodoObtenerTipoInt, NodoObtenerTipoBoolean,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
 export { NodoCrearInt } from './nodes/NodoCrearInt';
 export { FileLocation } from './nodes/FileLocation' ;
-export { NodoDeclararVar } from  './nodes/NodoDeclararVar'
-export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5'
+export { NodoDeclararVar } from  './nodes/NodoDeclararVar';
+export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
+export { NodoSuma } from './nodes/arithmetic_operations/NodoSuma';
+export { NodoAsignar } from './nodes/NodoAsignar';
+export { NodoObtenerVar } from './nodes/NodoObtenerVar';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

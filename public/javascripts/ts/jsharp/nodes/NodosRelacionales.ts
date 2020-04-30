@@ -6,16 +6,16 @@ import {desenvolver, generarEtiqueta, generarTemporal} from "../Utilidades";
 import {obtenerTipoOperacionRelacional} from "./TypeDefinition";
 import {SemanticError} from "../types/SemanticError";
 
-export class NodoMayor extends NodoAstPro{
+export class NodoRelacional extends NodoAstPro{
     public readonly e1: NodoAst;
     public readonly e2: NodoAst;
     private readonly symbol: string;
 
-    constructor(fileLocation: FileLocation, e1: NodoAst, e2: NodoAst) {
+    constructor(fileLocation: FileLocation, e1: NodoAst, e2: NodoAst, symbol: string) {
         super(fileLocation);
         this.e1 = e1;
         this.e2 = e2;
-        this.symbol = '>';
+        this.symbol = symbol;
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
@@ -35,10 +35,25 @@ export class NodoMayor extends NodoAstPro{
 
         codigo.eTrue = generarEtiqueta();
         codigo.eFalse = generarEtiqueta();
+        codigo.eSalida = generarEtiqueta();
         codigo.apuntador = generarTemporal();
 
         codigo.agregar(`if  ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${codigo.eTrue} ;`);
         codigo.agregar(`goto ${codigo.eFalse} ;`);
+
+        /*
+        codigo.agregar(`${codigo.eTrue}:`)
+        codigo.agregar(`${codigo.apuntador} = 1 ;`)
+        codigo.agregar(`goto ${codigo.eSalida}`)
+
+        codigo.agregar(`${codigo.eFalse}:`)
+        codigo.agregar(`${codigo.apuntador} = 0 ;`)
+
+
+
+        codigo.agregar(`${codigo.eSalida}:`)
+    */
+
 
         return codigo;
 

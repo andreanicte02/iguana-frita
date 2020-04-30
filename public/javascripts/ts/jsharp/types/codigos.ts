@@ -47,6 +47,7 @@ export function codigoAsignar(
   codigo.agregarCodigo(codigoDestino);
   codigo.agregarCodigo(codigoValor);
 
+  //acceso stack[adf]
   codigo.agregar(`${codigoDestino.acceso} = ${codigoValor.apuntador};`);
   codigo.comentar(`${codigoDestino.extra} = ${codigoValor.extra}`);
   return codigo;

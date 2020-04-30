@@ -1,26 +1,101 @@
 import {NTipo} from "../types/NTipo";
-import {nTipoDouble, nTipoEntero, nTipoError} from "../types/TiposPrimitivos";
+import {nTipoBoolean, nTipoDouble, nTipoEntero} from "../types/TiposPrimitivos";
+import {Codigo} from "./Codigo";
 
 
-export function arithmeticOperation(c1: NTipo, c2: NTipo ): NTipo {
+export function obtenerTipoOperacionAritmetica(c1: Codigo, c2: Codigo ): Codigo | undefined{
 
-    if(c1 === nTipoDouble && c2 === nTipoDouble){
-        return nTipoDouble;
+    const codigo = new Codigo();
+    if(c1.tipo === nTipoDouble && c2.tipo === nTipoDouble){
+
+        codigo.tipo = nTipoDouble;
+        return codigo;
     }
 
-    if(c1 === nTipoDouble && c2 == nTipoEntero){
-        return nTipoDouble
+    if(c1.tipo === nTipoDouble && c2.tipo == nTipoEntero){
+
+        codigo.tipo = nTipoDouble;
+        return codigo;
+
     }
 
 
-    if(c1 === nTipoEntero && c2 == nTipoDouble){
-        return nTipoDouble
+    if(c1.tipo === nTipoEntero && c2.tipo == nTipoDouble){
+        codigo.tipo = nTipoDouble;
+        return codigo;
+
     }
 
 
-    if(c1 === nTipoEntero && c2 === nTipoEntero){
-        return nTipoEntero;
+    if(c1.tipo === nTipoEntero && c2.tipo === nTipoEntero){
+
+        codigo.tipo = nTipoEntero;
+        return codigo;
+
     }
 
-    return nTipoError;
+    return undefined;
+}
+
+
+export function obtenerTipoOperacionRelacional(c1: Codigo, c2: Codigo): Codigo | undefined {
+
+    const codigo = new Codigo();
+
+    if(c1.tipo === nTipoDouble && c2.tipo === nTipoDouble){
+        codigo.tipo = nTipoBoolean;
+        return codigo;
+    }
+
+    if(c1.tipo === nTipoDouble && c2.tipo === nTipoEntero){
+        codigo.tipo = nTipoBoolean;
+        return codigo;
+    }
+
+    if(c1.tipo === nTipoEntero && c2.tipo === nTipoDouble){
+        codigo.tipo = nTipoBoolean;
+        return codigo;
+    }
+
+    if(c1.tipo === nTipoEntero && c2.tipo === nTipoEntero){
+        codigo.tipo = nTipoBoolean;
+        return codigo;
+    }
+
+
+
+
+    return undefined;
+}
+
+
+export function obtenerTipoOperacionLogica(c1: Codigo, c2: Codigo) {
+
+    if(c1.tipo!= nTipoBoolean){
+        return undefined;
+    }
+
+    if (c2.tipo != nTipoBoolean){
+        return undefined;
+    }
+
+    const codigo = new Codigo();
+    codigo.tipo = nTipoBoolean;
+    return codigo;
+
+}
+
+export function obtenerTipoOperacionLogicaUnaria(c1: Codigo) {
+
+    if(c1.tipo!= nTipoBoolean){
+        return undefined;
+    }
+
+    const codigo = new Codigo();
+    codigo.tipo = nTipoBoolean;
+    return codigo;
+
+
+
+
 }
