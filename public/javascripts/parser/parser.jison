@@ -208,7 +208,7 @@ assign
     ;
 
 expLeft
-    : id { new ast.NodoObtenerVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 ); }
+    : id { $$ = new ast.NodoObtenerVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 ); }
     //| expLeft '[' e ']'
     //| expLeft '.' id
     ;
