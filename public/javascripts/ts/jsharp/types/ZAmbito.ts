@@ -1,12 +1,7 @@
 import {NTipo, NTipoVar} from "./NTipo.js";
 import {SemanticError} from "./SemanticError.js";
+import {NFuncion} from "./NFuncion.js";
 
-
-
-
-class NFuncion {
-
-}
 
 export class ZAmbito {
 
@@ -32,6 +27,12 @@ export class ZAmbito {
         }
         this.propiedades.set(nombre.toLowerCase(), tipo);
     }
+    public declararFuncion(nombre: string, nFuncion: NFuncion): void {
+        if (this.funciones.has(nombre.toLowerCase())) {
+            throw new SemanticError(`Funcion ${nombre} ya declarado`);
+        }
+        this.funciones.set(nombre.toLowerCase(), nFuncion);
+    }
 
     public buscarPropiedadConDireccionRelativa(nombreBuscado: string): [number, NTipoVar | undefined] {
         const tipoVar = this.propiedades.get(nombreBuscado);
@@ -52,6 +53,10 @@ export class ZAmbito {
             throw new SemanticError(`Tipo ${nombre} no existe`);
         }
         return tipoVar;
+    }
+
+    public obtenerEntradas(): [string, NTipoVar][] {
+        return [...this.propiedades.entries()];
     }
 }
 
