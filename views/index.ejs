@@ -104,6 +104,11 @@
 <script src="/javascripts/parser/parser.js"></script>
 <script src="/javascripts/index.js"></script>
 
+<script>
+    const nodos = parser.parse('integer a;');
+    const texto = ast.generar3d(nodos);
+    console.log(texto);
+</script>
 
 </body>
 </html>
