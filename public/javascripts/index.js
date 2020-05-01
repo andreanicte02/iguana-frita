@@ -396,23 +396,13 @@ compileButton.click(()=>{
         //const relativePath = getPublicPath(currenOpenFile.path);
         //console.log(relativePath)
 
-        try {
 
-            console.log(jText);
-            const salida = parser.parse(jText);
 
-            console.log(salida);
+            const nodos = parser.parse(jText);
+            const texto = ast.generar3d(nodos);
+            editor3d.setValue(texto);
+            editor3d.clearSelection();
 
-            //editor3d.setValue(result);
-            //editor3d.clearSelection();
-        }
-        catch (e) {
-
-            console.log(e);
-            alert(e.message);
-            jj = e;
-
-        }
 
     }
 });

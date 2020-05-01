@@ -1,6 +1,8 @@
 public/javascripts/ts/**/*.js
 public/javascripts/ts/**/*.map
 public/javascripts/language.js
+public/javascripts/language.js.map
+public/javascripts/parser/parser.js
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template

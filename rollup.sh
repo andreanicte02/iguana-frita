@@ -1,1 +1,0 @@
-rollup ./public/javascripts/ts/jsharp/Main.js --format iife --name "ast" --file ./public/javascripts/language.js
