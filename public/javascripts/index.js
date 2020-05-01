@@ -400,6 +400,7 @@ compileButton.click(()=>{
 
             console.log(jText);
             const salida = parser.parse(jText);
+
             console.log(salida);
 
             //editor3d.setValue(result);

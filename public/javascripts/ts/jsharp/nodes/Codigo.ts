@@ -14,11 +14,13 @@ export class Codigo {
 
   //etiquetas verdaderas etiquetas falasas
 
-  public eTrue: string | undefined;
+  //cambiar por una lista
+  public eTrue: string []=[];
 
-  public eFalse: string | undefined;
+  public eFalse: string []=[];
 
-  public eSalida: string | undefined;
+
+  //public eSalida: string | undefined;
 
   public tipo: NTipo = nTipoComodin;
 
@@ -49,4 +51,33 @@ export class Codigo {
   get texto(): string {
     return this.lineas.join("\n");
   }
+
+  //metodos para agregar a las etiquetas verdaderas
+
+  public guardarEtiquetaVerdadera(etigquetaVerdadera: string): void{
+    this.eTrue.push(etigquetaVerdadera);
+  }
+
+
+  public guardarEtiquetaFalsa(etigquetaFalsa: string): void{
+    this.eFalse.push(etigquetaFalsa);
+  }
+
+  public pasarEtiquetasVerdaderas(etiquetasV: string[]): void {
+
+    this.eTrue.push(...etiquetasV);
+  }
+
+
+  public pasarEtiquetasFalsas(etiquetasF: string[]): void {
+
+    this.eFalse.push(...etiquetasF);
+  }
+
+
+
+
+
+
+
 }

@@ -111,7 +111,7 @@ case 38:
  this.$= new ast.NodoAsignar(new ast.FileLocation(('path'), _$[$0-2].first_column, _$[$0-2].first_line), $$[$0-2], $$[$0]); 
 break;
 case 39:
- new ast.NodoObtenerVar(new ast.FileLocation('path', _$[$0].first_column, _$[$0].first_line), $$[$0] ); 
+ this.$ = new ast.NodoObtenerVar(new ast.FileLocation('path', _$[$0].first_column, _$[$0].first_line), $$[$0] ); 
 break;
 case 41:
   this.$ = $$[$0-2]; $$[$0-2].push($$[$0]); 
@@ -121,7 +121,7 @@ case 42:
 break;
 case 43:
 
-            new ast.NodoDeclararVar(new ast.FileLocation('path', _$[$0].first_column, _$[$0].first_line), $$[$0]  ) ;
+            this.$ = new ast.NodoDeclararVar(new ast.FileLocation('path', _$[$0].first_column, _$[$0].first_line), $$[$0]  ) ;
          
 break;
 case 44:

@@ -224,7 +224,7 @@ idVariable
 
 idVarsDeclaration
     : id {
-            new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1  ) ;
+            $$ = new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1  ) ;
          }
     ;
 

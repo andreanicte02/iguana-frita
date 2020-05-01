@@ -2,7 +2,10 @@ import {NTipo} from "./NTipo.js";
 
 export const nTipoEntero = new NTipo('Integer');
 export const nTipoDouble = new NTipo('Double');
-export const nTipoBoolean = new NTipo('Boolean');
+//tipo boleano sombra
+export const nTipoBooleanSombra = new NTipo('Boolean');
+export const nTipoBooleanNormal = new NTipo('Boolean');
+//----------------
 export const nTipoChar = new NTipo('Char');
 export const nTipoVoid = new NTipo('Void');
 
