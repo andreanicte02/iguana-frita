@@ -1,6 +1,7 @@
 import {NodoAst} from "./nodes/NodoAst.js";
 import {ZAmbito} from "./types/ZAmbito.js";
 import {Codigo} from "./nodes/Codigo.js";
+import {FileLocation} from "./nodes/FileLocation.js";
 
 export { NodoObtenerTipoInt, NodoObtenerTipoBoolean,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
 export { NodoCrearInt } from './nodes/NodoCrearInt';
@@ -27,4 +28,13 @@ export function generar3d(sentencias: NodoAst[]): string {
         });
 
     return codigo.texto;
+}
+
+// Nos va a ayudar a crear el FileLocation de manera mas simplificada
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function fl(yy: any, pos: any): FileLocation {
+    const filePath = 'path';
+    const x = pos.first_column;
+    const y = pos.first_line;
+    return new FileLocation(filePath, x, y);
 }

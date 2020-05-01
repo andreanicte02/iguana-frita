@@ -105,9 +105,9 @@
 <script src="/javascripts/index.js"></script>
 
 <script>
-    const nodos = parser.parse('integer a;');
-    const texto = ast.generar3d(nodos);
-    console.log(texto);
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/java");
+    openFile({ path: '/public/archivos/prueba.j' });
 </script>
 
 </body>

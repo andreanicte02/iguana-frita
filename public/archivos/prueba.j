@@ -1,3 +1,4 @@
+
 integer a;
 integer b;
 b = 1;

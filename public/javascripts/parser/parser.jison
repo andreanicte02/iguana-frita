@@ -137,7 +137,7 @@ declareVariable
 
 
 
-    | pType decType idVariable { $$= new ast.NodoDeclararVarTipo5(new ast.FileLocation('path', @1.first_column, @1.first_line), $1, $2, $3); }
+    | pType decType idVariable { $$= new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, $2, $3); }
     //| id  decType idVariable
 
     //| 'var' id ':=' e
@@ -204,11 +204,11 @@ sentReturn
     ;
 
 assign
-    : expLeft '=' e { $$= new ast.NodoAsignar(new ast.FileLocation(('path'), @1.first_column, @1.first_line), $1, $3); }
+    : expLeft '=' e { $$= new ast.NodoAsignar(ast.fl(yy, @1), $1, $3); }
     ;
 
 expLeft
-    : id { $$ = new ast.NodoObtenerVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1 ); }
+    : id { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }
     //| expLeft '[' e ']'
     //| expLeft '.' id
     ;
@@ -224,7 +224,7 @@ idVariable
 
 idVarsDeclaration
     : id {
-            new ast.NodoDeclararVar(new ast.FileLocation('path', @1.first_column, @1.first_line), $1  ) ;
+            $$ = new ast.NodoDeclararVar(ast.fl(yy, @1), $1  ) ;
          }
     ;
 
@@ -241,22 +241,22 @@ type
 
 
 pType
-    : 'integer' { $$ = new ast.NodoObtenerTipoInt(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
-    | 'double'  { $$ = new ast.NodoObtenerTipoDouble(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
-    | 'char'    { $$ = new ast.NodoObtenerTipoChar(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
-    | 'boolean' { $$ = new ast.NodoObtenerTipoBoolean(new ast.FileLocation('path',  @1.first_column, @1.first_line)) ; }
+    : 'integer' { $$ = new ast.NodoObtenerTipoInt(ast.fl(yy,  @1)) ; }
+    | 'double'  { $$ = new ast.NodoObtenerTipoDouble(ast.fl(yy,  @1)) ; }
+    | 'char'    { $$ = new ast.NodoObtenerTipoChar(ast.fl(yy,  @1)) ; }
+    | 'boolean' { $$ = new ast.NodoObtenerTipoBoolean(ast.fl(yy,  @1)) ; }
     | 'void'
     ;
 
 e
-    : e '+' e { $$= new ast.NodoSuma(new ast.FileLocation('path',  @1.first_column, @1.first_line), $1, $3);}
+    : e '+' e { $$= new ast.NodoSuma(ast.fl(yy,  @1), $1, $3);}
     | '(' e ')' { $$ = $1; }
     | id
     | callFunction
     | explicitCast
     | e '.'  id  '(' listArguments ')'
     | e '[' e ']'
-    | num  { $$ = new ast.NodoCrearInt(new ast.FileLocation('path',  @1.first_column, @1.first_line), $1 );}
+    | num  { $$ = new ast.NodoCrearInt(ast.fl(yy,  @1), $1 );}
     | deci
     | aumento
     | arrayInstance
