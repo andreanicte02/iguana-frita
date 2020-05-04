@@ -4,6 +4,8 @@ import {Codigo} from "./Codigo.js";
 import {codigoAsignar} from "../types/codigos.js";
 import {FileLocation} from "./FileLocation.js";
 import {desenvolver} from "../Utilidades";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
 
 
 //linea 2016
@@ -23,8 +25,10 @@ export class NodoAsignar extends NodoAstPro {
         const codigo1 = this.c1.generarCodigo(ambito);
         const codigo2 = desenvolver(this.c2.generarCodigo(ambito));
 
-
-        return codigoAsignar(codigo1, codigo2);
+        //paso de boleans etiquetas a bollean normal si es que existe
+        return codigoAsignar(codigo1,
+            codigo2.tipo=== nTipoBooleanConEtiqueta
+                ?deBooleanoEtiquetaANormal(codigo2): codigo2);
     }
 
 }

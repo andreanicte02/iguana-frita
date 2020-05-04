@@ -1,4 +1,4 @@
 
 integer a;
-integer b;
-b = 1;
+boolean b;
+b = 1>2;

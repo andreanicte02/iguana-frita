@@ -3,14 +3,20 @@ import {ZAmbito} from "./types/ZAmbito.js";
 import {Codigo} from "./nodes/Codigo.js";
 import {FileLocation} from "./nodes/FileLocation.js";
 
-export { NodoObtenerTipoInt, NodoObtenerTipoBoolean,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
+export { NodoObtenerTipoInt,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
+export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
 export { NodoCrearInt } from './nodes/NodoCrearInt';
 export { FileLocation } from './nodes/FileLocation' ;
 export { NodoDeclararVar } from  './nodes/NodoDeclararVar';
 export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
+
 export { NodoSuma } from './nodes/arithmetic_operations/NodoSuma';
+
+export {NodoRelacional} from './nodes/NodoRelacional';
+
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
+export { NodoNot } from './nodes/NodoNot';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

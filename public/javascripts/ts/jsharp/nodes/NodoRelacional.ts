@@ -11,7 +11,7 @@ export class NodoRelacional extends NodoAstPro{
     public readonly e2: NodoAst;
     private readonly symbol: string;
 
-    constructor(fileLocation: FileLocation, e1: NodoAst, e2: NodoAst, symbol: string) {
+    constructor(fileLocation: FileLocation,e1: NodoAst , symbol: string, e2: NodoAst) {
         super(fileLocation);
         this.e1 = e1;
         this.e2 = e2;
@@ -42,25 +42,13 @@ export class NodoRelacional extends NodoAstPro{
         codigo.guardarEtiquetaVerdadera(etiquetaV);
         codigo.guardarEtiquetaFalsa(etiquetaF);
 
-        //codigo.eSalida = generarEtiqueta();
-        //codigo.apuntador = generarTemporal();
 
-        codigo.agregar(`if  ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${etiquetaV} ;`);
+        codigo.agregar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${etiquetaV} ;`);
         codigo.agregar(`goto ${etiquetaF} ;`);
 
-        /*
-        codigo.agregar(`${codigo.eTrue}:`)
-        codigo.agregar(`${codigo.apuntador} = 1 ;`)
-        codigo.agregar(`goto ${codigo.eSalida}`)
-
-        codigo.agregar(`${codigo.eFalse}:`)
-        codigo.agregar(`${codigo.apuntador} = 0 ;`)
-
-
-
-        codigo.agregar(`${codigo.eSalida}:`)
-    */
-
+        codigo.extra+=`if ${c1.apuntador} ${this.symbol} ${c2.apuntador}`;
+        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} etiquetas true ${codigo.eTrue.join(',')}`)
+        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} etiquetas false ${codigo.eFalse.join(',')}`)
 
         return codigo;
 
