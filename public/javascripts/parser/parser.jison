@@ -94,6 +94,7 @@
 %left '=' ':='
 %left '++' '--'
 %left '==' '!='
+%left '<' '<=' '>' '>='
 %left '+' '-'
 
 %left '*' '/' '%'
@@ -246,13 +247,15 @@ pType
     : 'integer' { $$ = new ast.NodoObtenerTipoInt(ast.fl(yy,  @1)) ; }
     | 'double'  { $$ = new ast.NodoObtenerTipoDouble(ast.fl(yy,  @1)) ; }
     | 'char'    { $$ = new ast.NodoObtenerTipoChar(ast.fl(yy,  @1)) ; }
-    | 'boolean' { $$ = new ast.NodoObtenerTipoBoolean(ast.fl(yy,  @1)) ; }
+    | 'boolean' { $$ = new ast.NodoObtenerTipoBool(ast.fl(yy,  @1)) ; }
     | 'void'
     ;
 
 e
-    : e '+' e { $$= new ast.NodoSuma(ast.fl(yy,  @1), $1, $3);}
-    | '(' e ')' { $$ = $1; }
+    : e '+' e       { $$ = new ast.NodoSuma(ast.fl(yy,  @1), $1, $3); }
+    | e '>' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
+    | '!' e         { $$ = new ast.NodoNot(ast.fl(yy,  @2), $2); }
+    | '(' e ')'     { $$ = $1; }
     | id
     | callFunction
     | explicitCast
