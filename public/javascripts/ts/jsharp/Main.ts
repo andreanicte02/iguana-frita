@@ -31,7 +31,7 @@ export { NodoDeclararEstructura } from './nodes/NodoDeclararEstructura';
 export { NodoNot } from './nodes/NodoNot';
 export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
-
+export { NodoXor } from './nodes/NodoXor';
 
 export function generar3d(sentencias: NodoAst[]): string {
     const ambito = new ZAmbito(undefined);
