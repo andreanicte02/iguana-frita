@@ -263,10 +263,14 @@ e
 
     | e '||' e      { $$ = new ast.NodoOr(ast.fl(yy,  @1), $1, $3); }
     | e '&&' e      { $$ = new ast.NodoAnd(ast.fl(yy,  @1),$1, $3); }
-
-
     | '!' e         { $$ = new ast.NodoNot(ast.fl(yy,  @2), $2); }
+
+
     | '(' e ')'     { $$ = $2; }
+
+    | 'true'        { $$ = new ast.NodoCrearTrue(ast.fl(yy,  @1)); }
+    | 'false'       { $$ = new ast.NodoCrearFalse(ast.fl(yy,  @1)); }
+
     | id
     | callFunction
     | explicitCast

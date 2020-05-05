@@ -6,6 +6,9 @@ import {FileLocation} from "./nodes/FileLocation.js";
 export { NodoObtenerTipoInt,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
 export { NodoCrearInt } from './nodes/NodoCrearInt';
+export { NodoCrearTrue } from './nodes/NodoCrearTrue';
+export { NodoCrearFalse } from './nodes/NodoCrearFalse';
+
 export { FileLocation } from './nodes/FileLocation' ;
 export { NodoDeclararVar } from  './nodes/NodoDeclararVar';
 export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
@@ -19,6 +22,7 @@ export { NodoObtenerVar } from './nodes/NodoObtenerVar';
 export { NodoNot } from './nodes/NodoNot';
 export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
+
 
 export function generar3d(sentencias: NodoAst[]): string {
 
