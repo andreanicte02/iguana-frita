@@ -1,6 +1,7 @@
 import {NTipo, NTipoVar} from "./NTipo.js";
 import {SemanticError} from "./SemanticError.js";
 import {NFuncion} from "./NFuncion.js";
+import { Codigo } from "../nodes/Codigo.js";
 
 
 export class ZAmbito {
@@ -10,6 +11,10 @@ export class ZAmbito {
     private readonly propiedades = new Map<string, NTipoVar>();
     private readonly funciones = new Map<string, NFuncion>();
     public readonly padre?: ZAmbito;
+
+    // nos lleva al final de la funcion
+    // solo se llena para el ambito principal al generar el codigo de una funcion
+    public etiquetaFinFuncion = '';
     
     constructor(padre?: ZAmbito) {
         this.padre = padre;
@@ -34,29 +39,35 @@ export class ZAmbito {
         this.funciones.set(nombre.toLowerCase(), nFuncion);
     }
 
-    public buscarPropiedadConDireccionRelativa(nombreBuscado: string): [number, NTipoVar | undefined] {
-        const tipoVar = this.propiedades.get(nombreBuscado);
+    public buscarPropiedadConDireccionRelativa(nombreBuscado: string): {indice: number; nTipoVar: NTipoVar} | undefined {
+        const nTipoVar = this.propiedades.get(nombreBuscado);
 
-        if (tipoVar === undefined) {
-            return [-1, undefined];
+        if (nTipoVar === undefined) {
+            return undefined;
         }
         const nombres = [...this.propiedades.keys()];
         const indice = nombres.findIndex(
             (nombre) => nombre === nombreBuscado.toLowerCase()
         );
-        return [indice, tipoVar];
+        return {indice, nTipoVar};
     }
 
-    public obtenerTipoDeclarado(nombre: string): NTipo {
-        const tipoVar = this.tipos.get(nombre.toLowerCase());
-        if (tipoVar === undefined) {
-            throw new SemanticError(`Tipo ${nombre} no existe`);
-        }
-        return tipoVar;
+    public buscarTipo(nombre: string): NTipo | undefined {
+        return this.tipos.get(nombre);
     }
 
     public obtenerEntradas(): [string, NTipoVar][] {
         return [...this.propiedades.entries()];
+    }
+
+    public generarCodigoFunciones(): Codigo {
+        const codigo = new Codigo();
+        [...this.funciones.entries()].forEach(([nombre, nFuncion]) => {
+            codigo.agregar(`proc ${nombre} begin`);
+            codigo.agregarCodigo(nFuncion.generarCodigo());
+            codigo.agregar(`end`);
+        });
+        return codigo;
     }
 }
 

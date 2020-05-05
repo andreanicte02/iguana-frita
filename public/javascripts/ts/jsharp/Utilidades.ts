@@ -1,4 +1,6 @@
 import {Codigo} from "./nodes/Codigo.js";
+import {NodoAst} from "./nodes/NodoAst.js";
+import {ZAmbito} from "./types/ZAmbito.js";
 
 
 const inicio = {
@@ -22,3 +24,17 @@ export function generarEtiqueta(): string {
     return `L${inicio.contadorEtiquetas}`;
 }
 
+export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Codigo {
+    const codigo = new Codigo();
+
+    sentencias
+        .map(sentencia => sentencia.generarCodigo(ambito))
+        .forEach(c => {
+            codigo.agregarCodigo(c)
+        });
+
+    const codigoFunciones = ambito.generarCodigoFunciones();
+    codigo.agregarCodigo(codigoFunciones);
+
+    return codigo;
+}

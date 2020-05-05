@@ -1,33 +1,70 @@
 import { Codigo } from "../nodes/Codigo.js";
 import { SemanticError } from "./SemanticError.js";
-import { NTipoVar } from "./NTipo.js";
+import {NTipo, NTipoVar} from "./NTipo.js";
 import { ZAmbito } from "./ZAmbito.js";
 import { generarTemporal } from "../Utilidades.js";
 
-export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
+
+/**
+ * Itera sobre la cadena de ambitos y va ejecutando la accion suministrada,
+ * se detiene solamente si se regresa un valor diferente de `undefined`
+ * @param ambito del cual comienza a buscar
+ * @param accion
+ */
+function buscarEnCadenaAmbito<T>(
+    ambito: ZAmbito,
+    accion: (a: ZAmbito) => T | undefined,
+): T | undefined {
   for (
-    let temporal: ZAmbito | undefined = ambito;
-    temporal !== undefined;
-    temporal = temporal!.padre
+      let temporal: ZAmbito | undefined = ambito;
+      temporal !== undefined;
+      temporal = temporal!.padre
   ) {
-    // TODO: falta agregar logica de ambitos anidados, y ambito global
+    const result = accion(temporal);
+    if (result) {
+      return result;
+    }
+  }
+  return undefined;
+}
 
-    const [indice, tipoVar] = ambito.buscarPropiedadConDireccionRelativa(
-      nombre
-    );
-    if (tipoVar === undefined) continue;
+export function codigoObtenerTipo(ambito: ZAmbito, nombre: string): Codigo {
+  const nTipo = buscarEnCadenaAmbito<NTipo>(ambito, a => a.buscarTipo(nombre));
 
-    const codigo = new Codigo();
-    codigo.apuntador = generarTemporal();
-    codigo.agregar(`${codigo.apuntador} = P + ${indice};`);
-    codigo.comentar(`&${nombre}`);
-    codigo.acceso = `stack[${codigo.apuntador}]`;
-    codigo.tipo = tipoVar;
-    return codigo;
+  if (nTipo === undefined) {
+    throw new SemanticError(`No se encontro el tipo ${nombre}`);
   }
 
-  throw new SemanticError(`Variable ${nombre} no declarada`);
+  const codigo = new Codigo();
+  codigo.tipo = nTipo;
+  return codigo;
 }
+
+export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
+
+
+  const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
+      ambito,
+      a => a.buscarPropiedadConDireccionRelativa(nombre),
+  );
+
+  if (tupla === undefined) {
+    throw new SemanticError(`Variable ${nombre} no declarada`);
+  }
+
+  // TODO: falta agregar logica de ambitos anidados, y ambito global
+
+  const codigo = new Codigo();
+  codigo.apuntador = generarTemporal();
+  codigo.agregar(`${codigo.apuntador} = P + ${tupla.indice};`);
+  codigo.comentar(`&${nombre}`);
+  codigo.acceso = `stack[${codigo.apuntador}]`;
+  codigo.tipo = tupla.nTipoVar;
+  return codigo;
+
+}
+
+
 
 export function codigoAsignar(
   codigoDestino: Codigo,

@@ -305,20 +305,29 @@ arrayInstance
     ;
 
 defineStruct
-    : 'define' id 'as' '[' structAttributes ']'
-    | 'define' id 'as' '[' ']'
+    : 'define' id 'as' '[' structAttributes ']'     { $$ = new ast.NodoDeclararEstructura( ast.fl(yy, @2), $2, $4 ); }
     ;
 
 structAttributes
-    : structAttributes structAttribute
-    | structAttribute
+    : structAttributes ',' structAttribute  { $$ = $1.concat($2); }
+    | structAttribute                       { $$ = [$1] }
     ;
 
 structAttribute
-    : pType decType
-    | id decType
-    | pType decType '=' e
-    | id decType '=' e
+    : varType id '=' e  {
+                            const declaracion = ast.NodoDeclararAtributo(ast.fl(yy, @2), $2);
+                            const asignacion = ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4);
+                            $$ = { declaracion, asignacion };
+                        }
+    | varType id        {
+                            const declaracion = ast.NodoDeclararAtributo(ast.fl(yy, @2), $2);
+                            $$ = { declaracion };
+                        }
+    ;
+
+varType
+    : id    { $$ = new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1); }
+    | pType { $$ = $1; }
     ;
 
 listExp
