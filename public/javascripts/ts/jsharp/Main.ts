@@ -18,6 +18,7 @@ export { NodoSuma } from './nodes/arithmetic_operations/NodoSuma';
 export { NodoResta } from './nodes/arithmetic_operations/NodoResta';
 export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';
 export { NodoModular } from  './nodes/arithmetic_operations/NodoModular';
+export { NodoUnarioMenos } from  './nodes/arithmetic_operations/NodoUnarioMenos';
 
 export {NodoRelacional} from './nodes/NodoRelacional';
 

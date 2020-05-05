@@ -93,7 +93,15 @@ export function obtenerTipoOperacionRelacional(c1: Codigo, c2: Codigo): NTipo | 
     return undefined;
 }
 
+export function obtenerTipoOperacionUnarioMenos(c1: Codigo): NTipo | undefined {
+    if(c1.tipo === nTipoEntero || c1.tipo === nTipoDouble){
 
+        return c1.tipo;
+
+    }
+
+    return undefined;
+}
 
 export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
 
