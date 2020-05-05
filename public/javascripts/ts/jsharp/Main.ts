@@ -17,6 +17,7 @@ export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
 export { NodoSuma } from './nodes/arithmetic_operations/NodoSuma';
 export { NodoResta } from './nodes/arithmetic_operations/NodoResta';
 export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';
+export { NodoModular } from  './nodes/arithmetic_operations/NodoModular';
 
 export {NodoRelacional} from './nodes/NodoRelacional';
 

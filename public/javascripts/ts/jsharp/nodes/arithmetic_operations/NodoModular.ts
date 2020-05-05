@@ -3,7 +3,7 @@ import { ZAmbito } from "../../types/ZAmbito";
 import { Codigo } from "../Codigo";
 import {FileLocation} from "../FileLocation";
 import {desenvolver, generarTemporal} from "../../Utilidades";
-import {obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
+import {obtenerTipoAritmeticoModular} from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
 
 export class NodoModular extends NodoAstPro{
@@ -24,7 +24,9 @@ export class NodoModular extends NodoAstPro{
         const c1 = desenvolver(this.e1.generarCodigo(ambito));
         const c2 = desenvolver(this.e2.generarCodigo(ambito));
 
-        const tipo = obtenerTipoOperacionAritmeticaSimple(c1, c2);
+        const tipo = obtenerTipoAritmeticoModular(c1, c2);
+
+        //TODO: falta lo del casteo implicitio hacia los char
 
         if(tipo === undefined){
 

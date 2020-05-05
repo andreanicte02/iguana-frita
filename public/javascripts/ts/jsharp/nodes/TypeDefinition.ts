@@ -51,6 +51,14 @@ export function obtenerTipoOperacionAritmeticaSimple(c1: Codigo, c2: Codigo ) {
 
 }
 
+export function obtenerTipoAritmeticoModular(c1: Codigo, c2: Codigo) {
+    if(c1.tipo === nTipoEntero && c2.tipo === nTipoEntero){
+        return nTipoEntero;
+    }
+    return  undefined;
+
+}
+
 export function obtenerTipoOperacionAritmeticaSuma(c1: Codigo, c2: Codigo ): NTipo  | undefined{
 
     if(!(esNumero(c1) || esCadena(c1)) && !(esNumero(c2) || esCadena(c2))){

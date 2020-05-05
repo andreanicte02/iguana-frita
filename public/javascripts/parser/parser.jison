@@ -262,6 +262,7 @@ e
     : e '+' e       { $$ = new ast.NodoSuma(ast.fl(yy,  @1), $1, $3); }
     | e '-' e       { $$ = new ast.NodoResta(ast.fl(yy,  @1), $1, $3); }
     | e '*' e       { $$ = new ast.NodoMulti(ast.fl(yy,  @1), $1, $3); }
+    | e '%' e       { $$ = new ast.NodoModular(ast.fl(yy,  @1), $1, $3); }
 
     | e '>' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
     | e '<' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
