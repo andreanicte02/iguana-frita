@@ -17,6 +17,8 @@ export {NodoRelacional} from './nodes/NodoRelacional';
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
 export { NodoNot } from './nodes/NodoNot';
+export { NodoOr } from './nodes/NodoOr';
+export { NodoAnd } from './nodes/NodoAnd';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

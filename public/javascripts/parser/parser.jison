@@ -92,7 +92,13 @@
 /* operator associations and precedence */
 
 %left '=' ':='
+
 %left '++' '--'
+
+%left '||'
+
+%left '&&'
+
 %left '==' '!='
 %left '<' '<=' '>' '>='
 %left '+' '-'
@@ -254,8 +260,13 @@ pType
 e
     : e '+' e       { $$ = new ast.NodoSuma(ast.fl(yy,  @1), $1, $3); }
     | e '>' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
+
+    | e '||' e      { $$ = new ast.NodoOr(ast.fl(yy,  @1), $1, $3); }
+    | e '&&' e      { $$ = new ast.NodoAnd(ast.fl(yy,  @1),$1, $3); }
+
+
     | '!' e         { $$ = new ast.NodoNot(ast.fl(yy,  @2), $2); }
-    | '(' e ')'     { $$ = $1; }
+    | '(' e ')'     { $$ = $2; }
     | id
     | callFunction
     | explicitCast

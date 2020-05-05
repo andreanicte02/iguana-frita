@@ -28,15 +28,22 @@ export class NodoNot  extends NodoAstPro{
             throw new SemanticError(`Error de tipos operacion  ${this.symbol} ${c1.tipo.nombre}`);
         }
 
+
+
+        const aux1 = c1.tipo === nTipoBooleanConEtiqueta ? c1 : deBolleanoNormalAEtiqueta(c1);
+
         const codigo = new Codigo();
 
-        const aux = codigo.tipo === nTipoBooleanConEtiqueta? c1 : deBolleanoNormalAEtiqueta(c1);
+        codigo.tipo = aux1.tipo;
+        codigo.pasarEtiquetasFalsas(aux1.eTrue);
+        codigo.pasarEtiquetasVerdaderas(aux1.eFalse);
+        codigo.agregarCodigo(aux1);
 
+        codigo.comentar(`! ${aux1.extra}`)
+        codigo.comentar(`etiquetas true: ${codigo.eTrue.join(',')}`)
+        codigo.comentar(`etiquetas false: ${codigo.eFalse.join(',')}`)
 
-        codigo.eFalse = aux.eTrue;
-        codigo.eTrue = aux.eFalse;
-
-        codigo.agregarCodigo(aux);
+        codigo.extra= `! ${aux1.extra}`;
 
         return codigo;
 

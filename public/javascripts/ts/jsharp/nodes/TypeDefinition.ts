@@ -101,12 +101,22 @@ export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
     codigo.agregarCodigo(c1);
 
     const eSalida = generarEtiqueta();
-    codigo.agregar(`${c1.eTrue.join(',')} :`);
+    codigo.agregar(`${codigo.eTrue.join(',')} :`);
     codigo.agregar(`${codigo.apuntador} = 1`);
     codigo.agregar(`goto ${eSalida}`);
-    codigo.agregar(`${c1.eFalse.join(',')} :`);
+    codigo.agregar(`${codigo.eFalse.join(',')} :`);
     codigo.agregar(`${codigo.apuntador} = 0`);
     codigo.agregar(`${eSalida} :`);
+
+    codigo.comentar('de bool normal a eitiqueta')
+
+    codigo.extra=`${codigo.apuntador} = 1 | 0`;
+
+    codigo.comentar(`if ${codigo.apuntador} == 1 goto - etiquetas true: ${codigo.eTrue.join(',')}` )
+    codigo.comentar(`if ${codigo.apuntador} == 0 goto - etiquetas false: ${codigo.eFalse.join(',')}` )
+
+
+
     return codigo;
 }
 
@@ -123,6 +133,11 @@ export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     codigo.agregar(`if ${c1.apuntador} == 1 goto ${etiquetaV}`)
     codigo.agregar(`go to ${etiquetaF}`)
 
+
+    codigo.comentar('de bool etiqueta a normal')
+    codigo.extra+= `${c1.apuntador} == 1`
+    codigo.comentar(`if ${c1.apuntador} == 1 goto - etiquetas true: ${etiquetaV}` )
+    codigo.comentar(`if ${c1.apuntador} == 1 goto - etiquetas false: ${etiquetaF}` )
 
     return codigo;
 }

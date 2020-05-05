@@ -46,6 +46,10 @@ export class NodoOr extends NodoAstPro{
         codigo.agregarCodigo(aux1);
         codigo.agregar(`${aux1.eFalse.reduce((a,x)=> a += "," + x )} :`);
         codigo.agregarCodigo(aux2);
+
+
+        codigo.extra = `${aux1.extra} || ${aux2.extra}`
+        codigo.comentar(`${aux1.extra} || ${aux2.extra}`);
         return codigo;
     }
 

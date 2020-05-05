@@ -40,14 +40,19 @@ export class NodoAnd extends NodoAstPro{
 
 
 
+
         codigo.pasarEtiquetasFalsas(aux1.eFalse);
         codigo.pasarEtiquetasFalsas(aux2.eFalse);
 
         codigo.pasarEtiquetasVerdaderas(aux2.eTrue);
 
         codigo.agregarCodigo(aux1);
-        codigo.agregar(`${aux1.eTrue.reduce((a,x)=> a += "," + x )} :`);
+        codigo.agregar(`${aux1.eTrue.join(',')} :`);
+
         codigo.agregarCodigo(aux2);
+
+        codigo.extra = `${aux1.extra} && ${aux2.extra}`
+        codigo.comentar(`${aux1.extra} && ${aux2.extra}`);
 
         return codigo;
 
