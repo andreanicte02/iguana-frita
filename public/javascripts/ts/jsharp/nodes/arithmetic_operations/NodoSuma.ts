@@ -28,6 +28,8 @@ export class NodoSuma extends NodoAstPro {
 
     const tipo = obtenerTipoOperacionAritmeticaSuma(c1, c2);
 
+    //TODO: Falta el manejo de cadenas
+
     if(tipo === undefined){
 
       throw new SemanticError(`Error de tipos operacion ${c1.tipo.nombre} ${this.symbol} ${c2.tipo.nombre} `);

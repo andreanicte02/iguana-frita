@@ -22,12 +22,16 @@ export {NodoRelacional} from './nodes/NodoRelacional';
 
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
+
+
+
 export { NodoAsignarAtributo } from './nodes/NodoAsignarAtributo';
 export { NodoDeclararAtributo } from './nodes/NodoDeclararAtributo';
 export { NodoDeclararEstructura } from './nodes/NodoDeclararEstructura';
 export { NodoNot } from './nodes/NodoNot';
 export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
+
 
 export function generar3d(sentencias: NodoAst[]): string {
     const ambito = new ZAmbito(undefined);

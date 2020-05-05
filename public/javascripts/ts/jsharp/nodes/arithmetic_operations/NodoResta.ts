@@ -3,7 +3,7 @@ import {FileLocation} from "../FileLocation";
 import {ZAmbito} from "../../types/ZAmbito";
 import {Codigo} from "../Codigo";
 import {desenvolver, generarTemporal} from "../../Utilidades";
-import {obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
+import { obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
 
 export class NodoResta extends NodoAstPro {
