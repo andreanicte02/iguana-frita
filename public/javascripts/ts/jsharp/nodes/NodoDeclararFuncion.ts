@@ -22,7 +22,7 @@ class NodoDeclararFuncion extends NodoAstPro {
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
         const { tipo } = this.nodoTipoRetorno.generarCodigo(ambito);
-        const nFuncion = new NFuncion(ambito, tipo, this.nodosParametro, this.sentencias);
+        const nFuncion = new NFuncion(ambito, tipo, this.nodosParametro, this.sentencias, false);
         /*
         Para soportar sobrecarga de funciones, ejemplo:
         hola(int a){}       --> hola_INT

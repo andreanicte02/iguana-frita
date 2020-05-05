@@ -16,7 +16,7 @@ export class NodoDeclararVar extends NodoAstPro {
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
         if(this.nodoObtenerTipo === undefined){
-            return Codigo.vacio;
+            throw new Error(`Estas ejecutando esto sin haber definido 'nodoObtenerTipo'`);
         }
         
         const codigoTipo = this.nodoObtenerTipo.generarCodigo(ambito) ;
@@ -25,11 +25,9 @@ export class NodoDeclararVar extends NodoAstPro {
             // ojo: este no es un SemanticError, se lanza para proteger durante desarrollo
             throw new Error('Nodo suministrado no posee tipo');
         }
-        //solo un declaraicon
 
         ambito.declararPropiedad(this.nombre, new NTipoVar(codigoTipo.tipo));
 
-        // TODO: devolver la posicion de la variable declarada;
         return Codigo.vacio;
     }
 
