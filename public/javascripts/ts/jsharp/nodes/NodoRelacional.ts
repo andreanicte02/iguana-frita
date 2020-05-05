@@ -11,7 +11,7 @@ export class NodoRelacional extends NodoAstPro{
     public readonly e2: NodoAst;
     private readonly symbol: string;
 
-    constructor(fileLocation: FileLocation, e1: NodoAst, e2: NodoAst, symbol: string) {
+    constructor(fileLocation: FileLocation,e1: NodoAst , symbol: string, e2: NodoAst) {
         super(fileLocation);
         this.e1 = e1;
         this.e2 = e2;
@@ -23,37 +23,32 @@ export class NodoRelacional extends NodoAstPro{
         const c1 = desenvolver(this.e1.generarCodigo(ambito));
         const c2 = desenvolver(this.e2.generarCodigo(ambito));
 
-        const codigo = obtenerTipoOperacionRelacional(c1, c2);
+        const  tipo = obtenerTipoOperacionRelacional(c1, c2);
 
-        if(codigo === undefined){
+        if(tipo === undefined){
             throw new SemanticError(`Error de tipos operacion ${c1.tipo.nombre} ${this.symbol} ${c2.tipo.nombre} `);
 
         }
 
+        const codigo = new Codigo();
+        codigo.tipo = tipo;
+
         codigo.agregarCodigo(c1);
         codigo.agregarCodigo(c2);
 
-        codigo.eTrue = generarEtiqueta();
-        codigo.eFalse = generarEtiqueta();
-        codigo.eSalida = generarEtiqueta();
-        codigo.apuntador = generarTemporal();
+        const etiquetaV = generarEtiqueta();
+        const etiquetaF = generarEtiqueta();
 
-        codigo.agregar(`if  ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${codigo.eTrue} ;`);
-        codigo.agregar(`goto ${codigo.eFalse} ;`);
-
-        /*
-        codigo.agregar(`${codigo.eTrue}:`)
-        codigo.agregar(`${codigo.apuntador} = 1 ;`)
-        codigo.agregar(`goto ${codigo.eSalida}`)
-
-        codigo.agregar(`${codigo.eFalse}:`)
-        codigo.agregar(`${codigo.apuntador} = 0 ;`)
+        codigo.guardarEtiquetaVerdadera(etiquetaV);
+        codigo.guardarEtiquetaFalsa(etiquetaF);
 
 
+        codigo.agregar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${etiquetaV} ;`);
+        codigo.agregar(`goto ${etiquetaF} ;`);
 
-        codigo.agregar(`${codigo.eSalida}:`)
-    */
-
+        codigo.extra+=`if ${c1.apuntador} ${this.symbol} ${c2.apuntador}`;
+        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
+        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas false: ${codigo.eFalse.join(',')}`)
 
         return codigo;
 

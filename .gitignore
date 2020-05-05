@@ -212,3 +212,4 @@ dist
 .pnp.*
 
 
+public/javascripts/parser/parser.js

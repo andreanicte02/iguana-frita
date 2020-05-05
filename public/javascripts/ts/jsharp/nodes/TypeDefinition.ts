@@ -1,36 +1,84 @@
 import {NTipo} from "../types/NTipo";
-import {nTipoBoolean, nTipoDouble, nTipoEntero} from "../types/TiposPrimitivos";
+import {
+    nTipoBooleanConEtiqueta,
+    nTipoBooleanNormal,
+    nTipoChar,
+    nTipoDouble,
+    nTipoEntero
+} from "../types/TiposPrimitivos";
 import {Codigo} from "./Codigo";
+import {generarEtiqueta, generarTemporal} from "../Utilidades";
 
+export function esBoleano(tipo: Codigo): boolean {
 
-export function obtenerTipoOperacionAritmetica(c1: Codigo, c2: Codigo ): Codigo | undefined{
-
-    const codigo = new Codigo();
-    if(c1.tipo === nTipoDouble && c2.tipo === nTipoDouble){
-
-        codigo.tipo = nTipoDouble;
-        return codigo;
+    if(tipo.tipo === nTipoBooleanConEtiqueta || tipo.tipo === nTipoBooleanConEtiqueta){
+        return true;
     }
 
-    if(c1.tipo === nTipoDouble && c2.tipo == nTipoEntero){
+    return false;
+}
 
-        codigo.tipo = nTipoDouble;
-        return codigo;
+export function esNumero(tipo: Codigo): boolean {
 
+    if(tipo.tipo === nTipoDouble || tipo.tipo === nTipoEntero || tipo.tipo === nTipoChar){
+        return true;
+    }
+    return false;
+}
+
+export function esCadena(tipo: Codigo): boolean {
+
+    return  true;
+}
+
+export function obtenerTipoOperacionAritmeticaSimple(c1: Codigo, c2: Codigo ) {
+
+    if(!esNumero(c1) && !esNumero(c2)){
+        return undefined;
     }
 
-
-    if(c1.tipo === nTipoEntero && c2.tipo == nTipoDouble){
-        codigo.tipo = nTipoDouble;
-        return codigo;
-
+    if(c1.tipo=== nTipoDouble || c2.tipo === nTipoDouble){
+        return nTipoDouble;
     }
 
+    if(c1.tipo === nTipoEntero || c2.tipo == nTipoEntero){
 
-    if(c1.tipo === nTipoEntero && c2.tipo === nTipoEntero){
+        return nTipoEntero;
+    }
 
-        codigo.tipo = nTipoEntero;
-        return codigo;
+    return nTipoChar;
+
+
+}
+
+export function obtenerTipoOperacionAritmeticaSuma(c1: Codigo, c2: Codigo ): NTipo  | undefined{
+
+    if(!(esNumero(c1) || esCadena(c1)) && !(esNumero(c2) || esCadena(c2))){
+        return  undefined;
+    }
+
+    //solo faltaria la excuslion para el tipo cadena
+    if(c1.tipo=== nTipoDouble || c2.tipo === nTipoDouble){
+        return nTipoDouble;
+    }
+
+    if(c1.tipo === nTipoEntero || c2.tipo == nTipoEntero){
+
+        return nTipoEntero;
+    }
+
+    return nTipoChar;
+
+}
+
+
+export function obtenerTipoOperacionRelacional(c1: Codigo, c2: Codigo): NTipo | undefined {
+
+
+    if(esNumero(c1) && esNumero(c2)){
+
+        //las relacionales siempre deberian de generar con etiquetas
+        return nTipoBooleanConEtiqueta;
 
     }
 
@@ -38,64 +86,61 @@ export function obtenerTipoOperacionAritmetica(c1: Codigo, c2: Codigo ): Codigo 
 }
 
 
-export function obtenerTipoOperacionRelacional(c1: Codigo, c2: Codigo): Codigo | undefined {
+
+export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
 
     const codigo = new Codigo();
 
-    if(c1.tipo === nTipoDouble && c2.tipo === nTipoDouble){
-        codigo.tipo = nTipoBoolean;
-        return codigo;
-    }
 
-    if(c1.tipo === nTipoDouble && c2.tipo === nTipoEntero){
-        codigo.tipo = nTipoBoolean;
-        return codigo;
-    }
+    codigo.pasarEtiquetasFalsas(c1.eFalse);
+    codigo.pasarEtiquetasVerdaderas(c1.eTrue);
 
-    if(c1.tipo === nTipoEntero && c2.tipo === nTipoDouble){
-        codigo.tipo = nTipoBoolean;
-        return codigo;
-    }
+    codigo.tipo = nTipoBooleanNormal;
+    codigo.apuntador = generarTemporal();
 
-    if(c1.tipo === nTipoEntero && c2.tipo === nTipoEntero){
-        codigo.tipo = nTipoBoolean;
-        return codigo;
-    }
+    codigo.agregarCodigo(c1);
 
+    const eSalida = generarEtiqueta();
+    codigo.agregar(`${codigo.eTrue.join(',')} :`);
+    codigo.agregar(`${codigo.apuntador} = 1`);
+    codigo.agregar(`goto ${eSalida}`);
+    codigo.agregar(`${codigo.eFalse.join(',')} :`);
+    codigo.agregar(`${codigo.apuntador} = 0`);
+    codigo.agregar(`${eSalida} :`);
 
+    codigo.comentar('de bool normal a eitiqueta')
 
+    codigo.extra=`${codigo.apuntador} = 1 | 0`;
 
-    return undefined;
-}
+    codigo.comentar(`if ${codigo.apuntador} == 1 goto - etiquetas true: ${codigo.eTrue.join(',')}` )
+    codigo.comentar(`if ${codigo.apuntador} == 0 goto - etiquetas false: ${codigo.eFalse.join(',')}` )
 
 
-export function obtenerTipoOperacionLogica(c1: Codigo, c2: Codigo) {
 
-    if(c1.tipo!= nTipoBoolean){
-        return undefined;
-    }
-
-    if (c2.tipo != nTipoBoolean){
-        return undefined;
-    }
-
-    const codigo = new Codigo();
-    codigo.tipo = nTipoBoolean;
     return codigo;
-
 }
 
-export function obtenerTipoOperacionLogicaUnaria(c1: Codigo) {
+export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
+    const  codigo = new Codigo();
+    codigo.tipo = nTipoBooleanConEtiqueta;
+    codigo.apuntador = c1.apuntador;
+    const etiquetaV = generarEtiqueta();
+    const etiquetaF = generarEtiqueta();
 
-    if(c1.tipo!= nTipoBoolean){
-        return undefined;
-    }
+    codigo.guardarEtiquetaVerdadera(etiquetaV);
+    codigo.guardarEtiquetaFalsa(etiquetaF);
 
-    const codigo = new Codigo();
-    codigo.tipo = nTipoBoolean;
+    codigo.agregar(`if ${c1.apuntador} == 1 goto ${etiquetaV}`)
+    codigo.agregar(`go to ${etiquetaF}`)
+
+
+    codigo.comentar('de bool etiqueta a normal')
+    codigo.extra+= `${c1.apuntador} == 1`
+    codigo.comentar(`if ${c1.apuntador} == 1 goto - etiquetas true: ${etiquetaV}` )
+    codigo.comentar(`if ${c1.apuntador} == 1 goto - etiquetas false: ${etiquetaF}` )
+
     return codigo;
-
-
-
-
 }
+
+
+

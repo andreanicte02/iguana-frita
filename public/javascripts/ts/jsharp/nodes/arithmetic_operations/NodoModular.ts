@@ -1,9 +1,9 @@
-import {FileLocation} from "../FileLocation";
 import {NodoAst, NodoAstPro} from "../NodoAst";
-import {ZAmbito} from "../../types/ZAmbito";
-import {Codigo} from "../Codigo";
+import { ZAmbito } from "../../types/ZAmbito";
+import { Codigo } from "../Codigo";
+import {FileLocation} from "../FileLocation";
 import {desenvolver, generarTemporal} from "../../Utilidades";
-import {obtenerTipoOperacionAritmetica} from "../TypeDefinition";
+import {obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
 
 export class NodoModular extends NodoAstPro{
@@ -15,7 +15,8 @@ export class NodoModular extends NodoAstPro{
         super(fileLocation);
         this.e1 = e1;
         this.e2 = e2;
-        this.symbol = "$";
+        this.symbol = "%";
+
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
@@ -23,14 +24,15 @@ export class NodoModular extends NodoAstPro{
         const c1 = desenvolver(this.e1.generarCodigo(ambito));
         const c2 = desenvolver(this.e2.generarCodigo(ambito));
 
+        const tipo = obtenerTipoOperacionAritmeticaSimple(c1, c2);
 
-        const  codigo = obtenerTipoOperacionAritmetica(c1, c2);
-
-        if(codigo === undefined){
+        if(tipo === undefined){
 
             throw new SemanticError(`Error de tipos operacion ${c1.tipo.nombre} ${this.symbol} ${c2.tipo.nombre} `);
-
         }
+
+        const codigo = new Codigo();
+        codigo.tipo = tipo;
 
         codigo.agregarCodigo(c1);
         codigo.agregarCodigo(c2);
@@ -42,4 +44,5 @@ export class NodoModular extends NodoAstPro{
         return codigo;
 
     }
+
 }
