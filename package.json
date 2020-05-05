@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "prender": "rollup -c & node jison-generator.js & node bin/www"
+    "prender": "node jison-generator.js && rollup -c && node bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
