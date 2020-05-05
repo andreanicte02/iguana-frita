@@ -11,7 +11,7 @@ import {generarEtiqueta, generarTemporal} from "../Utilidades";
 
 export function esBoleano(tipo: Codigo): boolean {
 
-    if(tipo.tipo === nTipoBooleanConEtiqueta || tipo.tipo === nTipoBooleanConEtiqueta){
+    if(tipo.tipo === nTipoBooleanConEtiqueta || tipo.tipo === nTipoBooleanNormal){
         return true;
     }
 

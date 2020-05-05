@@ -12,6 +12,7 @@
 "-"                   return '-'
 "+"                   return '+'
 "^^"                  return '^^'
+"^"                   return '^'
 "!"                   return '!'
 "%"                   return '%'
 ","                   return ','
@@ -102,7 +103,7 @@
 %left '==' '!='
 %left '<' '<=' '>' '>='
 %left '+' '-'
-
+%left '^'
 %left '*' '/' '%'
 
 %right '!' UMINUS
@@ -270,6 +271,7 @@ e
 
     | e '||' e      { $$ = new ast.NodoOr(ast.fl(yy,  @1), $1, $3); }
     | e '&&' e      { $$ = new ast.NodoAnd(ast.fl(yy,  @1),$1, $3); }
+    | e '^' e       { $$ = new ast.NodoXor(ast.fl(yy,  @1),$1, $3); }
     | '!' e         { $$ = new ast.NodoNot(ast.fl(yy,  @2), $2); }
 
 
