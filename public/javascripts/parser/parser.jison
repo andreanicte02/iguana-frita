@@ -342,13 +342,13 @@ structAttributes
 
 structAttribute
     : varType id '=' e  {
-                            const declaracion = ast.NodoDeclararAtributo(ast.fl(yy, @2), $2);
-                            const asignacion = ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4);
-                            $$ = { declaracion, asignacion };
+                            $$ = {
+                                declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $2),
+                                asignacion: ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
+                            };
                         }
     | varType id        {
-                            const declaracion = ast.NodoDeclararAtributo(ast.fl(yy, @2), $2);
-                            $$ = { declaracion };
+                            $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $2) };
                         }
     ;
 

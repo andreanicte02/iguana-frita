@@ -4,17 +4,19 @@ import {ZAmbito} from "./ZAmbito.js";
 export class NTipo {
   public readonly nombre: string;
   private readonly declaraciones: NodoAst[];
-  public readonly ambito = new ZAmbito();
+  public ambito: ZAmbito | undefined;
 
   constructor(nombre: string, declaraciones: NodoAst[]) {
     this.nombre = nombre;
     this.declaraciones = declaraciones;
   }
 
-  public declararPropiedades() {
+  public declararPropiedades(): void {
+    const a = new ZAmbito();
     this.declaraciones.forEach(declaracion => {
-      declaracion.generarCodigo(this.ambito);
+      declaracion.generarCodigo(a);
     })
+    this.ambito = a;
   }
 }
 
