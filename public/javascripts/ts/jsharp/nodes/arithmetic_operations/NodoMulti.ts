@@ -3,10 +3,10 @@ import {FileLocation} from "../FileLocation";
 import {ZAmbito} from "../../types/ZAmbito";
 import {Codigo} from "../Codigo";
 import {desenvolver, generarTemporal} from "../../Utilidades";
-import {obtenerTipoOperacionAritmetica, obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
+import { obtenerTipoOperacionAritmeticaSimple} from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
 
-export class NodoMultiplicacion extends NodoAstPro {
+export class NodoMulti extends NodoAstPro {
 
     public readonly e1: NodoAst;
     public readonly e2: NodoAst;
