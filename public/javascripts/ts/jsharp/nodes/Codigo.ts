@@ -26,10 +26,13 @@ export class Codigo {
 
   private readonly lineas: string[] = [];
 
-  public agregarCodigo(codigo: Codigo): void {
+  public agregarCodigo = (codigo: Codigo): void => {
     if (codigo === this)
       throw new Error(`El metodo agregarCodigo no debe de invocarse consigo misma`);
     this.lineas.push(...codigo.lineas);
+  }
+  public agregarCodigos = (codigos: Codigo[]): void => {
+    codigos.forEach(this.agregarCodigo);
   }
   public agregar(texto: string): void {
     if (texto.trim().length === 0) {

@@ -13,7 +13,7 @@ export { NodoDeclararParametro } from './nodes/NodoDeclararParametro';
 export { FileLocation } from './nodes/FileLocation' ;
 export { NodoDeclararVar } from  './nodes/NodoDeclararVar';
 export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
-
+export { NodoDeclararVarTipo1 } from './nodes/NodoDeclararVarTipo1';
 export { NodoSuma } from './nodes/arithmetic_operations/NodoSuma';
 export { NodoResta } from './nodes/arithmetic_operations/NodoResta';
 export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';

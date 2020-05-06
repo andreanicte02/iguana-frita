@@ -87,6 +87,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 
 "{"                     return '{'
 "}"                     return '}'
+"[]"                    return '[]'
 "["                     return '['
 "]"                     return ']'
 ";"                     return ';'
@@ -244,13 +245,15 @@ funLevelModifier
 
 classLevelVarDeclaration
     : type varDeclarations                                      { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
-    | type arrayInstanceType varDeclarations                    {   }
-    | type varDeclarations '=' expression                       {   }
-    | type arrayInstanceType varDeclarations '=' expression     {   }
+    | type '[' ']' varDeclarations                    {   }
+    | type varDeclarations '=' expression                       { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
+    | type '[' ']' varDeclarations '=' expression     {   }
     ;
 funLevelVarDeclaration
     : primitiveType varDeclarations         {  }
     | IDENTIFIER varDeclarations            {  }
+    | primitiveType '[' ']' varDeclarations         {  }
+    | IDENTIFIER '[]' varDeclarations            {  }
     ;
 
 varDeclarations
@@ -291,7 +294,7 @@ arrayInstanceType
 classLevelFunDeclaration
     : type  IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7 ); }
-    | type arrayInstanceType IDENTIFIER '(' paramDeclarationList ')'
+    | type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       {  }
     ;
 
