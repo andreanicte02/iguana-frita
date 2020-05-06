@@ -321,7 +321,7 @@ primitiveType
     : 'integer'     { $$ = new ast.NodoObtenerTipoInteger(ast.fl(yy,  @1)); }
     | 'double'      { $$ = new ast.NodoObtenerTipoDouble(ast.fl(yy,  @1));  }
     | 'char'        { $$ = new ast.NodoObtenerTipoChar(ast.fl(yy,  @1)) ;   }
-    | 'boolean'     { $$ = new ast.NodoObtenerTipoBoolean(ast.fl(yy,  @1)); }
+    | 'boolean'     { $$ = new ast.NodoObtenerTipoBool(ast.fl(yy,  @1)); }
     | 'void'        { $$ = new ast.NodoObtenerTipoVoid(ast.fl(yy,  @1));    }
     ;
 
@@ -331,20 +331,20 @@ assignation
     ;
 
 expression
-    : expression '-' expression             {  }
-    | expression '+' expression             {  }
-    | expression '*' expression             {  }
+    : expression '-' expression             { $$ = new ast.NodoResta(ast.fl(yy, @1), $1, $3); }
+    | expression '+' expression             { $$ = new ast.NodoSuma(ast.fl(yy, @1), $1, $3); }
+    | expression '*' expression             { $$ = new ast.NodoMulti(ast.fl(yy, @1), $1, $3); }
     | expression '/' expression             {  }
-    | expression '%' expression             {  }
+    | expression '%' expression             { $$ = new ast.NodoModular(ast.fl(yy, @1), $1, $3); }
     | expression '!=' expression            {  }
     | expression '==' expression            {  }
-    | expression '<' expression             {  }
-    | expression '>' expression             {  }
-    | expression '<=' expression            {  }
-    | expression '>=' expression            {  }
-    | expression '||' expression            {  }
-    | expression '&&' expression            {  }
-    | expression '^' expression             {  }
+    | expression '<' expression             { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
+    | expression '>' expression             { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
+    | expression '<=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
+    | expression '>=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
+    | expression '||' expression            { $$ = new ast.NodoOr(ast.fl(yy, @1), $1, $3); }
+    | expression '&&' expression            { $$ = new ast.NodoAnd(ast.fl(yy, @1), $1, $3); }
+    | expression '^' expression             { $$ = new ast.NodoXor(ast.fl(yy, @1), $1, $3); }
     | expression '.' IDENTIFIER             {  }
     | dotInvoke                             { $$ = $1; }
     | normalInvoke                          { $$ = $1; }
@@ -353,13 +353,13 @@ expression
     | DOUBLE                                {  }
     | INTEGER                               { $$ = new ast.NodoCrearInteger(ast.fl(yy, @1), $1 ); }
     | NULL                                  {  }
-    | 'true'                                {  }
-    | 'false'                               {  }
+    | 'true'                                { $$ = new ast.NodoCrearTrue (ast.fl(yy, @1)); }
+    | 'false'                               { $$ = new ast.NodoCrearFalse(ast.fl(yy, @1)); }
     | IDENTIFIER                            { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }
     | expression '[' expression ']'             {  }
     | '(' expression ')'                        { $$ = $2; }
-    | '-' expression %prec UMINUS               {  }
-    | '!' expression                            {  }
+    | '-' expression %prec UMINUS               { $$ = new ast.NodoUnarioMenos(ast.fl(yy, @1), $2); }
+    | '!' expression                            { $$ = new ast.NodoNot(ast.fl(yy, @1), $2); }
     | expression "?" expression ":" expression  {  }
     | increment                                 { $$ = $1; }
     | 'new' type '(' expressionList ')'         {  }

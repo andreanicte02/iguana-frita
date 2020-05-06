@@ -2,8 +2,13 @@ import {NodoAstPro} from "./NodoAst";
 import {ZAmbito} from "../types/ZAmbito";
 import {Codigo} from "./Codigo";
 import {nTipoBooleanNormal} from "../types/TiposPrimitivos";
+import {FileLocation} from "./FileLocation";
 
 export class NodoObtenerTipoBool extends NodoAstPro{
+
+    constructor(fileLocation: FileLocation) {
+        super(fileLocation);
+    }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
         const codigo = new Codigo();

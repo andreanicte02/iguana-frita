@@ -5,7 +5,7 @@ import {Codigo} from "./Codigo";
 import {desenvolver} from "../Utilidades";
 import {deBolleanoNormalAEtiqueta, esBoleano} from "./TypeDefinition";
 import {SemanticError} from "../types/SemanticError";
-import {nTipoBooleanConEtiqueta, nTipoBooleanNormal} from "../types/TiposPrimitivos";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
 
 
 export class NodoNot  extends NodoAstPro{
