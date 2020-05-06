@@ -4,7 +4,7 @@ import { Codigo } from "./Codigo.js";
 import { nTipoEntero } from "../types/TiposPrimitivos.js";
 import { ZAmbito } from "../types/ZAmbito.js";
 
-export class NodoCrearInt extends NodoAstPro {
+export class NodoCrearInteger extends NodoAstPro {
   private valor: number;
 
   constructor(fileLocation: FileLocation, valor: number) {

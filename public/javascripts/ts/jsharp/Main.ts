@@ -4,12 +4,12 @@ import {Codigo} from "./nodes/Codigo.js";
 import {FileLocation} from "./nodes/FileLocation.js";
 import {codigoGenerarBloque} from "./Utilidades.js";
 
-export { NodoObtenerTipoInt,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInt'
+export { NodoObtenerTipoInteger,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
-export { NodoCrearInt } from './nodes/NodoCrearInt';
+export { NodoCrearInteger } from './nodes/NodoCrearInteger';
 export { NodoCrearTrue } from './nodes/NodoCrearTrue';
 export { NodoCrearFalse } from './nodes/NodoCrearFalse';
-
+export { NodoDeclararParametro } from './nodes/NodoDeclararParametro';
 export { FileLocation } from './nodes/FileLocation' ;
 export { NodoDeclararVar } from  './nodes/NodoDeclararVar';
 export { NodoDeclararVarTipo5 } from  './nodes/NodoDeclararVarTipo5';
@@ -24,7 +24,7 @@ export {NodoRelacional} from './nodes/NodoRelacional';
 
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
-
+export { NodoDeclararFuncion } from './nodes/NodoDeclararFuncion';
 
 
 export { NodoAsignarAtributo } from './nodes/NodoAsignarAtributo';

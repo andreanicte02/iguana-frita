@@ -1,7 +1,6 @@
 
-integer a;
+integer z;
 
-
-define Vector as [ integer x = 2, integer y = 3 * 4];
-
-a= a + 1;
+integer hola(integer a, integer b){
+    a = 3;
+}
