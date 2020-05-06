@@ -30,7 +30,7 @@ export class NodoDeclararEstructura extends NodoAstPro {
         // se declara el constructor
         const asignaciones = this.pares.map(p => p.asignacion).filter(a => a);
         const nFuncion = new NFuncion(ambito, nTipo, [], asignaciones, true);
-        ambito.declararFuncion(`@constructor_${this.nombre}`, nFuncion);
+        ambito.declararFuncion(`init_${this.nombre}`, nFuncion);
 
         return Codigo.vacio;
     }

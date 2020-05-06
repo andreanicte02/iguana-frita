@@ -28,7 +28,7 @@ class NodoDeclararFuncion extends NodoAstPro {
         hola(int a){}       --> hola_INT
         hola(bool z, int c) --> hola_BOOL_INT
          */
-        const firma = `${this.nombre}${nFuncion.obtenerFirmaTipos()}`;
+        const firma = `fun_${this.nombre}${nFuncion.obtenerFirmaTipos()}`;
         ambito.declararFuncion(firma, nFuncion);
 
         // Las funciones solo se declaran, el contenido de ellas se genera despues

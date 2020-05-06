@@ -49,16 +49,18 @@ function codigoObtenerVarDeStackConTupla(nombre: string, tupla: {indice: number;
   codigo.comentar(`&${nombre}`);
   codigo.acceso = `stack[${codigo.apuntador}]`;
   codigo.tipo = tupla.nTipoVar;
+  codigo.extra = `${nombre}`;
   return codigo;
 }
 
-function codigoObtenerVarDeHeapConTupla(nombre: string, apuntadorOrigen: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
+function codigoObtenerVarDeHeapConTuplaExclusivo(nombre: string, apuntadorOrigen: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
   const codigo = new Codigo();
   codigo.apuntador = generarTemporal();
   codigo.agregar(`${codigo.apuntador} = ${apuntadorOrigen} + ${tupla.indice};`);
   codigo.comentar(`&${nombre}`);
   codigo.acceso = `heap[${codigo.apuntador}]`;
   codigo.tipo = tupla.nTipoVar;
+  codigo.extra = `${nombre}`;
   return codigo;
 }
 
@@ -78,7 +80,17 @@ export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: str
 
   if (tupla === undefined) throw new SemanticError(`Atributo ${nombreAtributo} no esta definido en instancias de tipo ${codigoOrigen.tipo.nombre}`);
 
-  return codigoObtenerVarDeHeapConTupla(nombreAtributo, codigoOrigen.apuntador, tupla);
+  const codigoHeap = codigoObtenerVarDeHeapConTuplaExclusivo(nombreAtributo, codigoOrigen.apuntador, tupla);
+
+  const codigo = new Codigo();
+  codigo.agregarCodigo(codigoOrigen);
+  codigo.agregarCodigo(codigoHeap);
+
+  codigo.tipo = codigoHeap.tipo;
+  codigo.apuntador = codigoHeap.apuntador;
+  codigo.acceso = codigoHeap.acceso;
+  codigo.extra = codigoHeap.extra;
+  return codigo;
 }
 
 export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {

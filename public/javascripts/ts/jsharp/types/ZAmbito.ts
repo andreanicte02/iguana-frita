@@ -67,6 +67,7 @@ export class ZAmbito {
     public generarCodigoFunciones(): Codigo {
         const codigo = new Codigo();
         [...this.funciones.entries()].forEach(([nombre, nFuncion]) => {
+            codigo.agregar('//');
             codigo.agregar(`proc ${nombre} begin`);
             codigo.agregarCodigo(nFuncion.generarCodigo());
             codigo.agregar(`end`);
