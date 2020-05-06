@@ -19,6 +19,7 @@ export class NFuncion {
         this.sentencias = sentencias;
 
         // se declara en la tabla de simbolos el 'return'
+        // TODO: esto podria ser opcional para las funciones con retorno 'void'
         this.ambito.declararPropiedad(NFuncion.RETURN, new NTipoVar(tipoRetorno));
 
         // cuando la funcion es un constructor, siempre va a recibir como unico parametro una instancia del mismo tipo
@@ -35,7 +36,9 @@ export class NFuncion {
 
     obtenerFirmaTipos(): string {
         const entradas = this.ambito.obtenerEntradas();
-        const nombreTipos = entradas.map(([, valor]) => valor.tipoContenido.nombre);
+        const nombreTipos = entradas
+            .filter(([nombre, ]) => nombre !== NFuncion.RETURN)
+            .map(([, valor]) => valor.tipoContenido.nombre);
         return nombreTipos.join('_');
     }
 

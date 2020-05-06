@@ -5,13 +5,19 @@ import {FileLocation} from "./FileLocation.js";
 import {NFuncion} from "../types/NFuncion.js";
 
 
-class NodoDeclararFuncion extends NodoAstPro {
+export class NodoDeclararFuncion extends NodoAstPro {
     private readonly nodoTipoRetorno: NodoAst;
     private readonly nombre: string;
     private readonly nodosParametro: NodoAst[];
     private readonly sentencias: NodoAst[];
 
-    constructor(fileLocation: FileLocation, nodoTipoRetorno: NodoAst, nombre: string, nodosParametro: NodoAst[], sentencias: NodoAst[]) {
+    constructor(
+        fileLocation: FileLocation,
+        nodoTipoRetorno: NodoAst,
+        nombre: string,
+        nodosParametro: NodoAst[],
+        sentencias: NodoAst[]
+    ) {
         super(fileLocation);
         this.nodoTipoRetorno = nodoTipoRetorno;
         this.nombre = nombre;
@@ -28,7 +34,7 @@ class NodoDeclararFuncion extends NodoAstPro {
         hola(int a){}       --> hola_INT
         hola(bool z, int c) --> hola_BOOL_INT
          */
-        const firma = `fun_${this.nombre}${nFuncion.obtenerFirmaTipos()}`;
+        const firma = `fun_${this.nombre}_${nFuncion.obtenerFirmaTipos()}`;
         ambito.declararFuncion(firma, nFuncion);
 
         // Las funciones solo se declaran, el contenido de ellas se genera despues

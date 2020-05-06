@@ -3,7 +3,7 @@ import { Codigo } from "./Codigo.js";
 import { nTipoBooleanNormal, nTipoChar, nTipoDouble, nTipoEntero} from "../types/TiposPrimitivos.js";
 import { ZAmbito } from "../types/ZAmbito.js";
 
-export class NodoObtenerTipoInt extends NodoAstPro {
+export class NodoObtenerTipoInteger extends NodoAstPro {
   generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
     const codigo = new Codigo();
     codigo.tipo = nTipoEntero;
