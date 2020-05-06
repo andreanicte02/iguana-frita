@@ -4,6 +4,8 @@ import {NTipo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
 import {desenvolver, generarTemporal} from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
+import {nTipoBooleanConEtiqueta} from "./TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "../nodes/TypeDefinition";
 
 
 /**
@@ -123,23 +125,27 @@ export function codigoAsignar(
   codigoDestino: Codigo,
   codigoValor: Codigo
 ): Codigo {
+
+  const codigoValorAux = codigoValor.tipo == nTipoBooleanConEtiqueta?
+      deBooleanoEtiquetaANormal(codigoValor): codigoValor;
+
   if (!(codigoDestino.tipo instanceof NTipoVar))
     throw new SemanticError(
       `Lado izquierdo de asignacion no es una variable: ${codigoDestino.tipo.nombre}`
     );
   const variableTipo = codigoDestino.tipo.tipoContenido;
-  if (variableTipo !== codigoValor.tipo)
+  if (variableTipo !== codigoValorAux.tipo)
     throw new SemanticError(
-      `No se puede guardar tipo ${codigoValor.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
+      `No se puede guardar tipo ${codigoValorAux.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
     );
 
   const codigo = new Codigo();
   codigo.agregarCodigo(codigoDestino);
-  codigo.agregarCodigo(codigoValor);
+  codigo.agregarCodigo(codigoValorAux);
 
   //acceso stack[adf]
-  codigo.agregar(`${codigoDestino.acceso} = ${codigoValor.apuntador};`);
-  codigo.comentar(`${codigoDestino.extra} = ${codigoValor.extra}`);
+  codigo.agregar(`${codigoDestino.acceso} = ${codigoValorAux.apuntador};`);
+  codigo.comentar(`${codigoDestino.extra} = ${codigoValorAux.extra}`);
   return codigo;
 }
 //codigo operacion binaria armietica

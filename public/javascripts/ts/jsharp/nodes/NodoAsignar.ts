@@ -26,9 +26,7 @@ export class NodoAsignar extends NodoAstPro {
         const codigo2 = desenvolver(this.c2.generarCodigo(ambito));
 
         //paso de boleans etiquetas a bollean normal si es que existe
-        return codigoAsignar(codigo1,
-            codigo2.tipo=== nTipoBooleanConEtiqueta
-                ?deBooleanoEtiquetaANormal(codigo2): codigo2);
+        return codigoAsignar(codigo1,codigo2);
     }
 
 }
