@@ -33,6 +33,8 @@ export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Cod
             codigo.agregarCodigo(c)
         });
 
+    ambito.inicializarTipos();
+
     const codigoFunciones = ambito.generarCodigoFunciones();
     codigo.agregarCodigo(codigoFunciones);
 

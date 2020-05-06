@@ -60,6 +60,10 @@ export class ZAmbito {
         return [...this.propiedades.entries()];
     }
 
+    public inicializarTipos(): void {
+        this.tipos.forEach(value => value.declararPropiedades());
+    }
+
     public generarCodigoFunciones(): Codigo {
         const codigo = new Codigo();
         [...this.funciones.entries()].forEach(([nombre, nFuncion]) => {

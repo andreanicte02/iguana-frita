@@ -6,7 +6,7 @@ export class Codigo {
   public static readonly vacio = new Codigo();
 
   // guarda el temporal utilizado
-  public apuntador: string | undefined;
+  public apuntador = "";
   // nos ayuda a generar comentarios entendibles
   public extra = "";
   // aqui guardaremos el 'acceso' a stack o heap, ejemplo: stack[t93]
@@ -27,6 +27,8 @@ export class Codigo {
   private readonly lineas: string[] = [];
 
   public agregarCodigo(codigo: Codigo): void {
+    if (codigo === this)
+      throw new Error(`El metodo agregarCodigo no debe de invocarse consigo misma`);
     this.lineas.push(...codigo.lineas);
   }
   public agregar(texto: string): void {

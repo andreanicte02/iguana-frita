@@ -1,8 +1,9 @@
-import { Codigo } from "../nodes/Codigo.js";
-import { SemanticError } from "./SemanticError.js";
+import {Codigo} from "../nodes/Codigo.js";
+import {SemanticError} from "./SemanticError.js";
 import {NTipo, NTipoVar} from "./NTipo.js";
-import { ZAmbito } from "./ZAmbito.js";
-import { generarTemporal } from "../Utilidades.js";
+import {ZAmbito} from "./ZAmbito.js";
+import {desenvolver, generarTemporal} from "../Utilidades.js";
+import {NFuncion} from "./NFuncion.js";
 
 
 /**
@@ -18,7 +19,7 @@ function buscarEnCadenaAmbito<T>(
   for (
       let temporal: ZAmbito | undefined = ambito;
       temporal !== undefined;
-      temporal = temporal!.padre
+      temporal = temporal.padre
   ) {
     const result = accion(temporal);
     if (result) {
@@ -40,20 +41,8 @@ export function codigoObtenerTipo(ambito: ZAmbito, nombre: string): Codigo {
   return codigo;
 }
 
-export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
 
-
-  const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
-      ambito,
-      a => a.buscarPropiedadConDireccionRelativa(nombre),
-  );
-
-  if (tupla === undefined) {
-    throw new SemanticError(`Variable ${nombre} no declarada`);
-  }
-
-  // TODO: falta agregar logica de ambitos anidados, y ambito global
-
+function codigoObtenerVarDeStackConTupla(nombre: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
   const codigo = new Codigo();
   codigo.apuntador = generarTemporal();
   codigo.agregar(`${codigo.apuntador} = P + ${tupla.indice};`);
@@ -61,8 +50,60 @@ export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
   codigo.acceso = `stack[${codigo.apuntador}]`;
   codigo.tipo = tupla.nTipoVar;
   return codigo;
-
 }
+
+function codigoObtenerVarDeHeapConTupla(nombre: string, apuntadorOrigen: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
+  const codigo = new Codigo();
+  codigo.apuntador = generarTemporal();
+  codigo.agregar(`${codigo.apuntador} = ${apuntadorOrigen} + ${tupla.indice};`);
+  codigo.comentar(`&${nombre}`);
+  codigo.acceso = `heap[${codigo.apuntador}]`;
+  codigo.tipo = tupla.nTipoVar;
+  return codigo;
+}
+
+// export function codigoObtenerPropiedadExclusivo(apuntadorOrigen: string, nTipo: NTipo, nombreAtributo: string): Codigo {
+//
+//   if (nTipo.ambito === undefined) throw new Error('ambito de tipo no fue inicializado');
+//   const tupla = nTipo.ambito.buscarPropiedadConDireccionRelativa(nombreAtributo);
+//
+//   if (tupla === undefined) throw new SemanticError(`Atributo ${nombreAtributo} no esta definido en instancias de tipo ${nTipo.nombre}`);
+//
+//   return codigoObtenerVarDeHeapConTupla(nombreAtributo, apuntadorOrigen, tupla);
+// }
+export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: string): Codigo {
+
+  if (codigoOrigen.tipo.ambito === undefined) throw new Error('ambito de tipo no fue inicializado');
+  const tupla = codigoOrigen.tipo.ambito.buscarPropiedadConDireccionRelativa(nombreAtributo);
+
+  if (tupla === undefined) throw new SemanticError(`Atributo ${nombreAtributo} no esta definido en instancias de tipo ${codigoOrigen.tipo.nombre}`);
+
+  return codigoObtenerVarDeHeapConTupla(nombreAtributo, codigoOrigen.apuntador, tupla);
+}
+
+export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
+
+  const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
+      ambito,
+      a => a.buscarPropiedadConDireccionRelativa(nombre),
+  );
+
+  if (tupla === undefined) {
+    // verificamos si estamos en un constructor
+    const tuplaInstanciaNueva = ambito.buscarPropiedadConDireccionRelativa(NFuncion.INSTANCIA);
+    if (tuplaInstanciaNueva === undefined) throw new SemanticError(`Variable ${nombre} no declarada`);
+
+    // se hace referencia a una propiedad dentro de una estructura.
+    const codigoReferenciaInstancia = codigoObtenerVarDeStackConTupla(NFuncion.INSTANCIA, tuplaInstanciaNueva);
+    const codigoDireccionInstancia = desenvolver(codigoReferenciaInstancia);
+    return codigoObtenerPropiedad(codigoDireccionInstancia, nombre);
+  }
+
+  return codigoObtenerVarDeStackConTupla(nombre, tupla);
+}
+
+
+
 
 
 

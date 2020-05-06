@@ -1,4 +1,24 @@
 
+## Desarrollo
+
+```bash
+npm install -g browser-sync
+```
+
+Se tiene dos scripts npm, estos pueden ser ejecutados desde IntelliJ o con el comando `npm run <name>`
++ actualizar: compila el jison y el codigo typescript
++ monitorear: inicia el servidor web y enciende browser-sync para que refresque el navegador al detectar un cambio.
+Se compone de dos comandos, y en la parte de browser-sync tiene que especificado que solo observe los cambios de los archivos compilados.
+
+```bash
+node ./bin/www & browser-sync start --proxy 'localhost:3000' --files 'public/javascripts/language.js' 'public/javascripts/parser/parser.js'
+```
+
+Recomiendo ejecutar al script `monitorear` desde una terminal externa a IntelliJ
+```bash
+npm run monitorear
+```
+
 ## Orden de analisis en bloque
 
 + Declaracion de Estructuras (no se analiza lo interior)

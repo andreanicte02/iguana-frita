@@ -133,7 +133,7 @@ globalSentence
     : declareVariable pComa {  $$= $1; }
     | assign pComa { $$ = $1; console.log($1 + "------------"); }
     //| functionDefinition
-    //| defineStruct
+    | defineStruct pComa
     ;
 
 
@@ -334,23 +334,23 @@ arrayInstance
     ;
 
 defineStruct
-    : 'define' id 'as' '[' structAttributes ']'     { $$ = new ast.NodoDeclararEstructura( ast.fl(yy, @2), $2, $4 ); }
+    : 'define' id 'as' '[' structAttributes ']'     { $$ = new ast.NodoDeclararEstructura( ast.fl(yy, @2), $2, $5 ); }
     ;
 
 structAttributes
-    : structAttributes ',' structAttribute  { $$ = $1.concat($2); }
+    : structAttributes ',' structAttribute  { $$ = $1.concat($3); }
     | structAttribute                       { $$ = [$1] }
     ;
 
 structAttribute
     : varType id '=' e  {
                             $$ = {
-                                declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $2),
-                                asignacion: ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
+                                declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2),
+                                asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
                             };
                         }
     | varType id        {
-                            $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $2) };
+                            $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) };
                         }
     ;
 
