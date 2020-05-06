@@ -282,7 +282,7 @@ e
     | 'true'        { $$ = new ast.NodoCrearTrue(ast.fl(yy,  @1)); }
     | 'false'       { $$ = new ast.NodoCrearFalse(ast.fl(yy,  @1)); }
 
-    | id
+    | id            { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }
     | callFunction
     | explicitCast
     | e '.'  id  '(' listArguments ')'

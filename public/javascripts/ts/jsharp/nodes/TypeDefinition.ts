@@ -33,9 +33,15 @@ export function esCadena(tipo: Codigo): boolean {
 
 export function obtenerTipoOperacionAritmeticaSimple(c1: Codigo, c2: Codigo ) {
 
-    if(!esNumero(c1) && !esNumero(c2)){
+    if(!esNumero(c1)){
         return undefined;
     }
+
+
+    if(!esNumero(c2)){
+        return undefined;
+    }
+
 
     if(c1.tipo=== nTipoDouble || c2.tipo === nTipoDouble){
         return nTipoDouble;
@@ -61,7 +67,11 @@ export function obtenerTipoAritmeticoModular(c1: Codigo, c2: Codigo) {
 
 export function obtenerTipoOperacionAritmeticaSuma(c1: Codigo, c2: Codigo ): NTipo  | undefined{
 
-    if(!(esNumero(c1) || esCadena(c1)) && !(esNumero(c2) || esCadena(c2))){
+    if(!(esNumero(c1))){
+        return  undefined;
+    }
+
+    if(!(esNumero(c2))){
         return  undefined;
     }
 
