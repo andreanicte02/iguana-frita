@@ -262,6 +262,8 @@ e
     : e '+' e       { $$ = new ast.NodoSuma(ast.fl(yy,  @1), $1, $3); }
     | e '-' e       { $$ = new ast.NodoResta(ast.fl(yy,  @1), $1, $3); }
     | e '*' e       { $$ = new ast.NodoMulti(ast.fl(yy,  @1), $1, $3); }
+    | e '%' e       { $$ = new ast.NodoModular(ast.fl(yy,  @1), $1, $3); }
+    | '-' e %prec UMINUS { $$ = new ast.NodoUnarioMenos(ast.fl(yy, @1), $2); }
 
     | e '>' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
     | e '<' e       { $$ = new ast.NodoRelacional(ast.fl(yy,  @1), $1, $2, $3); }
@@ -280,7 +282,7 @@ e
     | 'true'        { $$ = new ast.NodoCrearTrue(ast.fl(yy,  @1)); }
     | 'false'       { $$ = new ast.NodoCrearFalse(ast.fl(yy,  @1)); }
 
-    | id
+    | id            { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }
     | callFunction
     | explicitCast
     | e '.'  id  '(' listArguments ')'
