@@ -1,7 +1,7 @@
 import {NTipo, NTipoVar} from "./NTipo.js";
 import {NodoAst} from "../nodes/NodoAst.js";
 import {ZAmbito} from "./ZAmbito.js";
-import { Codigo } from "../nodes/Codigo.js";
+import {Codigo} from "../nodes/Codigo.js";
 import {codigoGenerarBloque, generarEtiqueta} from "../Utilidades.js";
 
 export class NFuncion {
@@ -14,7 +14,7 @@ export class NFuncion {
     public readonly sentencias: NodoAst[];
 
     constructor(ambitoPadre: ZAmbito, tipoRetorno: NTipo, nodosParametro: NodoAst[], sentencias: NodoAst[], esConstructor: boolean) {
-        this.ambito = new ZAmbito(ambitoPadre);
+        this.ambito = new ZAmbito(ambitoPadre, true);
         this.tipoRetorno = tipoRetorno;
         this.sentencias = sentencias;
 
@@ -34,12 +34,18 @@ export class NFuncion {
 
     }
 
-    obtenerFirmaTipos(): string {
+    obtenerParametrosTipos(): NTipo[] {
         const entradas = this.ambito.obtenerEntradas();
-        const nombreTipos = entradas
-            .filter(([nombre, ]) => nombre !== NFuncion.RETURN)
-            .map(([, valor]) => valor.tipoContenido.nombre);
-        return nombreTipos.join('_');
+        return entradas
+            .filter(([nombre,]) => nombre !== NFuncion.RETURN)
+            .map(([, valor]) => valor.tipoContenido);
+    }
+
+    get nombresParametro(): string[] {
+        const entradas = this.ambito.obtenerEntradas();
+        return entradas
+            .filter(([nombre,]) => nombre !== NFuncion.RETURN)
+            .map(([nombre,]) => nombre);
     }
 
     /**

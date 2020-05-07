@@ -1,11 +1,11 @@
-import {Codigo} from "../nodes/Codigo.js";
+import {Codigo, GestorTemp} from "../nodes/Codigo.js";
 import {SemanticError} from "./SemanticError.js";
 import {NTipo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
-import {desenvolver, generarTemporal} from "../Utilidades.js";
+import {desenvolver, generarNombreProc, generarTemporal, obtenerEspacioOcupadoEnFuncion} from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
-import {nTipoBooleanConEtiqueta} from "./TiposPrimitivos";
-import {deBooleanoEtiquetaANormal} from "../nodes/TypeDefinition";
+import {nTipoBooleanConEtiqueta, nTipoVoid} from "./TiposPrimitivos";
+import {deBooleanoEtiquetaANormal, deBooleanoEtiquetaANormalCondicional} from "../nodes/TypeDefinition";
 
 
 /**
@@ -14,7 +14,7 @@ import {deBooleanoEtiquetaANormal} from "../nodes/TypeDefinition";
  * @param ambito del cual comienza a buscar
  * @param accion
  */
-function buscarEnCadenaAmbito<T>(
+export function buscarEnCadenaAmbito<T>(
     ambito: ZAmbito,
     accion: (a: ZAmbito) => T | undefined,
 ): T | undefined {
@@ -117,17 +117,19 @@ export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
 }
 
 
-
-
-
-
+/**
+ *
+ * @param codigoDestino
+ * @param codigoValor
+ * @param exclusivo Si `false` (default) se comportara de manera normal, si es `true` no realizara ningun proceso que absorba a codigoValor
+ */
 export function codigoAsignar(
   codigoDestino: Codigo,
-  codigoValor: Codigo
+  codigoValor: Codigo,
+  exclusivo = false,
 ): Codigo {
 
-  const codigoValorAux = codigoValor.tipo == nTipoBooleanConEtiqueta?
-      deBooleanoEtiquetaANormal(codigoValor): codigoValor;
+  const codigoValorAux = exclusivo? codigoValor: deBooleanoEtiquetaANormalCondicional(codigoValor);
 
   if (!(codigoDestino.tipo instanceof NTipoVar))
     throw new SemanticError(
@@ -141,11 +143,96 @@ export function codigoAsignar(
 
   const codigo = new Codigo();
   codigo.agregarCodigo(codigoDestino);
-  codigo.agregarCodigo(codigoValorAux);
+  if (!exclusivo) {
+    codigo.agregarCodigo(codigoValorAux);
+  }
 
   //acceso stack[adf]
   codigo.agregar(`${codigoDestino.acceso} = ${codigoValorAux.apuntador};`);
   codigo.comentar(`${codigoDestino.extra} = ${codigoValorAux.extra}`);
   return codigo;
 }
-//codigo operacion binaria armietica
+
+function buscarNFuncion(ambito: ZAmbito, nombreProc: string): NFuncion | undefined {
+  return buscarEnCadenaAmbito<NFuncion>(
+      ambito,
+      a => a.buscarNFuncion(nombreProc),
+  );
+}
+
+
+export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArgumentos: Codigo[]): Codigo {
+
+  const tiposArgumento = codigosArgumentos.map(c => c.tipo);
+  const nombreProc = generarNombreProc(nombreFuncion, tiposArgumento);
+  const nFuncion = buscarNFuncion(ambito, nombreProc);
+
+  if (nFuncion === undefined) {
+    const nombreBonito = `${nombreFuncion}(${tiposArgumento.map(t => t.nombre).join(", ")})`;
+    throw new SemanticError(`Funcion ${nombreBonito} no declarado`);
+  }
+
+  const codigo = new Codigo();
+  codigo.tipo = nFuncion.tipoRetorno;
+  codigo.extra = `${nombreFuncion}(${codigosArgumentos.map(c => c.extra).join(", ")})`;
+
+  codigo.agregarCodigos(codigosArgumentos);
+  // se marcan los apuntadores de los argumentos como utilizados
+  codigosArgumentos.forEach(c => {
+    GestorTemp.usarTemporal(c.apuntador);
+  });
+
+  console.log('Temporales no usados:', GestorTemp.cantidad);
+  console.log(GestorTemp.temporales);
+
+  const temporalesNoUtilizados = GestorTemp.cantidad;
+
+  // Backup de temporales no utilizados
+  for (let i = 0; i < temporalesNoUtilizados; i++)
+  {
+    const temporal = generarTemporal();
+    codigo.agregar(`${temporal} = P + ${obtenerEspacioOcupadoEnFuncion(ambito) + i};`, false);
+    codigo.comentar(`& Backup ${GestorTemp.temporales[i]}`);
+    codigo.agregar(`stack[${temporal}] = ${GestorTemp.temporales[i]};`, false);
+    codigo.comentar(`Backup ${GestorTemp.temporales[i]}`);
+  }
+
+  codigo.agregar(`P = P + ${obtenerEspacioOcupadoEnFuncion(ambito) + temporalesNoUtilizados};`)
+  codigo.comentar(`Cambio de ambito`);
+
+  // paso de parametros
+  codigosArgumentos.forEach((codigoArgumento, indice) => {
+    const codigoDestino = codigoObtenerVar(nFuncion.ambito, nFuncion.nombresParametro[indice])
+    const codigoAsignacion = codigoAsignar(codigoDestino, codigoArgumento, true);
+    codigo.agregarCodigo(codigoAsignacion);
+    codigo.comentar(` (argumento)`);
+  });
+
+  // invocacion
+  codigo.agregar(`call ${nombreProc}`);
+  codigo.comentar(`call ${nombreProc}`);
+
+  // captura de retorno
+  if (nFuncion.tipoRetorno !== nTipoVoid)
+  {
+    const codigoRetorno = desenvolver(codigoObtenerVar(nFuncion.ambito, NFuncion.RETURN));
+    codigo.agregarCodigo(codigoRetorno);
+    codigo.apuntador = codigoRetorno.apuntador;
+  }
+
+  // restauracion de ambito
+  codigo.agregar(`P = P - ${obtenerEspacioOcupadoEnFuncion(ambito) + temporalesNoUtilizados};`)
+  codigo.comentar(`Ambito restaurado`);
+
+  // recupero temporales
+  // Backup de temporales no utilizados
+  for (let i = 0; i < temporalesNoUtilizados; i++)
+  {
+    codigo.agregar(`${GestorTemp.temporales[i]} = P + ${obtenerEspacioOcupadoEnFuncion(ambito) + i};`);
+    codigo.comentar(`& Backup ${GestorTemp.temporales[i]}`);
+    codigo.agregar(`${GestorTemp.temporales[i]} = stack[${GestorTemp.temporales[i]}];`);
+    codigo.comentar(`${GestorTemp.temporales[i]} = Backup ${GestorTemp.temporales[i]}`);
+  }
+
+  return codigo;
+}

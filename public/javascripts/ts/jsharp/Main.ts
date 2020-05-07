@@ -19,7 +19,7 @@ export { NodoResta } from './nodes/arithmetic_operations/NodoResta';
 export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';
 export { NodoModular } from  './nodes/arithmetic_operations/NodoModular';
 export { NodoUnarioMenos } from  './nodes/arithmetic_operations/NodoUnarioMenos';
-
+export { NodoInvocar } from './nodes/NodoInvocar';
 export {NodoRelacional} from './nodes/NodoRelacional';
 
 export { NodoAsignar } from './nodes/NodoAsignar';
@@ -36,13 +36,14 @@ export { NodoAnd } from './nodes/NodoAnd';
 export { NodoXor } from './nodes/NodoXor';
 
 export function generar3d(sentencias: NodoAst[]): string {
-    const ambito = new ZAmbito(undefined);
+    const ambito = new ZAmbito(undefined, false);
     const codigo = new Codigo();
     codigo.agregar(`var H, P;`);
     codigo.agregar(`P = 0;`);
     codigo.agregar(`H = 0;`);
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
     codigo.agregarCodigo(codigoAmbitoGlobal);
+    console.log(ambito);
     return codigo.texto;
 }
 

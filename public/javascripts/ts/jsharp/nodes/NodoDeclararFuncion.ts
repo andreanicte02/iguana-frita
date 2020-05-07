@@ -3,6 +3,7 @@ import {ZAmbito} from "../types/ZAmbito.js";
 import {Codigo} from "./Codigo.js";
 import {FileLocation} from "./FileLocation.js";
 import {NFuncion} from "../types/NFuncion.js";
+import {generarNombreProc} from "../Utilidades.js";
 
 
 export class NodoDeclararFuncion extends NodoAstPro {
@@ -34,8 +35,8 @@ export class NodoDeclararFuncion extends NodoAstPro {
         hola(int a){}       --> hola_INT
         hola(bool z, int c) --> hola_BOOL_INT
          */
-        const firma = `fun_${this.nombre}_${nFuncion.obtenerFirmaTipos()}`;
-        ambito.declararFuncion(firma, nFuncion);
+        const nombreProc = generarNombreProc(this.nombre, nFuncion.obtenerParametrosTipos());
+        ambito.declararFuncion(nombreProc, nFuncion);
 
         // Las funciones solo se declaran, el contenido de ellas se genera despues
         /*
