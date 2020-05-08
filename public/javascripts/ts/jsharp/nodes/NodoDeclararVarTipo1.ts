@@ -33,7 +33,7 @@ export class NodoDeclararVarTipo1 extends NodoAstPro{
         const tipo: NodoAst = this.nodoObtenerTipo;
         this.listId.forEach(function (value) {
             value.definirTipo(tipo);
-            value.generacionSeguraDeCodigo(ambito);
+            value.generarCodigo(ambito);
         })
 
         // se obtiene el valor

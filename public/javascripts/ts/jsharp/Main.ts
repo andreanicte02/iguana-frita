@@ -37,7 +37,7 @@ export { NodoNot } from './nodes/NodoNot';
 export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
 export { NodoXor } from './nodes/NodoXor';
-
+export { NodoAccesoPunto } from './nodes/NodoAccesoPunto';
 
 export { NodoIf } from './nodes/control_sentences/NodoIf';
 export { NodoWhile } from  './nodes/control_sentences/NodoWhile';
@@ -48,6 +48,8 @@ export { NodoCase } from './nodes/control_sentences/NodoCase';
 
 export function generar3d(sentencias: NodoAst[]): string {
 
+    console.log('sentencias:');
+    console.log(sentencias);
 
     reiniciarContadores();
 

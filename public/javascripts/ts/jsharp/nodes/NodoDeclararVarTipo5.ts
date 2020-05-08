@@ -23,7 +23,7 @@ export class NodoDeclararVarTipo5 extends NodoAstPro{
 
         this.listId.forEach(function (value) {
             value.definirTipo(tipo);
-            value.generacionSeguraDeCodigo(ambito);
+            value.generarCodigo(ambito);
         })
         
         return Codigo.vacio;
