@@ -5,6 +5,8 @@ import {NTipo, NTipoVar} from "./types/NTipo";
 import { buscarEnCadenaAmbito } from "./types/codigos.js";
 import { NodoDeclararVarTipo5 } from "./nodes/NodoDeclararVarTipo5.js";
 import {NodoDeclararVarTipo1} from "./nodes/NodoDeclararVarTipo1.js";
+import {NodoDeclararEstructura} from "./nodes/NodoDeclararEstructura.js";
+import {NodoDeclararFuncion} from "./nodes/NodoDeclararFuncion.js";
 
 
 export const inicio = {
@@ -22,8 +24,8 @@ export function reiniciarContadores(): void {
 
 
 export function getTextoDeclaracionTemporales(): string {
-    let cont: number = 0;
-    let arreglo: string[] = [];
+    let cont = 0;
+    const arreglo: string[] = [];
     while (cont<= inicio.contadorTemporales){
 
         arreglo.push(`t${cont}`);
@@ -64,14 +66,14 @@ export function desenvolver(codigo: Codigo): Codigo {
 }
 
 function esDeclaracion(sentencia: NodoAst): boolean {
-    return sentencia instanceof NodoDeclararVarTipo5 || sentencia instanceof NodoDeclararVarTipo1;
+    return sentencia instanceof NodoDeclararEstructura || sentencia instanceof NodoDeclararFuncion;
 }
 
 export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Codigo {
     const codigo = new Codigo();
 
-    const nodosDeclaracion = sentencias.filter(esDeclaracion);
-    const nodosOtros = sentencias.filter(s => !esDeclaracion(s));
+    const nodosDeclaracion = sentencias.filter(s => !esDeclaracion(s));
+    const nodosOtros = sentencias.filter(s => esDeclaracion(s));
 
     nodosOtros
         .map(sentencia => sentencia.generarCodigo(ambito))
@@ -97,6 +99,19 @@ export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Cod
 //
 //     const codigoFunciones = ambito.generarCodigoFunciones();
 // }
+
+export function obtenerEspacioOcupadoEnFuncionExclusivo(ambito: ZAmbito): number {
+
+    let espacioOcupado = 0;
+    for (
+        let temporal = ambito.padre;
+        temporal?.padre !== undefined;
+        temporal = temporal.padre
+    ) {
+        espacioOcupado += temporal.espacioEnMemoria;
+    }
+    return espacioOcupado;
+}
 
 export function obtenerEspacioOcupadoEnFuncion(ambito: ZAmbito): number {
     // en el ambito global, no se tiene espacio utilizado en el stack

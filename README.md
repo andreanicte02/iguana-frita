@@ -35,8 +35,8 @@ https://docs.google.com/document/d/1pGWOrVRGFv5ElYKtYodffLzUX-UYMlfZ4vG-8IIM08c/
 https://docs.google.com/document/d/1V70JDf1lCCd1W1t-szvOb3Al7jXiKrmPL8u1kiFura0/edit?usp=sharing
 
 ## Pendientes
-[] TipoChar
-[] Manejo de Import
+[ ] TipoChar
+[ ] Manejo de Import
 Declaracion de variables pag 13
 [] Declaracion tipo 2
 [] Declaracion tipo 3
@@ -80,7 +80,7 @@ Arreglos
 [] linealize
 
 Estrucths
-[] Acceso Structs
+[/] Acceso Structs
 [] Size
 [] getReference
 [] InstanceOf

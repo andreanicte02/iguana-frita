@@ -352,10 +352,10 @@ expression
     | expression '>' expression             { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
     | expression '<=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
     | expression '>=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
-    | expression '||' expression            { $$ = new ast.NodoOr(ast.fl(yy, @1), $1, $3); }
-    | expression '&&' expression            { $$ = new ast.NodoAnd(ast.fl(yy, @1), $1, $3); }
-    | expression '^' expression             { $$ = new ast.NodoXor(ast.fl(yy, @1), $1, $3); }
-    | expression '.' IDENTIFIER             {  }
+    | expression '||' expression            { $$ = new ast.NodoOr(ast.fl(yy, @2), $1, $3); }
+    | expression '&&' expression            { $$ = new ast.NodoAnd(ast.fl(yy, @2), $1, $3); }
+    | expression '^' expression             { $$ = new ast.NodoXor(ast.fl(yy, @2), $1, $3); }
+    | expression '.' IDENTIFIER             { $$ = new ast.NodoAccesoPunto( ast.fl(yy, @2), $1, $3 );  }
     | dotInvoke                             { $$ = $1; }
     | normalInvoke                          { $$ = $1; }
     | STRING                                { $$ = new ast.CreateStringNode(yy.last(), @1, JSON.parse($1) ); }

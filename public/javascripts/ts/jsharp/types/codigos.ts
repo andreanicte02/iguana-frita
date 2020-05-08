@@ -2,7 +2,7 @@ import {Codigo, GestorTemp} from "../nodes/Codigo.js";
 import {SemanticError} from "./SemanticError.js";
 import {NTipo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
-import {desenvolver, generarNombreProc, generarTemporal, obtenerEspacioOcupadoEnFuncion} from "../Utilidades.js";
+import {desenvolver, generarNombreProc, generarTemporal, obtenerEspacioOcupadoEnFuncion, obtenerEspacioOcupadoEnFuncionExclusivo} from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
 import {nTipoBooleanConEtiqueta, nTipoVoid} from "./TiposPrimitivos";
 import {deBooleanoEtiquetaANormal, deBooleanoEtiquetaANormalCondicional} from "../nodes/TypeDefinition";
@@ -97,17 +97,19 @@ export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: str
   codigo.tipo = codigoHeap.tipo;
   codigo.apuntador = codigoHeap.apuntador;
   codigo.acceso = codigoHeap.acceso;
-  codigo.extra = codigoHeap.extra;
+  codigo.extra = `${codigoOrigen.extra}.${codigoHeap.extra}`;
   return codigo;
 }
 
 export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
 
   let esGlobal = false;
+  let encontradoEn: ZAmbito | undefined;
 
   const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
       ambito,
           a => {
+            encontradoEn = a;
             esGlobal = a.padre === undefined;
             return a.buscarPropiedadConDireccionRelativa(nombre)
           },
@@ -130,6 +132,8 @@ export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
     return codigoObtenerVarGlobalConTupla(nombre, tupla);
   }
 
+  const espacio = obtenerEspacioOcupadoEnFuncionExclusivo(encontradoEn!);
+  tupla.indice += espacio;
   return codigoObtenerVarDeStackConTupla(nombre, tupla);
 }
 
