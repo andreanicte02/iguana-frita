@@ -128,10 +128,10 @@ export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
 
     const eSalida = generarEtiqueta();
     codigo.agregar(`${codigo.eTrue.join(',')} :`);
-    codigo.agregar(`${codigo.apuntador} = 1`);
+    codigo.agregar(`${codigo.apuntador} = 1 ;`);
     codigo.agregar(`goto ${eSalida}`);
     codigo.agregar(`${codigo.eFalse.join(',')} :`);
-    codigo.agregar(`${codigo.apuntador} = 0`);
+    codigo.agregar(`${codigo.apuntador} = 0 ;`);
     codigo.agregar(`${eSalida} :`);
 
     codigo.comentar('de bool normal a eitiqueta')
@@ -163,8 +163,8 @@ export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     codigo.guardarEtiquetaVerdadera(etiquetaV);
     codigo.guardarEtiquetaFalsa(etiquetaF);
 
-    codigo.agregar(`if ${c1.apuntador} == 1 goto ${etiquetaV}`)
-    codigo.agregar(`go to ${etiquetaF}`)
+    codigo.agregar(`if ${c1.apuntador} == 1 goto ${etiquetaV} ;`)
+    codigo.agregar(`go to ${etiquetaF} ;`)
 
 
     codigo.comentar('de bool etiqueta a normal')

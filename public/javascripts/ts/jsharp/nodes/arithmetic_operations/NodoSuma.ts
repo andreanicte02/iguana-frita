@@ -42,7 +42,7 @@ export class NodoSuma extends NodoAstPro {
     codigo.agregarCodigo(c2);
 
     codigo.apuntador = generarTemporal();
-    codigo.agregar(`${codigo.apuntador} = ${c1.apuntador} ${this.symbol} ${c2.apuntador}`);
+    codigo.agregar(`${codigo.apuntador} = ${c1.apuntador} ${this.symbol} ${c2.apuntador};`);
     codigo.comentar(`${c1.extra} ${this.symbol} ${c2.extra}`);
     codigo.extra = `${c1.extra} ${this.symbol} ${c2.extra}`;
     return codigo;

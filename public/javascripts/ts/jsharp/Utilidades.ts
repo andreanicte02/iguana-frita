@@ -12,6 +12,25 @@ const inicio = {
     contadorEtiquetas: -1,
 };
 
+export function reiniciarContadores(): void {
+    inicio.contadorEtiquetas = -1;
+    inicio.contadorTemporales = -1;
+}
+
+
+
+export function getTextoDeclaracionTemporales(): string {
+    let cont: number = 0;
+    let arreglo: string[] = [];
+    while (cont<= inicio.contadorTemporales){
+
+        arreglo.push(`t${cont}`);
+        cont+=1;
+    }
+
+    return arreglo.join(',');
+}
+
 export function generarTemporal(): string {
     inicio.contadorTemporales += 1;
     return `t${inicio.contadorTemporales}`;

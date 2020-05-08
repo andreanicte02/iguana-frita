@@ -424,7 +424,7 @@ expressions
 whileLoop
     : 'while' '(' expression ')' '{'
         funSentenceList
-      '}'                           { $$ = new ast.WhileNode( yy.last(), @1, $3, $6); }
+      '}'                           { $$ = new ast.NodoWhile( ast.fl(yy, @1) , $3, $6); }
     ;
 
 doWhileLoop
