@@ -36,10 +36,12 @@ export class NodoWhile extends NodoAstPro{
         const etiquetaSalida = generarEtiqueta();
 
         codigo.agregar(`${etiquetaInicio} :`)
-        codigo.comentar(`LInicio while`);
+
         codigo.agregarCodigo(codigoCondicionAuxiliar);
 
+        codigo.comentar(`LInicio while`);
         codigo.agregar(`if ${codigoCondicionAuxiliar.apuntador} == 0 goto ${etiquetaSalida};`);
+        codigo.comentar(`LInicio while`);
 
         codigo.agregarCodigo(codigoGenerarBloque(this.sentencias, ambitoWhile));
 
