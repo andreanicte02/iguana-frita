@@ -239,16 +239,16 @@ funLevelModifier
 
 
 classLevelVarDeclaration
-    : type varDeclarations                                      { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
-    | type '[' ']' varDeclarations                    {   }
-    | type varDeclarations '=' expression                       { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
-    | type '[' ']' varDeclarations '=' expression     {   }
+    : type varDeclarations                          { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
+    | type '[' ']' varDeclarations                  {   }
+    | type varDeclarations '=' expression           { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
+    | type '[' ']' varDeclarations '=' expression   {   }
     ;
 funLevelVarDeclaration
-    : primitiveType varDeclarations         {  }
-    | IDENTIFIER varDeclarations            {  }
+    : primitiveType varDeclarations                 { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
+    | IDENTIFIER varDeclarations                    { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2);  }
     | primitiveType '[' ']' varDeclarations         {  }
-    | IDENTIFIER '[]' varDeclarations            {  }
+    | IDENTIFIER '[]' varDeclarations               {  }
     ;
 
 varDeclarations

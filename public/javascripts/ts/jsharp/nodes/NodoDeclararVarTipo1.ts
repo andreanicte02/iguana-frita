@@ -44,7 +44,7 @@ export class NodoDeclararVarTipo1 extends NodoAstPro{
         codigo.agregarCodigo(codigoValor);
         const codigosAsignacion = this.listId.map(nodoDeclarar => {
             const codigoVar = codigoObtenerVar(ambito, nodoDeclarar.nombre);
-            return codigoAsignar(codigoVar, codigoValor);
+            return codigoAsignar(codigoVar, codigoValor, true);
         });
 
         codigo.agregarCodigos(codigosAsignacion);

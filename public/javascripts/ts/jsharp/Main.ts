@@ -3,6 +3,8 @@ import {ZAmbito} from "./types/ZAmbito.js";
 import {Codigo} from "./nodes/Codigo.js";
 import {FileLocation} from "./nodes/FileLocation.js";
 import {codigoGenerarBloque} from "./Utilidades.js";
+import { NTipoVar } from "./types/NTipo.js";
+import {nTipoVoid} from "./types/TiposPrimitivos.js";
 
 export { NodoObtenerTipoInteger,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
@@ -36,14 +38,16 @@ export { NodoAnd } from './nodes/NodoAnd';
 export { NodoXor } from './nodes/NodoXor';
 
 export function generar3d(sentencias: NodoAst[]): string {
-    const ambito = new ZAmbito(undefined, false);
+
     const codigo = new Codigo();
     codigo.agregar(`var H, P;`);
-    codigo.agregar(`P = 0;`);
-    codigo.agregar(`H = 0;`);
+    codigo.agregar(`P = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
+    codigo.agregar(`H = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
+    const ambito = new ZAmbito(undefined, false);
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
-    codigo.agregarCodigo(codigoAmbitoGlobal);
     console.log(ambito);
+
+    codigo.agregarCodigo(codigoAmbitoGlobal);
     return codigo.texto;
 }
 

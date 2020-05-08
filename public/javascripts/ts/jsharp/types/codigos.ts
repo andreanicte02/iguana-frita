@@ -43,7 +43,13 @@ export function codigoObtenerTipo(ambito: ZAmbito, nombre: string): Codigo {
   return codigo;
 }
 
-
+function codigoObtenerVarGlobalConTupla(nombre: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
+  const codigo = new Codigo();
+  codigo.acceso = `stack[${tupla.indice + 1}]`;
+  codigo.tipo = tupla.nTipoVar;
+  codigo.extra = `${nombre}`;
+  return codigo;
+}
 function codigoObtenerVarDeStackConTupla(nombre: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
   const codigo = new Codigo();
   codigo.apuntador = generarTemporal();
@@ -97,20 +103,31 @@ export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: str
 
 export function codigoObtenerVar(ambito: ZAmbito, nombre: string): Codigo {
 
+  let esGlobal = false;
+
   const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
       ambito,
-      a => a.buscarPropiedadConDireccionRelativa(nombre),
+          a => {
+            esGlobal = a.padre === undefined;
+            return a.buscarPropiedadConDireccionRelativa(nombre)
+          },
   );
 
   if (tupla === undefined) {
-    // verificamos si estamos en un constructor
+    // Este bloque es algo raro, pero es un caso especial que ocurre en los constructores.
+    // Verificamos si estamos en un constructor
     const tuplaInstanciaNueva = ambito.buscarPropiedadConDireccionRelativa(NFuncion.INSTANCIA);
     if (tuplaInstanciaNueva === undefined) throw new SemanticError(`Variable ${nombre} no declarada`);
 
-    // se hace referencia a una propiedad dentro de una estructura.
+    // En un constructor se hace referencia al atributo que se desea inicializar de una manera 'indirecta'.
+    // Se hace referencia a una propiedad dentro de una estructura.
     const codigoReferenciaInstancia = codigoObtenerVarDeStackConTupla(NFuncion.INSTANCIA, tuplaInstanciaNueva);
     const codigoDireccionInstancia = desenvolver(codigoReferenciaInstancia);
     return codigoObtenerPropiedad(codigoDireccionInstancia, nombre);
+  }
+
+  if (esGlobal) {
+    return codigoObtenerVarGlobalConTupla(nombre, tupla);
   }
 
   return codigoObtenerVarDeStackConTupla(nombre, tupla);
