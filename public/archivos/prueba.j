@@ -1,24 +1,6 @@
 
-integer w, v = 3;
+integer w, v = 2*3+otro(3);
 
-integer hola(integer a, integer b){
-
-    a = 3;
-    
-    if(a>3 || 2 <1){
-        
-    }else if (2>3){
-        
-        
-    }else if(false){
-        
-    }else{
-        
-    }
-
-    a = 3 + 4;
-    a = otro(8);
-}
 
 integer otro(integer primero) {
 
@@ -26,4 +8,10 @@ integer otro(integer primero) {
 
 void main() {
     integer uno, dos, tres = 4 *3 -1;
+    Vector i = strc Vector();
 }
+
+define Vector as [
+    integer x = 94,
+    integer y = 93
+    ];

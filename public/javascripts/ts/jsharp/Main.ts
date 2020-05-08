@@ -28,8 +28,8 @@ export { NodoObtenerTipoVoid } from './nodes/NodoObtenerTipoVoid';
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
 export { NodoDeclararFuncion } from './nodes/NodoDeclararFuncion';
-
-
+export { NodoInstanciar } from './nodes/NodoInstanciar';
+export { NodoObtenerTipo } from './nodes/NodoObtenerTipo';
 export { NodoAsignarAtributo } from './nodes/NodoAsignarAtributo';
 export { NodoDeclararAtributo } from './nodes/NodoDeclararAtributo';
 export { NodoDeclararEstructura } from './nodes/NodoDeclararEstructura';
@@ -53,6 +53,7 @@ export function generar3d(sentencias: NodoAst[]): string {
     console.log(ambito);
     codigo.agregarCodigo(codigoAmbitoGlobal);
 
+    codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
     codigo.agregar('//////////////////////////////');
     codigo.agregar('// ejecucion de main');
     const codigoInvocarMain = codigoInvocar(ambito, 'main', []);

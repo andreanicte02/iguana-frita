@@ -3,6 +3,7 @@ import {NodoAst} from "../nodes/NodoAst.js";
 import {ZAmbito} from "./ZAmbito.js";
 import {Codigo} from "../nodes/Codigo.js";
 import {codigoGenerarBloque, generarEtiqueta} from "../Utilidades.js";
+import {nTipoVoid} from "./TiposPrimitivos.js";
 
 export class NFuncion {
 
@@ -15,7 +16,7 @@ export class NFuncion {
 
     constructor(ambitoPadre: ZAmbito, tipoRetorno: NTipo, nodosParametro: NodoAst[], sentencias: NodoAst[], esConstructor: boolean) {
         this.ambito = new ZAmbito(ambitoPadre, true);
-        this.tipoRetorno = tipoRetorno;
+        this.tipoRetorno = esConstructor? nTipoVoid: tipoRetorno;
         this.sentencias = sentencias;
 
         // se declara en la tabla de simbolos el 'return'

@@ -73,6 +73,9 @@ export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Cod
 }
 
 export function obtenerEspacioOcupadoEnFuncion(ambito: ZAmbito): number {
+    // en el ambito global, no se tiene espacio utilizado en el stack
+    if (ambito.padre === undefined) return 0;
+
     let espacioOcupado = 0;
     buscarEnCadenaAmbito<boolean>(ambito, a => {
         espacioOcupado += a.espacioEnMemoria;
