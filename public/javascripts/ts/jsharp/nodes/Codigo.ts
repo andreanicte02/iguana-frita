@@ -10,13 +10,13 @@ export class GestorTemp {
   }
 
   public static agregarTemporal(temporal: string): void {
-    console.log(`agregar:`, temporal);
+    // console.log(`agregar:`, temporal);
     if (!GestorTemp._temporales.includes(temporal)) {
       GestorTemp._temporales.push(temporal);
     }
   }
   public static usarTemporal(temporal: string): void {
-    console.log('a usar:', temporal)
+    // console.log('a usar:', temporal)
     GestorTemp._temporales = GestorTemp._temporales.filter(t => t !== temporal);
   }
 
@@ -74,7 +74,7 @@ export class Codigo {
 
     if (!gestionarTemporal) return;
 
-    console.log(texto);
+    // console.log(texto);
 
     if (texto.indexOf("if") >= 0) {
       const assignaciones: string[] = [];
