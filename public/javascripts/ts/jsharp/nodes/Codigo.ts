@@ -10,11 +10,13 @@ export class GestorTemp {
   }
 
   public static agregarTemporal(temporal: string): void {
-    // console.log(`agregar:`, temporal);
-    GestorTemp._temporales.push(temporal);
+    console.log(`agregar:`, temporal);
+    if (!GestorTemp._temporales.includes(temporal)) {
+      GestorTemp._temporales.push(temporal);
+    }
   }
   public static usarTemporal(temporal: string): void {
-    // console.log('a usar:', temporal)
+    console.log('a usar:', temporal)
     GestorTemp._temporales = GestorTemp._temporales.filter(t => t !== temporal);
   }
 
@@ -68,8 +70,25 @@ export class Codigo {
     if (texto.trim().length === 0) {
       return;
     }
+    this.lineas.push(texto);
 
-    if (texto.indexOf("=") >= 0 && gestionarTemporal) {
+    if (!gestionarTemporal) return;
+
+    console.log(texto);
+
+    if (texto.indexOf("if") >= 0) {
+      const assignaciones: string[] = [];
+      const regex1 = /t[0-9]+/gi;
+      let result1: RegExpExecArray | null;
+      while ((result1 = regex1.exec(texto)) ) {
+        assignaciones.push(result1[0]);
+      }
+
+      assignaciones.forEach(temporal => {
+          GestorTemp.usarTemporal(temporal);
+      });
+    }
+    else if (texto.indexOf("=") >= 0) {
       const [izquierdo, derecho] = texto.split('=');
 
       const assignaciones: string[] = [];
@@ -85,7 +104,6 @@ export class Codigo {
         operandos.push(result2[0]);
       }
 
-      // console.log(texto);
       assignaciones.forEach(temporal => {
         if (texto.startsWith('stack')){
           GestorTemp.usarTemporal(temporal);
@@ -101,8 +119,6 @@ export class Codigo {
         GestorTemp.usarTemporal(temporal);
       })
     }
-
-    this.lineas.push(texto);
   }
 
   public comentar(texto: string): void {

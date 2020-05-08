@@ -30,12 +30,11 @@ export function desenvolver(codigo: Codigo): Codigo {
         const c1 = new Codigo();
         c1.agregarCodigo(codigo);
         c1.apuntador = generarTemporal();
-        c1.agregar(`${c1.apuntador} = ${codigo.acceso}`);
+        c1.agregar(`${c1.apuntador} = ${codigo.acceso};`);
         c1.tipo = codigo.tipo.tipoContenido;
 
-
-        c1.extra += `${c1.apuntador} = ${codigo.acceso}`
-        c1.comentar(`${c1.apuntador} = ${codigo.acceso}`);
+        c1.extra = `${codigo.extra}`
+        c1.comentar(`${c1.apuntador} = ${codigo.extra}`);
 
         return c1;
     }
