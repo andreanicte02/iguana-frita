@@ -4,6 +4,7 @@ import { ZAmbito } from "../types/ZAmbito.js";
 import {FileLocation} from "./FileLocation.js";
 import {NTipo} from "../types/NTipo.js";
 import {NFuncion} from "../types/NFuncion.js";
+import { generarNombreConstructor } from "../Utilidades.js";
 
 
 export class NodoDeclararEstructura extends NodoAstPro {
@@ -30,7 +31,8 @@ export class NodoDeclararEstructura extends NodoAstPro {
         // se declara el constructor
         const asignaciones = this.pares.map(p => p.asignacion).filter(a => a);
         const nFuncion = new NFuncion(ambito, nTipo, [], asignaciones, true);
-        ambito.declararFuncion(`init_${this.nombre}`, nFuncion);
+        const nombreConstructor = generarNombreConstructor(nTipo);
+        ambito.declararFuncion(nombreConstructor, nFuncion);
 
         return Codigo.vacio;
     }

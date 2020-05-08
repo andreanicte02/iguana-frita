@@ -55,8 +55,10 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.agregar('//');
     const ambito = new ZAmbito(undefined);
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
+    const codigoFunciones = ambito.generarCodigoFunciones();
     console.log(ambito);
     codigo.agregarCodigo(codigoAmbitoGlobal);
+    codigo.agregarCodigo(codigoFunciones);
 
     codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
     codigo.agregar('//////////////////////////////');

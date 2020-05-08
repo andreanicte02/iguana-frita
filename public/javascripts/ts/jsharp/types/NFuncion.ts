@@ -61,6 +61,8 @@ export class NFuncion {
         const codigoBloque = codigoGenerarBloque(this.sentencias, this.ambito);
         codigo.agregarCodigo(codigoBloque);
         codigo.agregar(`${this.ambito.etiquetaFinFuncion}:`);
+        codigo.agregar(`end`);
+        codigo.agregarCodigo(this.ambito.generarCodigoFunciones());
         return codigo;
     }
 
