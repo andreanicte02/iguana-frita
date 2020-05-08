@@ -159,5 +159,9 @@ export class Codigo {
     this.eFalse.push(...etiquetasF);
   }
 
+  public declararTemporales(linea: string): void{
+
+    this.lineas.unshift(linea);
+  }
 
 }

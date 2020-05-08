@@ -34,8 +34,8 @@ export class NodoUnarioMenos extends NodoAstPro{
         codigo.apuntador = generarTemporal();
 
 
-        codigo.agregar(`${temporalAuxiliar} = 0 - 1`);
-        codigo.agregar(`${codigo.apuntador} = ${temporalAuxiliar} * ${c1.apuntador} `);
+        codigo.agregar(`${temporalAuxiliar} = 0 - 1;`);
+        codigo.agregar(`${codigo.apuntador} = ${temporalAuxiliar} * ${c1.apuntador};`);
 
         codigo.comentar(`${temporalAuxiliar}*${c1.extra}`);
         codigo.extra += `${temporalAuxiliar}*${c1.extra}`;
