@@ -431,16 +431,16 @@ whileLoop
 doWhileLoop
     : 'do' '{'
         funSentenceList
-      '}' 'while' '(' expression ')'  { $$ = new ast.DoWhileNode(yy.last(), @5, $3, $7); }
+      '}' 'while' '(' expression ')'  { $$ = new ast.NodoDoWhile(ast.fl(yy, @1), $7, $3); }
     ;
 
 forLoop
     : 'for' '(' forInit  ';' expression ';'  increment  ')' '{'
         funSentenceList
-      '}'                           { $$ = new ast.ForNode(yy.last(), @1, $3, $5, $7, $10); }
+      '}'                           { $$ = new ast.NodoFor(ast.fl(yy, @1), $3, $5, $7, $10); }
     | 'for' '(' forInit  ';' expression ';'  assignation  ')' '{'
         funSentenceList
-      '}'                           { $$ = new ast.ForNode(yy.last(), @1, $3, $5, $7, $10); }
+      '}'                           { $$ = new ast.NodoFor(ast.fl(yy, @1), $3, $5, $7, $10); }
     ;
 
 forInit
