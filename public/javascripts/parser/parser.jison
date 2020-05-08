@@ -28,14 +28,14 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
                         }
 <comment>.            /* skip comment content*/
 
-
-"abstract"              return 'abstract'
+"as"                    return 'as'
+"define"                return 'define'
+"strc"                  return 'strc'
 
 "break"                 return 'break'
 "boolean"               return 'boolean'
 
 "case"                  return 'case'
-"class"                 return 'class'
 "char"                  return 'char'
 "continue"              return 'continue'
 
@@ -44,30 +44,20 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "do"                    return 'do'
 
 "else"                  return 'else'
-"extends"               return 'extends'
 "false"                 return 'false'
-"final"                 return 'final'
 "for"                   return 'for'
 
 "if"                    return 'if'
 "import"                return 'import'
 "integer"               return 'integer'
 
-"new"                   return 'new'
 "null"                  return 'NULL'
-
-"public"                return 'public'
-"private"               return 'private'
-"protected"             return 'protected'
 
 "return"                return 'return'
 
 "switch"                return 'switch'
 "str"                   return 'str'
-"static"                return 'static'
-"super"                 return 'super'
 
-"this"                  return 'this'
 "throw"                 return 'throw'
 "true"                  return 'true'
 
@@ -153,7 +143,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 %left '*' '/' '%'
 
 %right UMINUS
-%right 'new' UCHAR UINT UDOUBLE
+%right 'strc' UCHAR UINT UDOUBLE
 
 %left '--' '++' '!'
 %left '.' '['
@@ -166,7 +156,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 %% /* language grammar */
 
 withBeingDrunk
-    : globalSentenceList EOF               { return $1; }
+    : globalSentenceList EOF            { return $1; }
     ;
 
 globalSentenceList
@@ -181,6 +171,7 @@ globalSentence
     : importSentence ";"                { $$ = $1; }
     | classLevelVarDeclaration ';'      { $$ = $1; }
     | classLevelFunDeclaration          { $$ = $1; }
+    | structureDeclaration ';'          { $$ = $1; }
     ;
 
 
@@ -235,6 +226,25 @@ localLevelModifier
 funLevelModifier
     : 'abstract'                                {  }
     | 'final'                                   {  }
+    ;
+
+structureDeclaration
+    : 'define' IDENTIFIER 'as' '[' attributes ']'   { $$ = new ast.NodoDeclararEstructura( ast.fl(yy, @2), $2, $5 ); }
+    ;
+attributes
+    : attributes ',' attribute                      { $$ = $1.concat($3); }
+    | attribute                                     { $$ = [$1];          }
+    ;
+attribute
+    : type IDENTIFIER '=' expression            {
+                                                    $$ = {
+                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2),
+                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
+                                                    };
+                                                }
+    | type IDENTIFIER                           { $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) }; }
+    | type '[' ']' IDENTIFIER '=' expression    { }
+    | type '[' ']' IDENTIFIER                   { }
     ;
 
 
@@ -361,8 +371,8 @@ expression
     | '!' expression                            { $$ = new ast.NodoNot(ast.fl(yy, @1), $2); }
     | expression "?" expression ":" expression  {  }
     | increment                                 { $$ = $1; }
-    | 'new' type '(' expressionList ')'         {  }
-    | 'new' type fixedArrayInit                 {  }
+    | 'strc' type '(' ')'                       { $$ = new ast.NodoInstanciar( ast.fl(yy, @1), $2 ); }
+    //| 'new' type fixedArrayInit                 {  }
     | casting                                   { $$ = $1; }
     ;
 

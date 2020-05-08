@@ -5,7 +5,7 @@ import { Codigo } from "./Codigo.js";
 import {codigoObtenerTipo} from "../types/codigos.js";
 
 
-class NodoObtenerTipo extends NodoAstPro {
+export class NodoObtenerTipo extends NodoAstPro {
     private readonly nombre: string;
 
     constructor(fileLocation: FileLocation, nombre: string) {
