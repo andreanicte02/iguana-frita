@@ -41,6 +41,7 @@ export { NodoXor } from './nodes/NodoXor';
 
 export { NodoIf } from './nodes/control_sentences/NodoIf';
 export { NodoWhile } from  './nodes/control_sentences/NodoWhile';
+export { NodoDoWhile } from  './nodes/control_sentences/NodoDoWhile';
 
 
 export function generar3d(sentencias: NodoAst[]): string {

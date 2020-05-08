@@ -420,7 +420,7 @@ whileLoop
 doWhileLoop
     : 'do' '{'
         funSentenceList
-      '}' 'while' '(' expression ')'  { $$ = new ast.DoWhileNode(yy.last(), @5, $3, $7); }
+      '}' 'while' '(' expression ')'  { $$ = new ast.NodoDoWhile(ast.fl(yy, @1), $7, $3); }
     ;
 
 forLoop
