@@ -33,3 +33,63 @@ https://docs.google.com/document/d/1pGWOrVRGFv5ElYKtYodffLzUX-UYMlfZ4vG-8IIM08c/
 ## Booleanos
 
 https://docs.google.com/document/d/1V70JDf1lCCd1W1t-szvOb3Al7jXiKrmPL8u1kiFura0/edit?usp=sharing
+
+## Pendientes
+[] TipoChar
+[] Manejo de Import
+Declaracion de variables pag 13
+[] Declaracion tipo 2
+[] Declaracion tipo 3
+[] Declaracion Tipo 4
+Operaciones
+[] Operaciones arimeticas con el tipo Char
+[] Operaciones arimeticas con cadenas
+[] Division
+[] Potencia
+[] Igualdad y Desigualdad
+[] Igualdad de referencias
+Sentencias de control
+[] Sentencia Switch
+[] Break
+[] Continue
+[] Return
+Casteos
+[] casteos implicitos
+[] casteos explicitos
+Funciones 
+[] Llamada a funciones tipo 2
+[] invocacion '.' de funciones
+[] Funcion Print
+Excepciones
+[] Exepciones 
+[] TryCatch
+[] Throw
+
+String
+[] Manejo de String
+[] toCharArray
+[] length
+[] toUpeerCase
+[] toLowerCase()
+[] charAt()
+
+Arreglos
+[] Arreglos
+[] AccesoArreglos
+[] length
+[] linealize
+
+Estrucths
+[] Acceso Structs
+[] Size
+[] getReference
+[] InstanceOf
+
+Reportes
+[]Reportes tabla simbolos
+[]Reporte errores
+[]Reporte ast
+[] Gramatica
+
+3d
+[]Probarlo con el interprete de los aux
