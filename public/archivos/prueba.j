@@ -6,7 +6,7 @@ integer otro(integer primero) {
 
 }
 
-void main() {
+void principal() {
     integer uno, dos, tres = 4 *3 -1;
     Vector i = strc Vector();
 }
