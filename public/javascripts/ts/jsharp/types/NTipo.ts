@@ -1,10 +1,13 @@
 import { NodoAst } from "../nodes/NodoAst.js";
 import {ZAmbito} from "./ZAmbito.js";
+import {inicio} from "../Utilidades.js";
 
 export class NTipo {
+
   public readonly nombre: string;
   private readonly declaraciones: NodoAst[];
   public ambito: ZAmbito | undefined;
+  public id = inicio.contadorEstructuras++;
 
   constructor(nombre: string, declaraciones: NodoAst[]) {
     this.nombre = nombre;

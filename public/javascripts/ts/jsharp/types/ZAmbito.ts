@@ -79,7 +79,6 @@ export class ZAmbito {
             codigo.agregar('//');
             codigo.agregar(`proc ${nombre} begin`);
             codigo.agregarCodigo(nFuncion.generarCodigo());
-            codigo.agregar(`end`);
         });
         return codigo;
     }

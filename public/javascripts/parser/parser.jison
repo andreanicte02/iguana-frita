@@ -199,6 +199,7 @@ funSentence
     | breakControl  ';'             { $$ = $1; }
     | continueControl ';'           { $$ = $1; }
     | throwControl ';'              { $$ = $1; }
+    | structureDeclaration ';'      { $$ = $1; }
     ;
 
 /* ********************************************************** */

@@ -181,7 +181,7 @@ function buscarNFuncion(ambito: ZAmbito, nombreProc: string): NFuncion | undefin
 export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArgumentos: Codigo[], esConstructor = false): Codigo {
 
   const tiposArgumento = codigosArgumentos.map(c => c.tipo);
-  const nombreProc = esConstructor? `init_${nombreFuncion}`: generarNombreProc(nombreFuncion, tiposArgumento);
+  const nombreProc = esConstructor? nombreFuncion: generarNombreProc(nombreFuncion, tiposArgumento);
   const nFuncion = buscarNFuncion(ambito, nombreProc);
 
   if (nFuncion === undefined) {

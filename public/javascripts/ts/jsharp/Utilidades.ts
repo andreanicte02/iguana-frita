@@ -7,14 +7,16 @@ import { NodoDeclararVarTipo5 } from "./nodes/NodoDeclararVarTipo5.js";
 import {NodoDeclararVarTipo1} from "./nodes/NodoDeclararVarTipo1.js";
 
 
-const inicio = {
+export const inicio = {
     contadorTemporales: -1,
     contadorEtiquetas: -1,
+    contadorEstructuras: -1,
 };
 
 export function reiniciarContadores(): void {
     inicio.contadorEtiquetas = -1;
     inicio.contadorTemporales = -1;
+    inicio.contadorEstructuras = -1;
 }
 
 
@@ -85,11 +87,16 @@ export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Cod
             codigo.agregarCodigo(c)
         });
 
-    const codigoFunciones = ambito.generarCodigoFunciones();
-    codigo.agregarCodigo(codigoFunciones);
+    // const codigoFunciones = ambito.generarCodigoFunciones();
+    // codigo.agregarCodigo(codigoFunciones);
 
     return codigo;
 }
+
+// export function codigoGenerarBloqueExtras(sentencias: NodoAst[], ambito: ZAmbito): Codigo {
+//
+//     const codigoFunciones = ambito.generarCodigoFunciones();
+// }
 
 export function obtenerEspacioOcupadoEnFuncion(ambito: ZAmbito): number {
     // en el ambito global, no se tiene espacio utilizado en el stack
@@ -101,6 +108,10 @@ export function obtenerEspacioOcupadoEnFuncion(ambito: ZAmbito): number {
         return a.esOrigenFuncion;
     });
     return espacioOcupado;
+}
+
+export function generarNombreConstructor(tipo: NTipo): string {
+    return `init_${tipo.id}_${tipo.nombre}`;
 }
 
 export function generarNombreProc(nombre: string, tipos: NTipo[]): string {
