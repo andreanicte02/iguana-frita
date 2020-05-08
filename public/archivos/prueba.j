@@ -9,3 +9,7 @@ integer hola(integer a, integer b){
 integer otro(integer primero) {
     
 }
+
+void main() {
+    integer uno, dos, tres = 4 *3 -1;
+}

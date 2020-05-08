@@ -5,6 +5,7 @@ import {FileLocation} from "./nodes/FileLocation.js";
 import {codigoGenerarBloque} from "./Utilidades.js";
 import { NTipoVar } from "./types/NTipo.js";
 import {nTipoVoid} from "./types/TiposPrimitivos.js";
+import {codigoInvocar} from "./types/codigos.js";
 
 export { NodoObtenerTipoInteger,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
@@ -22,8 +23,8 @@ export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';
 export { NodoModular } from  './nodes/arithmetic_operations/NodoModular';
 export { NodoUnarioMenos } from  './nodes/arithmetic_operations/NodoUnarioMenos';
 export { NodoInvocar } from './nodes/NodoInvocar';
-export {NodoRelacional} from './nodes/NodoRelacional';
-
+export { NodoRelacional } from './nodes/NodoRelacional';
+export { NodoObtenerTipoVoid } from './nodes/NodoObtenerTipoVoid';
 export { NodoAsignar } from './nodes/NodoAsignar';
 export { NodoObtenerVar } from './nodes/NodoObtenerVar';
 export { NodoDeclararFuncion } from './nodes/NodoDeclararFuncion';
@@ -43,11 +44,16 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.agregar(`var H, P;`);
     codigo.agregar(`P = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
     codigo.agregar(`H = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
+    codigo.agregar('//');
     const ambito = new ZAmbito(undefined, false);
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
     console.log(ambito);
-
     codigo.agregarCodigo(codigoAmbitoGlobal);
+
+    codigo.agregar('//////////////////////////////');
+    codigo.agregar('// ejecucion de main');
+    const codigoInvocarMain = codigoInvocar(ambito, 'main', []);
+    codigo.agregarCodigo(codigoInvocarMain);
     return codigo.texto;
 }
 

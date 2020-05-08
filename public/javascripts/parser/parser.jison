@@ -249,6 +249,10 @@ funLevelVarDeclaration
     | IDENTIFIER varDeclarations                    { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2);  }
     | primitiveType '[' ']' varDeclarations         {  }
     | IDENTIFIER '[]' varDeclarations               {  }
+    | primitiveType varDeclarations '=' expression  { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
+    | IDENTIFIER varDeclarations '=' expression     { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2, $4);  }
+    | primitiveType '[' ']' varDeclarations '=' expression  {  }
+    | IDENTIFIER '[]' varDeclarations '=' expression        {  }
     ;
 
 varDeclarations
