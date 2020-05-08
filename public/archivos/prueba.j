@@ -4,11 +4,17 @@ integer w, v = 2*3+otro(3);
 
 integer otro(integer primero) {
     
-    for(integer val = 3; val<5; val = val+ 1){
+    switch(3+2+3){
         
-        boolean n = true;
+        case w:
+            boolean a=1;    
+            
+        case v:
+            boolean b=2;
+            
         
-    } 
+        
+    }
 
 }
 

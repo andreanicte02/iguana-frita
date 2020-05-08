@@ -43,7 +43,8 @@ export { NodoIf } from './nodes/control_sentences/NodoIf';
 export { NodoWhile } from  './nodes/control_sentences/NodoWhile';
 export { NodoDoWhile } from  './nodes/control_sentences/NodoDoWhile';
 export { NodoFor } from './nodes/control_sentences/NodoFor';
-
+export { NodoSwitch } from './nodes/control_sentences/NodoSwitch';
+export { NodoCase } from './nodes/control_sentences/NodoCase';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

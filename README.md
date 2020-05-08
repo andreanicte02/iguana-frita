@@ -49,7 +49,7 @@ Operaciones
 [] Igualdad y Desigualdad
 [] Igualdad de referencias
 Sentencias de control
-[] Sentencia Switch
+[/] Sentencia Switch
 [] Break
 [] Continue
 [] Return
