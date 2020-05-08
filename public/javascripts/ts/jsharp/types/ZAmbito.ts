@@ -21,7 +21,7 @@ export class ZAmbito {
         return this.propiedades.size;
     }
     
-    constructor(padre: ZAmbito | undefined, esOrigenFuncion: boolean) {
+    constructor(padre: ZAmbito | undefined, esOrigenFuncion = false) {
         this.padre = padre;
         this.esOrigenFuncion = esOrigenFuncion;
     }

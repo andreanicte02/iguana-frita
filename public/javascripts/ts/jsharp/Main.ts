@@ -48,7 +48,7 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.agregar(`P = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
     codigo.agregar(`H = 1;`); // comenzamos desde 1, por que el 0 se toma como null a la hora de manejar referencias
     codigo.agregar('//');
-    const ambito = new ZAmbito(undefined, false);
+    const ambito = new ZAmbito(undefined);
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
     console.log(ambito);
     codigo.agregarCodigo(codigoAmbitoGlobal);
