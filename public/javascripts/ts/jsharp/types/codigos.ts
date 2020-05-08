@@ -199,8 +199,8 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
     GestorTemp.usarTemporal(c.apuntador);
   });
 
-  console.log('Temporales no usados:', GestorTemp.cantidad);
-  console.log(GestorTemp.temporales);
+  // console.log('Temporales no usados:', GestorTemp.cantidad);
+  // console.log(GestorTemp.temporales);
 
   const temporalesNoUtilizados = GestorTemp.cantidad;
 
@@ -245,11 +245,14 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
   // Backup de temporales no utilizados
   for (let i = 0; i < temporalesNoUtilizados; i++)
   {
-    codigo.agregar(`${GestorTemp.temporales[i]} = P + ${obtenerEspacioOcupadoEnFuncion(ambito) + i};`);
+    codigo.agregar(`${GestorTemp.temporales[i]} = P + ${obtenerEspacioOcupadoEnFuncion(ambito) + i};`, false);
     codigo.comentar(`& Backup ${GestorTemp.temporales[i]}`);
-    codigo.agregar(`${GestorTemp.temporales[i]} = stack[${GestorTemp.temporales[i]}];`);
+    codigo.agregar(`${GestorTemp.temporales[i]} = stack[${GestorTemp.temporales[i]}];`, false);
     codigo.comentar(`${GestorTemp.temporales[i]} = Backup ${GestorTemp.temporales[i]}`);
   }
+
+  // console.log('Fin de Temporales no usados:', GestorTemp.cantidad);
+  // console.log(GestorTemp.temporales);
 
   return codigo;
 }
