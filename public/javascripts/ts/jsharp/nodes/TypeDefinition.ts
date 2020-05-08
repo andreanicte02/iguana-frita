@@ -146,6 +146,13 @@ export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
     return codigo;
 }
 
+export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
+    if (codigo.tipo == nTipoBooleanConEtiqueta) {
+        return deBooleanoEtiquetaANormal(codigo);
+    }
+    return codigo;
+}
+
 export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     const  codigo = new Codigo();
     codigo.tipo = nTipoBooleanConEtiqueta;

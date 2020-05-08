@@ -11,13 +11,19 @@ export class ZAmbito {
     private readonly propiedades = new Map<string, NTipoVar>();
     private readonly funciones = new Map<string, NFuncion>();
     public readonly padre?: ZAmbito;
+    public readonly esOrigenFuncion: boolean;
 
     // nos lleva al final de la funcion
     // solo se llena para el ambito principal al generar el codigo de una funcion
     public etiquetaFinFuncion = '';
+
+    public get espacioEnMemoria(): number {
+        return this.propiedades.size;
+    }
     
-    constructor(padre?: ZAmbito) {
+    constructor(padre: ZAmbito | undefined, esOrigenFuncion: boolean) {
         this.padre = padre;
+        this.esOrigenFuncion = esOrigenFuncion;
     }
 
     public declararTipo(nombre: string, tipo: NTipo ): void {
@@ -40,7 +46,7 @@ export class ZAmbito {
     }
 
     public buscarPropiedadConDireccionRelativa(nombreBuscado: string): {indice: number; nTipoVar: NTipoVar} | undefined {
-        const nTipoVar = this.propiedades.get(nombreBuscado);
+        const nTipoVar = this.propiedades.get(nombreBuscado.toLowerCase());
 
         if (nTipoVar === undefined) {
             return undefined;
@@ -52,8 +58,11 @@ export class ZAmbito {
         return {indice, nTipoVar};
     }
 
+    public buscarNFuncion(nombreProc: string): NFuncion | undefined {
+        return this.funciones.get(nombreProc.toLowerCase());
+    }
     public buscarTipo(nombre: string): NTipo | undefined {
-        return this.tipos.get(nombre);
+        return this.tipos.get(nombre.toLowerCase());
     }
 
     public obtenerEntradas(): [string, NTipoVar][] {

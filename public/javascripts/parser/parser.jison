@@ -56,8 +56,6 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "new"                   return 'new'
 "null"                  return 'NULL'
 
-"println"               return 'println'
-"print"                 return 'print'
 "public"                return 'public'
 "private"               return 'private'
 "protected"             return 'protected'
@@ -72,9 +70,6 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "this"                  return 'this'
 "throw"                 return 'throw'
 "true"                  return 'true'
-"toDouble"              return 'toDouble'
-"toInt"                 return 'toInt'
-"toChar"                return 'toChar'
 
 "void"                  return 'void'
 "while"                 return 'while'
@@ -87,6 +82,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 
 "{"                     return '{'
 "}"                     return '}'
+"[]"                    return '[]'
 "["                     return '['
 "]"                     return ']'
 ";"                     return ';'
@@ -243,14 +239,16 @@ funLevelModifier
 
 
 classLevelVarDeclaration
-    : type varDeclarations                                      { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
-    | type arrayInstanceType varDeclarations                    {   }
-    | type varDeclarations '=' expression                       {   }
-    | type arrayInstanceType varDeclarations '=' expression     {   }
+    : type varDeclarations                          { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
+    | type '[' ']' varDeclarations                  {   }
+    | type varDeclarations '=' expression           { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
+    | type '[' ']' varDeclarations '=' expression   {   }
     ;
 funLevelVarDeclaration
-    : primitiveType varDeclarations         {  }
-    | IDENTIFIER varDeclarations            {  }
+    : primitiveType varDeclarations                 { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
+    | IDENTIFIER varDeclarations                    { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2);  }
+    | primitiveType '[' ']' varDeclarations         {  }
+    | IDENTIFIER '[]' varDeclarations               {  }
     ;
 
 varDeclarations
@@ -291,7 +289,7 @@ arrayInstanceType
 classLevelFunDeclaration
     : type  IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7 ); }
-    | type arrayInstanceType IDENTIFIER '(' paramDeclarationList ')'
+    | type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       {  }
     ;
 
@@ -381,15 +379,7 @@ fixedArrayInit
 
 // separar las sentencias
 normalInvoke
-    : IDENTIFIER '(' expressionList ')'     { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'print' '(' expressionList ')'        { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'println' '(' expressionList ')'      { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'super' '(' expressionList ')'        { $$ = new ast.SuperFunInvoke(yy.last(), @1, $3); }
-    | 'this' '(' expressionList ')'         { $$ = new ast.ThisFunInvoke(yy.last(), @1, $3); }
-    | 'str' '(' expressionList ')'        { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'toDouble' '(' expressionList ')'        { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'toInt' '(' expressionList ')'        { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
-    | 'toChar' '(' expressionList ')'        { $$ = new ast.InnerFunInvoke(yy.last(), @1, $1, $3); }
+    : IDENTIFIER '(' expressionList ')'     { $$ = new ast.NodoInvocar( ast.fl(yy, @1), $1, $3); }
     ;
 
 
@@ -410,7 +400,7 @@ expressionList
     |                               { $$ = []; }
     ;
 expressions
-    : expressions ',' expression    { $$ = $1;  $$.push($3); }
+    : expressions ',' expression    { $$ = $1.concat($3); }
     | expression                    { $$ = [$1]; }
     ;
 

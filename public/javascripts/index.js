@@ -91,6 +91,9 @@ function refreshFileTree() {
     fileTreeDiv.empty();
     $.getJSON("/get-files", function( data ) {
         paintDirectory(data, fileTreeDiv, "&nbsp;&nbsp;");
+
+        // ESTO ABRE EL ULTIMO ARCHIVO ABIERTO
+        ultimoArchivoPintando.dblclick();
     });
 }
 
@@ -127,6 +130,7 @@ function paintDirectory(directory, contentDiv, indent){
 
 function paintFile(file, contentDiv, indent){
     const fileDiv = $("<div></div>", { "class" : "tree-element" });
+    ultimoArchivoPintando = fileDiv;
     fileDiv.append(indent);
     fileDiv.append(document.createTextNode(file.name));
     

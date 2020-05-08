@@ -12,7 +12,7 @@ export class NTipo {
   }
 
   public declararPropiedades(): void {
-    const a = new ZAmbito();
+    const a = new ZAmbito(undefined, false);
     this.declaraciones.forEach(declaracion => {
       declaracion.generarCodigo(a);
     })

@@ -5,7 +5,7 @@ import {NTipoVar} from "../types/NTipo.js";
 import {ZAmbito} from "../types/ZAmbito.js";
 
 export class NodoDeclararVar extends NodoAstPro {
-    private readonly nombre: string;
+    public readonly nombre: string;
     private nodoObtenerTipo: NodoAst | undefined;
 
     constructor(fileLocation: FileLocation, nombre: string) {
