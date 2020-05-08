@@ -43,8 +43,8 @@ export class NodoRelacional extends NodoAstPro{
         codigo.guardarEtiquetaFalsa(etiquetaF);
 
 
-        codigo.agregar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${etiquetaV} ;`);
-        codigo.agregar(`goto ${etiquetaF} ;`);
+        codigo.agregar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} goto ${etiquetaV} `);
+        codigo.agregar(`goto ${etiquetaF} `);
 
         codigo.extra+=`if ${c1.apuntador} ${this.symbol} ${c2.apuntador}`;
         codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
