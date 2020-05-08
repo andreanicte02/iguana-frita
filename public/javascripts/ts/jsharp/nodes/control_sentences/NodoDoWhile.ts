@@ -25,6 +25,7 @@ export class NodoDoWhile extends NodoAstPro{
         const ambitoDoWhile = new ZAmbito(ambito);
 
         const etiquetaInicio = generarEtiqueta();
+        const etiquetaSalida = generarEtiqueta();
 
 
         codigo.agregar(`${etiquetaInicio} :`)
@@ -50,8 +51,12 @@ export class NodoDoWhile extends NodoAstPro{
 
         codigo.agregar(`if ${codigoCondicionAuxiliar.apuntador} == 1 goto ${etiquetaInicio};`);
         codigo.comentar(`doWhile ${codigoCondicionAuxiliar.extra}`);
-        codigo.comentar('fin do while');
 
+        codigo.agregar(`goto ${etiquetaSalida} ;`)
+
+        codigo.agregar(`${etiquetaSalida} :`)
+        codigo.comentar('fin do while');
+        //todo: agregar una etiqueta de fin, para el break
 
         return codigo;
 

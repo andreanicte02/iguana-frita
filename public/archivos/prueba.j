@@ -3,6 +3,12 @@ integer w, v = 2*3+otro(3);
 
 
 integer otro(integer primero) {
+    
+    for(integer val = 3; val<5; val = val+ 1){
+        
+        boolean n = true;
+        
+    } 
 
 }
 
