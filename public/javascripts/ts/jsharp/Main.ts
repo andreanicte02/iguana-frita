@@ -35,6 +35,9 @@ export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
 export { NodoXor } from './nodes/NodoXor';
 
+
+export { NodoIf } from './nodes/control_sentences/NodoIf';
+
 export function generar3d(sentencias: NodoAst[]): string {
     const ambito = new ZAmbito(undefined);
     const codigo = new Codigo();

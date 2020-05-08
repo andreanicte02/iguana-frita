@@ -469,9 +469,9 @@ caseBlock
 
 
 ifControl
-    : 'if' '(' expression ')' ifBody                    { $$ = new ast.IfNode(yy.last(), @1, $3, $5, []); }
-    | 'if' '(' expression ')' ifBody 'else' ifBody      { $$ = new ast.IfNode(yy.last(), @1, $3, $5, $7); }
-    | 'if' '(' expression ')' ifBody 'else' ifControl   { $$ = new ast.IfNode(yy.last(), @1, $3, $5, [$7]); }
+    : 'if' '(' expression ')' ifBody                    { $$ = new ast.NodoIf(ast.fl(yy, @1), $3, $5, []); }
+    | 'if' '(' expression ')' ifBody 'else' ifBody      { $$ = new ast.NodoIf(ast.fl(yy, @1), $3, $5, $7); }
+    | 'if' '(' expression ')' ifBody 'else' ifControl   { $$ = new ast.NodoIf(ast.fl(yy, @1), $3, $5, [$7]); }
     ;
 
 ifBody
