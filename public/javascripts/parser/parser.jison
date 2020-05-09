@@ -454,13 +454,13 @@ switchControl
     : 'switch' '(' expression  ')'   '{'
         cases
         'default' ':' funSentenceList
-    '}'                                     { $$ = new ast.SwitchNode(yy.last(), @1, $3, $6, $9);  }
+    '}'                                     { $$ = new ast.NodoSwitch(ast.fl(yy, @1), $3, $6, $9);  }
     | 'switch' '(' expression  ')'   '{'
               cases
-       '}'                                     { $$ = new ast.SwitchNode(yy.last(), @1, $3, $6, []);  }
+       '}'                                     { $$ = new ast.NodoSwitch(ast.fl(yy, @1), $3, $6, []);  }
     | 'switch' '(' expression  ')'   '{'
 
-           '}'                                     { $$ = new ast.SwitchNode(yy.last(), @1, $3, [], []);  }
+           '}'                                     { $$ = new ast.NodoSwitch(ast.fl(yy, @1), $3, [], []);  }
     ;
 
 cases
@@ -469,7 +469,7 @@ cases
     ;
 
 caseBlock
-    : 'case' expression ':' funSentenceList         { $$ = new ast.CaseNode(yy.last(), @1, $2, $4); }
+    : 'case' expression ':' funSentenceList         { $$ = new ast.NodoCase(ast.fl(yy, @1), $2, $4); }
     ;
 
 
@@ -490,11 +490,11 @@ returnControl
     ;
 
 breakControl
-    : 'break'               { $$ = new ast.BreakNode(yy.last(), @1); }
+    : 'break'               { $$ = new ast.NodoBreak(ast.fl(yy,@1)); }
     ;
 
 continueControl
-    : 'continue'            { $$ = new ast.ContinueNode(yy.last(), @1); }
+    : 'continue'            { $$ = new ast.NodoContinue(ast.fl(yy, @1)); }
     ;
 
 throwControl

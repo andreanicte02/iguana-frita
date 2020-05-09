@@ -49,9 +49,9 @@ Operaciones
 [] Igualdad y Desigualdad
 [] Igualdad de referencias
 Sentencias de control
-[] Sentencia Switch
-[] Break
-[] Continue
+[/] Sentencia Switch
+[/] Break
+[/] Continue
 [] Return
 Casteos
 [] casteos implicitos

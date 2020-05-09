@@ -1,7 +1,6 @@
 
 integer w, v = 4;
 
-
 void print(integer entero){
     #print(e, entero);
 }
