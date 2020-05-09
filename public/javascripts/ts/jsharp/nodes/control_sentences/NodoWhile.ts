@@ -35,6 +35,7 @@ export class NodoWhile extends NodoAstPro{
         const etiquetaInicio = generarEtiqueta();
         const etiquetaSalida = generarEtiqueta();
         ambitoWhile.labelFin = etiquetaSalida;
+        ambitoWhile.labelInicio = etiquetaInicio;
 
         codigo.agregar(`${etiquetaInicio} :`)
 

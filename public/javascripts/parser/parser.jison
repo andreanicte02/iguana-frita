@@ -494,7 +494,7 @@ breakControl
     ;
 
 continueControl
-    : 'continue'            { $$ = new ast.ContinueNode(yy.last(), @1); }
+    : 'continue'            { $$ = new ast.NodoContinue(ast.fl(yy, @1)); }
     ;
 
 throwControl

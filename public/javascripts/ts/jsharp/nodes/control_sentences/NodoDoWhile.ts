@@ -28,6 +28,7 @@ export class NodoDoWhile extends NodoAstPro{
         const etiquetaSalida = generarEtiqueta();
 
         ambitoDoWhile.labelFin = etiquetaSalida;
+        ambitoDoWhile.labelInicio = etiquetaInicio;
 
         codigo.agregar(`${etiquetaInicio} :`)
         codigo.comentar('inicio doWhile');

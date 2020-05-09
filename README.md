@@ -50,8 +50,8 @@ Operaciones
 [] Igualdad de referencias
 Sentencias de control
 [/] Sentencia Switch
-[] Break
-[] Continue
+[/] Break
+[/] Continue
 [] Return
 Casteos
 [] casteos implicitos

@@ -13,6 +13,7 @@ export class ZAmbito {
     public readonly padre?: ZAmbito;
     public readonly esOrigenFuncion: boolean;
     public labelFin: string | undefined;
+    public labelInicio: string | undefined;
 
     // nos lleva al final de la funcion
     // solo se llena para el ambito principal al generar el codigo de una funcion
