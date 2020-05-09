@@ -32,6 +32,8 @@ export class NodoFor extends NodoAstPro{
         const etiquetaInicio = generarEtiqueta();
         const etiquetaSalida = generarEtiqueta();
 
+        ambitoFor.labelFin = etiquetaSalida;
+
         codigo.comentar('inicio for')
         codigo.agregarCodigo(codigoForInit);
 

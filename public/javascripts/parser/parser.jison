@@ -490,7 +490,7 @@ returnControl
     ;
 
 breakControl
-    : 'break'               { $$ = new ast.BreakNode(yy.last(), @1); }
+    : 'break'               { $$ = new ast.NodoBreak(ast.fl(yy,@1)); }
     ;
 
 continueControl

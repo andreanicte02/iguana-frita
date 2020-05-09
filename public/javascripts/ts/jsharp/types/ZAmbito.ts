@@ -12,6 +12,7 @@ export class ZAmbito {
     private readonly funciones = new Map<string, NFuncion>();
     public readonly padre?: ZAmbito;
     public readonly esOrigenFuncion: boolean;
+    public labelFin: string | undefined;
 
     // nos lleva al final de la funcion
     // solo se llena para el ambito principal al generar el codigo de una funcion

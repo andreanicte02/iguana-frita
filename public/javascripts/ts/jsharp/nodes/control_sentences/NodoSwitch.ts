@@ -31,6 +31,8 @@ export class NodoSwitch extends NodoAstPro{
         codigo.comentar('inicio switch');
         const etiquetaSalida = generarEtiqueta();
         const ambitoSwitch = new ZAmbito(ambito);
+        ambitoSwitch.labelFin = etiquetaSalida;
+
         this.cases.forEach(value => {
                 value.setApuntadorOriginal(codigoExpAux.apuntador);
                 codigo.agregarCodigo(value.generarCodigo(ambitoSwitch));

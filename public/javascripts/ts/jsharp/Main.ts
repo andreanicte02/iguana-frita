@@ -46,6 +46,8 @@ export { NodoFor } from './nodes/control_sentences/NodoFor';
 export { NodoSwitch } from './nodes/control_sentences/NodoSwitch';
 export { NodoCase } from './nodes/control_sentences/NodoCase';
 
+export { NodoBreak } from  './nodes/control_sentences/NodoBreak';
+
 export function generar3d(sentencias: NodoAst[]): string {
 
     console.log('sentencias:');
