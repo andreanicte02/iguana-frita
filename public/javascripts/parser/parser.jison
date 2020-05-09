@@ -28,6 +28,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
                         }
 <comment>.            /* skip comment content*/
 
+"#print"                return '#print'
 "as"                    return 'as'
 "define"                return 'define'
 "strc"                  return 'strc'
@@ -116,7 +117,6 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "<"                     return '<'
 ">"                     return '>'
 "@"                     return '@'
-"#"                     return '#'
 
 
 
@@ -359,7 +359,7 @@ expression
     | dotInvoke                             { $$ = $1; }
     | normalInvoke                          { $$ = $1; }
     | STRING                                { $$ = new ast.CreateStringNode(yy.last(), @1, JSON.parse($1) ); }
-    | CHAR                                  {  }
+    | CHAR                                  { $$ = new ast.NodoCrearChar( ast.fl(yy, @1), JSON.parse('"' + $1.slice(1, -1) + '"') ); }
     | DOUBLE                                {  }
     | INTEGER                               { $$ = new ast.NodoCrearInteger(ast.fl(yy, @1), $1 ); }
     | NULL                                  {  }
@@ -504,11 +504,7 @@ throwControl
 //*************************************************************************************************
 
 nativeFuns
-    : '@' type 'println' '(' paramDeclarationList ')'
-      '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type 'print' '(' paramDeclarationList ')'
-      '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type 'str' '(' paramDeclarationList ')'
+    : '@' type 'str' '(' paramDeclarationList ')'
        '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
     | '@' type 'toDouble' '(' paramDeclarationList ')'
            '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
@@ -522,5 +518,5 @@ nativeFuns
 
 
 simplePrint
-    : '#' 'print' '(' IDENTIFIER ',' expression ')'        { $$ = new ast.SimplePrintNode(yy.last(), @2, $4, $6); }
+    : '#print' '(' IDENTIFIER ',' expression ')'        { $$ = new ast.NodoPrintSimple( ast.fl(yy, @1) , $3, $5); }
     ;

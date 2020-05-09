@@ -1,20 +1,29 @@
 
-integer w, v = 2*3+otro(3);
+integer w, v = 4;
 
 
-integer otro(integer primero) {
-    
-    for(integer val = 3; val<5; val = val+ 1){
-        
-        boolean n = true;
-        
-    } 
-
+void print(integer entero){
+    #print(e, entero);
+}
+void println(integer entero){
+    #print(c, '>');
+    #print(c, ' ');
+    #print(e, entero);
+    #print(c, '\n');
 }
 
+
 void principal() {
-    integer uno, dos, tres = 4 *3 -1;
-    Vector i = strc Vector();
+    
+    integer panza = 3;
+    
+    if (panza > 4) {
+        println(1997);
+    }
+    else {
+        println(1993);
+    }
+    
 }
 
 define Vector as [

@@ -18,21 +18,3 @@ export class NodoObtenerTipoDouble extends NodoAstPro{
     return codigo;
   }
 }
-
-
-export class NodoObtenerTipoChar extends NodoAstPro{
-
-  generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
-    const codigo = new Codigo();
-    codigo.tipo = nTipoChar;
-    return codigo;
-  }
-
-}
-
-//boleanas
-//int
-//char
-//asdfsd
-
-

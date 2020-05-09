@@ -230,8 +230,8 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
   });
 
   // invocacion
-  codigo.agregar(`call ${nombreProc}`);
-  codigo.comentar(`call ${nombreProc}`);
+  codigo.agregar(`call ${nombreProc};`);
+  codigo.comentar(`call ${nombreProc};`);
 
   // captura de retorno
   if (nFuncion.tipoRetorno !== nTipoVoid)

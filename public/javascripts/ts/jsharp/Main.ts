@@ -7,7 +7,7 @@ import { NTipoVar } from "./types/NTipo.js";
 import {nTipoVoid} from "./types/TiposPrimitivos.js";
 import {codigoInvocar} from "./types/codigos.js";
 
-export { NodoObtenerTipoInteger,NodoObtenerTipoChar, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
+export { NodoObtenerTipoInteger, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
 export { NodoCrearInteger } from './nodes/NodoCrearInteger';
 export { NodoCrearTrue } from './nodes/NodoCrearTrue';
@@ -38,12 +38,13 @@ export { NodoOr } from './nodes/NodoOr';
 export { NodoAnd } from './nodes/NodoAnd';
 export { NodoXor } from './nodes/NodoXor';
 export { NodoAccesoPunto } from './nodes/NodoAccesoPunto';
-
+export { NodoPrintSimple } from './nodes/NodoPrintSimple';
 export { NodoIf } from './nodes/control_sentences/NodoIf';
 export { NodoWhile } from  './nodes/control_sentences/NodoWhile';
 export { NodoDoWhile } from  './nodes/control_sentences/NodoDoWhile';
 export { NodoFor } from './nodes/control_sentences/NodoFor';
-
+export { NodoObtenerTipoChar } from './nodes/NodoObtenerTipoChar';
+export { NodoCrearChar } from './nodes/NodoCrearChar';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

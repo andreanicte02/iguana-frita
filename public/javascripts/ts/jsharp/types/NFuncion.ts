@@ -20,8 +20,9 @@ export class NFuncion {
         this.sentencias = sentencias;
 
         // se declara en la tabla de simbolos el 'return'
-        // TODO: esto podria ser opcional para las funciones con retorno 'void'
-        this.ambito.declararPropiedad(NFuncion.RETURN, new NTipoVar(tipoRetorno));
+        if (tipoRetorno !== nTipoVoid) {
+            this.ambito.declararPropiedad(NFuncion.RETURN, new NTipoVar(tipoRetorno));
+        }
 
         // cuando la funcion es un constructor, siempre va a recibir como unico parametro una instancia del mismo tipo
         if (esConstructor) {

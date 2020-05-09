@@ -1,4 +1,4 @@
-import {Codigo} from "./nodes/Codigo.js";
+import {Codigo, GestorTemp} from "./nodes/Codigo.js";
 import {NodoAst} from "./nodes/NodoAst.js";
 import {ZAmbito} from "./types/ZAmbito.js";
 import {NTipo, NTipoVar} from "./types/NTipo";
@@ -65,27 +65,29 @@ export function desenvolver(codigo: Codigo): Codigo {
     return codigo;
 }
 
-function esDeclaracion(sentencia: NodoAst): boolean {
+function esDeclaracionImportante(sentencia: NodoAst): boolean {
     return sentencia instanceof NodoDeclararEstructura || sentencia instanceof NodoDeclararFuncion;
 }
 
 export function codigoGenerarBloque(sentencias: NodoAst[], ambito: ZAmbito): Codigo {
     const codigo = new Codigo();
 
-    const nodosDeclaracion = sentencias.filter(s => !esDeclaracion(s));
-    const nodosOtros = sentencias.filter(s => esDeclaracion(s));
+    const nodosDeclaracion = sentencias.filter(s => esDeclaracionImportante(s));
+    const nodosOtros = sentencias.filter(s => !esDeclaracionImportante(s));
 
-    nodosOtros
+    nodosDeclaracion
         .map(sentencia => sentencia.generarCodigo(ambito))
         .forEach(c => {
+            GestorTemp.limpiar();
             codigo.agregarCodigo(c)
         });
 
     ambito.inicializarTipos();
 
-    nodosDeclaracion
+    nodosOtros
         .map(sentencia => sentencia.generarCodigo(ambito))
         .forEach(c => {
+            GestorTemp.limpiar();
             codigo.agregarCodigo(c)
         });
 
@@ -126,10 +128,10 @@ export function obtenerEspacioOcupadoEnFuncion(ambito: ZAmbito): number {
 }
 
 export function generarNombreConstructor(tipo: NTipo): string {
-    return `init_${tipo.id}_${tipo.nombre}`;
+    return `init_${tipo.id}_${tipo.nombre}`.toLowerCase();
 }
 
 export function generarNombreProc(nombre: string, tipos: NTipo[]): string {
     const parametros = tipos.map(tipo => tipo.nombre).join("_");
-    return `fun_${nombre}_${parametros}`;
+    return `fun_${nombre}_${parametros}`.toLowerCase();
 }
