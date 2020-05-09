@@ -47,7 +47,7 @@ export class NodoAnd extends NodoAstPro{
         codigo.pasarEtiquetasVerdaderas(aux2.eTrue);
 
         codigo.agregarCodigo(aux1);
-        codigo.agregar(`${aux1.eTrue.join(',')} :`);
+        codigo.agregar(`${aux1.eTrue.join(':\n')}:`);
 
         codigo.agregarCodigo(aux2);
 
