@@ -41,7 +41,7 @@ export class NodoIf extends NodoAstPro{
         codigo.agregarCodigo(codigoCondicionAux);
 
 
-        codigo.agregar(`if ${codigoCondicionAux.apuntador} == 0 goto ${etiquetaF};` );
+        codigo.agregar(`if (${codigoCondicionAux.apuntador} == 0) goto ${etiquetaF};` );
         codigo.comentar('if  init');
 
         codigo.agregarCodigo(codigoGenerarBloque(this.nodosVerdaderos,ambitoVerdadero));

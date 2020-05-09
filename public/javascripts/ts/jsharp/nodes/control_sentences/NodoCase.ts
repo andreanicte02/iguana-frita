@@ -40,7 +40,7 @@ export class NodoCase extends NodoAstPro{
         const etiquetaV = generarEtiqueta();
         const etiquetaF = generarEtiqueta();
 
-        codigo.agregar(`if ${codigoExpAux.apuntador} == ${this.apuntadorSwitch} goto ${etiquetaV};`)
+        codigo.agregar(`if (${codigoExpAux.apuntador} == ${this.apuntadorSwitch}) goto ${etiquetaV};`)
         codigo.agregar(`goto ${etiquetaF};`)
 
         codigo.agregar(`${etiquetaV} :`)

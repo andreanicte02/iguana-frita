@@ -47,7 +47,7 @@ export class NodoFor extends NodoAstPro{
 
         codigo.agregarCodigo(codigoCondicionAuxiliar);
 
-        codigo.agregar(`if ${codigoCondicionAuxiliar.apuntador} == 0 goto ${etiquetaSalida} ;`);
+        codigo.agregar(`if (${codigoCondicionAuxiliar.apuntador} == 0) goto ${etiquetaSalida} ;`);
 
         codigo.agregarCodigo(codigoGenerarBloque(this.sentences, ambitoFor));
 
