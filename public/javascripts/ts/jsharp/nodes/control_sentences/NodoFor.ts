@@ -31,14 +31,17 @@ export class NodoFor extends NodoAstPro{
         const codigo = new Codigo();
         const etiquetaInicio = generarEtiqueta();
         const etiquetaSalida = generarEtiqueta();
+        const etiquetaIncremento = generarEtiqueta();
 
         ambitoFor.labelFin = etiquetaSalida;
-        ambitoFor.labelInicio = etiquetaInicio;
+        ambitoFor.labelInicio = etiquetaIncremento;
 
-        codigo.comentar('inicio for')
+
         codigo.agregarCodigo(codigoForInit);
+        codigo.comentar('incialziador  for')
 
         codigo.agregar(`${etiquetaInicio} :`);
+        codigo.comentar('condicion for')
 
 
         const codigoCondicion = desenvolver(this.forCondition.generarCodigo(ambitoFor));
@@ -53,6 +56,8 @@ export class NodoFor extends NodoAstPro{
 
         const codigoIncremento = desenvolver(this.forIncrease.generarCodigo(ambitoFor));
 
+        codigo.agregar(`${etiquetaIncremento}:`)
+        codigo.comentar('incremento for');
         codigo.agregarCodigo(codigoIncremento);
 
         codigo.agregar(`goto ${etiquetaInicio};`)
