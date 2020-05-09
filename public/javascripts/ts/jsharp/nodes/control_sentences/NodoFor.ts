@@ -55,6 +55,8 @@ export class NodoFor extends NodoAstPro{
 
         codigo.agregarCodigo(codigoIncremento);
 
+        codigo.agregar(`goto ${etiquetaInicio};`)
+
         codigo.agregar(`${etiquetaSalida} :`)
 
         codigo.comentar('fin for');
