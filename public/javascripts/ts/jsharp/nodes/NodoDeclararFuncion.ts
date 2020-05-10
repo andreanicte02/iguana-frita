@@ -3,7 +3,7 @@ import {ZAmbito} from "../types/ZAmbito.js";
 import {Codigo} from "./Codigo.js";
 import {FileLocation} from "./FileLocation.js";
 import {NFuncion} from "../types/NFuncion.js";
-import {generarNombreProc} from "../Utilidades.js";
+import {generarNombreProc, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
 
 
 export class NodoDeclararFuncion extends NodoAstPro {
@@ -11,25 +11,30 @@ export class NodoDeclararFuncion extends NodoAstPro {
     private readonly nombre: string;
     private readonly nodosParametro: NodoAst[];
     private readonly sentencias: NodoAst[];
+    private readonly esArray: boolean;
 
     constructor(
         fileLocation: FileLocation,
         nodoTipoRetorno: NodoAst,
         nombre: string,
         nodosParametro: NodoAst[],
-        sentencias: NodoAst[]
+        sentencias: NodoAst[],
+        esArray = false,
     ) {
         super(fileLocation);
         this.nodoTipoRetorno = nodoTipoRetorno;
         this.nombre = nombre;
         this.nodosParametro = nodosParametro;
         this.sentencias = sentencias;
+        this.esArray = esArray;
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
         const { tipo } = this.nodoTipoRetorno.generarCodigo(ambito);
-        const nFuncion = new NFuncion(ambito, tipo, this.nodosParametro, this.sentencias, false);
+
+        const tipoRetorno = this.esArray? obtenerTipoDesdeBancoArray(tipo): tipo;
+        const nFuncion = new NFuncion(ambito, tipoRetorno, this.nodosParametro, this.sentencias, false);
         /*
         Para soportar sobrecarga de funciones, ejemplo:
         hola(int a){}       --> hola_INT

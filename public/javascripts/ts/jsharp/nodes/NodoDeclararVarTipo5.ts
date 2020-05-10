@@ -21,8 +21,8 @@ export class NodoDeclararVarTipo5 extends NodoAstPro{
 
         const tipo: NodoAst = this.nodoObtenerTipo;
 
-        this.listId.forEach(function (value) {
-            value.definirTipo(tipo);
+        this.listId.forEach((value) => {
+            value.definirTipo(tipo, this.isArray);
             value.generarCodigo(ambito);
         })
         

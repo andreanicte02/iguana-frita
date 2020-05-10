@@ -74,10 +74,11 @@ String
 [] charAt()
 
 Arreglos
-[] Arreglos
-[] AccesoArreglos
-[] length
-[] linealize
+[/] Arreglos
+[ ] Inicializacion especial
+[/] AccesoArreglos
+[/] length
+[ ] linealize
 
 Estrucths
 [/] Acceso Structs

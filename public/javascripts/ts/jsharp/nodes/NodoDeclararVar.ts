@@ -3,10 +3,12 @@ import {FileLocation} from "./FileLocation.js";
 import {Codigo} from "./Codigo.js";
 import {NTipoVar} from "../types/NTipo.js";
 import {ZAmbito} from "../types/ZAmbito.js";
+import {obtenerTipoDesdeBancoArray} from "../Utilidades.js";
 
 export class NodoDeclararVar extends NodoAstPro {
     public readonly nombre: string;
     private nodoObtenerTipo: NodoAst | undefined;
+    private esArray: boolean | undefined;
 
     constructor(fileLocation: FileLocation, nombre: string) {
         super(fileLocation);
@@ -25,15 +27,17 @@ export class NodoDeclararVar extends NodoAstPro {
             // ojo: este no es un SemanticError, se lanza para proteger durante desarrollo
             throw new Error('Nodo suministrado no posee tipo');
         }
-
-        ambito.declararPropiedad(this.nombre, new NTipoVar(codigoTipo.tipo));
+        
+        const tipoContenido = this.esArray? obtenerTipoDesdeBancoArray(codigoTipo.tipo): codigoTipo.tipo;
+        ambito.declararPropiedad(this.nombre, new NTipoVar(tipoContenido));
 
         return Codigo.vacio;
     }
 
-    definirTipo(nodoObtenerTipo: NodoAst): void{
+    definirTipo(nodoObtenerTipo: NodoAst, esArray: boolean): void{
 
         this.nodoObtenerTipo = nodoObtenerTipo;
+        this.esArray = esArray;
 
     }
 

@@ -4,13 +4,17 @@ import {inicio} from "../Utilidades.js";
 
 export class NTipo {
 
-  public readonly nombre: string;
+  public readonly _nombre: string;
   private readonly declaraciones: NodoAst[];
   public ambito: ZAmbito | undefined;
   public id = inicio.contadorEstructuras++;
 
+  public get nombre(): string {
+    return this._nombre;
+  }
+
   constructor(nombre: string, declaraciones: NodoAst[]) {
-    this.nombre = nombre;
+    this._nombre = nombre;
     this.declaraciones = declaraciones;
   }
 
@@ -29,6 +33,19 @@ export class NTipoVar extends NTipo {
 
   constructor(tipoContenido: NTipo) {
     super("NTipoVar", []);
+    this.tipoContenido = tipoContenido;
+  }
+}
+
+export class NTipoArreglo extends NTipo {
+  public readonly tipoContenido: NTipo;
+
+  public get nombre(): string {
+    return `${this.tipoContenido.nombre}[]`;
+  }
+
+  constructor(tipoContenido: NTipo) {
+    super("NTipoArreglo", []);
     this.tipoContenido = tipoContenido;
   }
 }

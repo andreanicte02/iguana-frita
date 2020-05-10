@@ -49,7 +49,13 @@ export { NodoSwitch } from './nodes/control_sentences/NodoSwitch';
 export { NodoCase } from './nodes/control_sentences/NodoCase';
 export { NodoBreak } from  './nodes/control_sentences/NodoBreak';
 export { NodoContinue } from './nodes/control_sentences/NodoContinue';
+
 export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia'
+
+
+export { NodoCrearArray } from './nodes/NodoCrearArray';
+export { NodoAccessoArray } from './nodes/NodoAccessoArray';
+
 
 export function generar3d(sentencias: NodoAst[]): string {
 

@@ -1,11 +1,18 @@
 import {Codigo, GestorTemp} from "../nodes/Codigo.js";
 import {SemanticError} from "./SemanticError.js";
-import {NTipo, NTipoVar} from "./NTipo.js";
+import {NTipo, NTipoArreglo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
-import {desenvolver, generarNombreProc, generarTemporal, obtenerEspacioOcupadoEnFuncion, obtenerEspacioOcupadoEnFuncionExclusivo} from "../Utilidades.js";
+import {
+  desenvolver,
+  generarNombreProc,
+  generarTemporal,
+  obtenerEspacioOcupadoEnFuncion,
+  obtenerEspacioOcupadoEnFuncionExclusivo,
+  obtenerTipoDesdeBancoArray
+} from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
-import {nTipoBooleanConEtiqueta, nTipoVoid} from "./TiposPrimitivos";
-import {deBooleanoEtiquetaANormal, deBooleanoEtiquetaANormalCondicional} from "../nodes/TypeDefinition";
+import {nTipoChar, nTipoEntero, nTipoVoid} from "./TiposPrimitivos";
+import {deBooleanoEtiquetaANormalCondicional} from "../nodes/TypeDefinition";
 
 
 /**
@@ -257,6 +264,66 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
 
   // console.log('Fin de Temporales no usados:', GestorTemp.cantidad);
   // console.log(GestorTemp.temporales);
+
+  return codigo;
+}
+
+export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo): Codigo {
+
+  if (codigoValor.tipo !== nTipoEntero)
+  {
+    throw new SemanticError(`Solo se puede reservar una cantidad entera de memoria`);
+  }
+
+  const codigo = new Codigo();
+  codigo.tipo = obtenerTipoDesdeBancoArray(tipoContenido);
+
+  codigo.apuntador = generarTemporal();
+  codigo.agregarCodigo(codigoValor);
+  codigo.agregar(`${codigo.apuntador} = H;`);
+  codigo.comentar(`captura de direccion`);
+  const temp = generarTemporal();
+  codigo.agregar(`${temp} = ${codigoValor.apuntador} + 1;`);
+  codigo.comentar(`array.legth espacio`);
+  codigo.agregar(`H = H + ${temp}; `);
+  codigo.comentar(`(${codigoValor.extra}) bloques reservados`);
+  codigo.agregar(`heap[${codigo.apuntador}] = ${codigoValor.apuntador};`);
+  codigo.extra = `[new ${tipoContenido.nombre}(${codigoValor.extra}) ]`;
+
+  return codigo;
+
+}
+
+function esNumerico(tipo: NTipo): boolean {
+  return tipo === nTipoEntero || tipo === nTipoChar;
+}
+
+export function codigoAccessoIndice(codigoArreglo: Codigo, codigoIndice: Codigo): Codigo {
+
+  if (!(codigoArreglo.tipo instanceof NTipoArreglo)) {
+    throw new SemanticError("Operador [] solo valido con arrays, no valido para " + codigoArreglo.tipo.nombre);
+  }
+
+  if (!esNumerico(codigoIndice.tipo))
+  {
+    throw new SemanticError("Debe de ser un indice entero, no valido para " + codigoIndice.tipo.nombre);
+  }
+
+  const codigo = new Codigo();
+  codigo.tipo = new NTipoVar(codigoArreglo.tipo.tipoContenido);
+  codigo.extra = `${codigoArreglo.extra}[${codigoIndice.extra}]`;
+
+  codigo.agregarCodigo(codigoArreglo);
+  codigo.agregarCodigo(codigoIndice);
+
+  const temp = generarTemporal();
+  codigo.agregar(`${temp} = ${codigoArreglo.apuntador} + 1;`);
+  codigo.comentar("bloque length");
+  codigo.apuntador = generarTemporal();
+  codigo.agregar(`${codigo.apuntador} = ${temp} + ${codigoIndice.apuntador};`);
+
+  codigo.comentar(`&${codigoArreglo.extra}[${codigoIndice.extra}]`);
+  codigo.acceso = `heap[${codigo.apuntador}]`;
 
   return codigo;
 }
