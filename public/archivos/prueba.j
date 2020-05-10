@@ -14,14 +14,12 @@ void println(integer entero){
 
 void principal() {
     
-    integer panza = 3;
+    integer[] panza = strc integer[9];
+    panza[0] = 2001;
+    panza[1] = 2002;
     
-    if (panza > 4) {
-        println(1997);
-    }
-    else {
-        println(1993);
-    }
+    println(panza[1]);
+    println(panza.length);
     
 }
 

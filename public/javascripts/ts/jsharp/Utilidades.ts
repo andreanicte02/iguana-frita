@@ -1,12 +1,11 @@
 import {Codigo, GestorTemp} from "./nodes/Codigo.js";
 import {NodoAst} from "./nodes/NodoAst.js";
 import {ZAmbito} from "./types/ZAmbito.js";
-import {NTipo, NTipoVar} from "./types/NTipo";
+import {NTipo, NTipoArreglo, NTipoVar} from "./types/NTipo";
 import { buscarEnCadenaAmbito } from "./types/codigos.js";
-import { NodoDeclararVarTipo5 } from "./nodes/NodoDeclararVarTipo5.js";
-import {NodoDeclararVarTipo1} from "./nodes/NodoDeclararVarTipo1.js";
 import {NodoDeclararEstructura} from "./nodes/NodoDeclararEstructura.js";
 import {NodoDeclararFuncion} from "./nodes/NodoDeclararFuncion.js";
+import {nTipoEntero} from "./types/TiposPrimitivos.js";
 
 
 export const inicio = {
@@ -14,6 +13,25 @@ export const inicio = {
     contadorEtiquetas: -1,
     contadorEstructuras: -1,
 };
+
+//private static Dictionary<string, ZEntorno> _bancoTiposArray = new Dictionary<string, ZEntorno>();
+
+export const bancoTiposArray: NTipoArreglo[] = [];
+
+export function obtenerTipoDesdeBancoArray(tipoContenido: NTipo): NTipoArreglo
+{
+    const tipoArrayExistente = bancoTiposArray.find(t => t.tipoContenido === tipoContenido)
+    if (tipoArrayExistente !== undefined) {
+        return tipoArrayExistente;
+    }
+    const tipoArray = new NTipoArreglo(tipoContenido);
+    tipoArray.declararPropiedades();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    tipoArray.ambito!.declararPropiedad('length', new NTipoVar(nTipoEntero))
+
+    bancoTiposArray.push(tipoArray);
+    return tipoArray;
+}
 
 export function reiniciarContadores(): void {
     inicio.contadorEtiquetas = -1;

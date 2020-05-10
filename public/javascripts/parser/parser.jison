@@ -209,26 +209,6 @@ importSentence
     : 'import' STRING                           {  }
     ;
 
-classLevelModifiers
-    : classLevelModifiers classLevelModifier    {  }
-    | classLevelModifier                        {  }
-    ;
-classLevelModifier
-    : 'public'                                  {  }
-    | 'private'                                 {  }
-    | 'protected'                               {  }
-    | localLevelModifier                        {  }
-    ;
-localLevelModifier
-    : 'abstract'                                {  }
-    | 'final'                                   {  }
-    | 'static'                                  {  }
-    ;
-funLevelModifier
-    : 'abstract'                                {  }
-    | 'final'                                   {  }
-    ;
-
 structureDeclaration
     : 'define' IDENTIFIER 'as' '[' attributes ']'   { $$ = new ast.NodoDeclararEstructura( ast.fl(yy, @2), $2, $5 ); }
     ;
@@ -244,26 +224,34 @@ attribute
                                                     };
                                                 }
     | type IDENTIFIER                           { $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) }; }
-    | type '[' ']' IDENTIFIER '=' expression    { }
-    | type '[' ']' IDENTIFIER                   { }
+    | type '[' ']' IDENTIFIER '=' expression    {
+
+                                                    $$ = {
+                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2, true),
+                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
+                                                    };
+                                                }
+    | type '[' ']' IDENTIFIER                   { $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2, true) }; }
     ;
 
 
 classLevelVarDeclaration
     : type varDeclarations                          { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
-    | type '[' ']' varDeclarations                  {   }
+    | type '[' ']' varDeclarations                  { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $2);  }
     | type varDeclarations '=' expression           { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
-    | type '[' ']' varDeclarations '=' expression   {   }
+    | type '[' ']' varDeclarations '=' expression   { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $2, $4);  }
     ;
 funLevelVarDeclaration
     : primitiveType varDeclarations                 { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
     | IDENTIFIER varDeclarations                    { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2);  }
-    | primitiveType '[' ']' varDeclarations         {  }
-    | IDENTIFIER '[]' varDeclarations               {  }
+    | primitiveType '[' ']' varDeclarations         { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $4); }
+    | primitiveType '[]' varDeclarations            { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $3); }
+    | IDENTIFIER '[]' varDeclarations               { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), true, $2); }
     | primitiveType varDeclarations '=' expression  { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
     | IDENTIFIER varDeclarations '=' expression     { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), false, $2, $4);  }
-    | primitiveType '[' ']' varDeclarations '=' expression  {  }
-    | IDENTIFIER '[]' varDeclarations '=' expression        {  }
+    | primitiveType '[' ']' varDeclarations '=' expression  { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $4, $6); }
+    | primitiveType '[]' varDeclarations '=' expression     { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $3, $5); }
+    | IDENTIFIER '[]' varDeclarations '=' expression        { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), true, $3, $5); }
     ;
 
 varDeclarations
@@ -292,20 +280,11 @@ arrayElement
     | arrayLiteral                                  { $$ = $1; }
     ;
 
-instanceType
-    :                                               { $$ = new ast.EmptyInstanceTypeOperation($1); }
-    | arrayInstanceType                             { $$ = $1; }
-    ;
-arrayInstanceType
-    : arrayInstanceType '[' ']'                     { $$ = new ast.ArrayInstanceTypeOperation($1); }
-    | '[' ']'                                       { $$ = new ast.ArrayInstanceTypeOperation(undefined); }
-    ;
-
 classLevelFunDeclaration
     : type  IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7 ); }
     | type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
-      '{' funSentenceList '}'                       {  }
+      '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7, true ); }
     ;
 
 
@@ -318,8 +297,8 @@ paramDeclarations
     | paramDeclaration                          { $$ = [$1]; }
     ;
 paramDeclaration
-    : type '[' ']' IDENTIFIER       {  }
-    | type IDENTIFIER               { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $2 ); }
+    : type '[' ']' IDENTIFIER       { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $2, true ); }
+    | type IDENTIFIER               { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $2, false); }
     ;
 
 
@@ -366,14 +345,14 @@ expression
     | 'true'                                { $$ = new ast.NodoCrearTrue (ast.fl(yy, @1)); }
     | 'false'                               { $$ = new ast.NodoCrearFalse(ast.fl(yy, @1)); }
     | IDENTIFIER                            { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }
-    | expression '[' expression ']'             {  }
+    | expression '[' expression ']'             { $$ = new ast.NodoAccessoArray( ast.fl(yy, @1), $1, $3 ); }
     | '(' expression ')'                        { $$ = $2; }
     | '-' expression %prec UMINUS               { $$ = new ast.NodoUnarioMenos(ast.fl(yy, @1), $2); }
     | '!' expression                            { $$ = new ast.NodoNot(ast.fl(yy, @1), $2); }
     | expression "?" expression ":" expression  {  }
     | increment                                 { $$ = $1; }
     | 'strc' type '(' ')'                       { $$ = new ast.NodoInstanciar( ast.fl(yy, @1), $2 ); }
-    //| 'new' type fixedArrayInit                 {  }
+    | 'strc' type '[' expression ']'            { $$ = new ast.NodoCrearArray( ast.fl(yy, @1), $2, $4 ); }
     | casting                                   { $$ = $1; }
     ;
 
@@ -381,14 +360,6 @@ casting
     : '(' 'int' ')' expression %prec UINT              { $$ = new ast.IntCastNode(yy.last(), @2, $4); }
     | '(' 'double' ')' expression %prec UDOUBLE           { $$ = new ast.DoubleCastNode(yy.last(), @2, $4); }
     | '(' 'char'  ')' expression %prec UCHAR            { $$ = new ast.CharCastNode(yy.last(), @2, $4); }
-    ;
-
-fixedArrayInit
-    : fixedArrayInit '[' expression ']'  %prec HOPE     {   const last = new ast.HopeFixedArrayInitNode( yy.last(), @2, $3);
-                                                            $1[1].setHopeFixedArrayInitNode(last);
-                                                            $$ = [$1[0], last];
-                                                        }
-    | '[' expression ']'                    { let first = new ast.HopeFixedArrayInitNode(yy.last(), @1, $2); $$ = [first, first]; }
     ;
 
 

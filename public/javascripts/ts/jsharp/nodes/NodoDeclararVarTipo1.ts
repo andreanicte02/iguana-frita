@@ -31,8 +31,8 @@ export class NodoDeclararVarTipo1 extends NodoAstPro{
 
         /// se declaran todos las variables
         const tipo: NodoAst = this.nodoObtenerTipo;
-        this.listId.forEach(function (value) {
-            value.definirTipo(tipo);
+        this.listId.forEach((value) => {
+            value.definirTipo(tipo, this.isArray);
             value.generarCodigo(ambito);
         })
 
@@ -43,6 +43,7 @@ export class NodoDeclararVarTipo1 extends NodoAstPro{
         const codigo = new Codigo();
         codigo.agregarCodigo(codigoValor);
         const codigosAsignacion = this.listId.map(nodoDeclarar => {
+            // debugger;
             const codigoVar = codigoObtenerVar(ambito, nodoDeclarar.nombre);
             return codigoAsignar(codigoVar, codigoValor, true);
         });
