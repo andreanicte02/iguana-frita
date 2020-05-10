@@ -52,7 +52,7 @@ export { NodoContinue } from './nodes/control_sentences/NodoContinue';
 
 export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia';
 export { NodoIgualdadValor } from './nodes/equal_operations/NodoIgualdadValor';
-
+export { NodoDesigualdadValor } from './nodes/equal_operations/NodoDesigualdadValor';
 
 export { NodoCrearArray } from './nodes/NodoCrearArray';
 export { NodoAccessoArray } from './nodes/NodoAccessoArray';

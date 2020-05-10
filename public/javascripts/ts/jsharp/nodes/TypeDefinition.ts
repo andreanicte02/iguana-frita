@@ -7,7 +7,10 @@ import {
     nTipoEntero
 } from "../types/TiposPrimitivos";
 import {Codigo} from "./Codigo";
-import {generarEtiqueta, generarTemporal} from "../Utilidades";
+import {desenvolver, generarEtiqueta, generarTemporal} from "../Utilidades";
+import {SemanticError} from "../types/SemanticError";
+import {NodoAst} from "./NodoAst";
+import {ZAmbito} from "../types/ZAmbito";
 
 export function esBoleano(tipo: Codigo): boolean {
 
@@ -187,7 +190,49 @@ export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
     }
     return codigo;
 }
+export function esIgualValor(e1: NodoAst, symbol: string , e2: NodoAst, ambito: ZAmbito): Codigo {
 
+
+    const c1 = desenvolver(e1.generarCodigo(ambito));
+    const c2 = desenvolver(e2.generarCodigo(ambito));
+
+    //TODO falta el manejo de strings
+    const tipo = obtenerTipoIgualdadRelacionalxValor(c1,c2);
+
+    if(tipo === undefined){
+
+        throw new SemanticError(`No se permiten tipos no primitivos  ${c1.tipo.nombre} ${symbol} ${c2.tipo.nombre}`)
+
+    }
+
+    const aux1 = c1.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c1): c1;
+    const aux2 = c2.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c2): c2;
+
+
+    const etiquetaVerdadera = generarEtiqueta();
+    const etiquetaFalsa = generarEtiqueta();
+
+    const codigo = new Codigo();
+    codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
+    codigo.guardarEtiquetaFalsa(etiquetaFalsa);
+
+    codigo.agregarCodigo(aux1);
+    codigo.agregarCodigo(aux2);
+    codigo.tipo = nTipoBooleanConEtiqueta;
+
+    codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+    codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
+
+
+    codigo.agregar(`goto ${etiquetaFalsa};`)
+    codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas false: ${codigo.eFalse.join(',')}`)
+
+
+    codigo.extra+=`if ${aux1.apuntador} ${symbol} ${aux2.apuntador}`;
+
+    return codigo;
+
+}
 export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     const  codigo = new Codigo();
     codigo.tipo = nTipoBooleanConEtiqueta;

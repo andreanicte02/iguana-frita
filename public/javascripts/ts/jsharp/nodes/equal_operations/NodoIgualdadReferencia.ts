@@ -44,7 +44,7 @@ export class NodoIgualdadReferencia extends NodoAstPro{
         codigo.agregarCodigo(c2);
         codigo.tipo = nTipoBooleanConEtiqueta;
 
-        codigo.agregar(`if ${c1.apuntador} == ${c2.apuntador} goto ${etiquetaVerdadera};`);
+        codigo.agregar(`if (${c1.apuntador} == ${c2.apuntador}) goto ${etiquetaVerdadera};`);
         codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
 
 

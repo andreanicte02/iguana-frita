@@ -65,10 +65,22 @@ void sent_control(){
     }
 
     integer contador = 0;
+       println('-');
+
+       println('-');
+
     do{
        println(contador);
        contador = contador + 1;
 
+        if(contador == 2 && true == (3>1) ){
+
+             println('f');
+             println('i');
+             println('n');
+
+            break;
+        }
 
     }while(contador<5)
 

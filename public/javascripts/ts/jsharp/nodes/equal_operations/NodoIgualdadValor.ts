@@ -2,10 +2,8 @@ import {NodoAst, NodoAstPro} from "../NodoAst";
 import {ZAmbito} from "../../types/ZAmbito";
 import {Codigo} from "../Codigo";
 import {FileLocation} from "../FileLocation";
-import {desenvolver, generarEtiqueta} from "../../Utilidades";
-import {esPrimitivo, obtenerTipoIgualdadRelacionalxValor} from "../TypeDefinition";
-import {SemanticError} from "../../types/SemanticError";
-import {nTipoBooleanConEtiqueta} from "../../types/TiposPrimitivos";
+import {esIgualValor} from "../TypeDefinition";
+
 
 export class NodoIgualdadValor extends NodoAstPro{
 
@@ -23,40 +21,8 @@ export class NodoIgualdadValor extends NodoAstPro{
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
-        const c1 = desenvolver(this.e1.generarCodigo(ambito));
-        const c2 = desenvolver(this.e2.generarCodigo(ambito));
 
-        //TODO falta el manejo de strings
-        const tipo = obtenerTipoIgualdadRelacionalxValor(c1,c2);
-
-        if(tipo === undefined){
-
-            throw new SemanticError(`No se permiten tipos primitivos  ${c1.tipo.nombre} == ${c2.tipo.nombre}`)
-
-        }
-
-        const etiquetaVerdadera = generarEtiqueta();
-        const etiquetaFalsa = generarEtiqueta();
-
-        const codigo = new Codigo();
-        codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
-        codigo.guardarEtiquetaFalsa(etiquetaFalsa);
-
-        codigo.agregarCodigo(c1);
-        codigo.agregarCodigo(c2);
-        codigo.tipo = nTipoBooleanConEtiqueta;
-
-        codigo.agregar(`if ${c1.apuntador} == ${c2.apuntador} goto ${etiquetaVerdadera};`);
-        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
-
-
-        codigo.agregar(`goto ${etiquetaFalsa};`)
-        codigo.comentar(`if ${c1.apuntador} ${this.symbol} ${c2.apuntador} - etiquetas false: ${codigo.eFalse.join(',')}`)
-
-
-        codigo.extra+=`if ${c1.apuntador} ${this.symbol} ${c2.apuntador}`;
-
-        return codigo;
+        return esIgualValor(this.e1, this.symbol, this.e2, ambito);
 
 
     }
