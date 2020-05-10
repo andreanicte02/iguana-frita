@@ -113,6 +113,27 @@ export function obtenerTipoOperacionUnarioMenos(c1: Codigo): NTipo | undefined {
     return undefined;
 }
 
+export function obtenerTipoIgualdadRelacionalxValor(c1: Codigo , c2: Codigo): NTipo | undefined {
+
+    if(esNumero(c1) && esNumero(c2)){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(esBoleano(c1) && esBoleano(c2)){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    //todo falta el manejo de strings
+
+    return undefined;
+
+
+
+}
+
+
+
+
 export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
 
     const codigo = new Codigo();

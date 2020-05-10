@@ -50,7 +50,8 @@ export { NodoCase } from './nodes/control_sentences/NodoCase';
 export { NodoBreak } from  './nodes/control_sentences/NodoBreak';
 export { NodoContinue } from './nodes/control_sentences/NodoContinue';
 
-export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia'
+export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia';
+export { NodoIgualdadValor } from './nodes/equal_operations/NodoIgualdadValor';
 
 
 export { NodoCrearArray } from './nodes/NodoCrearArray';

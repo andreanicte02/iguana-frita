@@ -327,7 +327,7 @@ expression
     | expression '/' expression             {  }
     | expression '%' expression             { $$ = new ast.NodoModular(ast.fl(yy, @1), $1, $3); }
     | expression '!=' expression            {  }
-    | expression '==' expression            {  }
+    | expression '==' expression            { $$ = new ast.NodoIgualdadValor(ast.fl(yy, @1), $1, $3); }
     | expression '<' expression             { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
     | expression '>' expression             { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
     | expression '<=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
