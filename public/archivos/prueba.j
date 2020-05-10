@@ -139,7 +139,25 @@ void sent_control(){
         }
 
     }
-    
+
+
+    println('S');
+
+    println('W');
+    println('I');
+
+    println('T');
+
+    switch (3*2-1) {
+        case 3:
+            println(3);
+        case 5:
+            println(2);
+        case 7:
+            println(5);
+        default:
+            println(8);
+    }
 }
 
 define Vector as [

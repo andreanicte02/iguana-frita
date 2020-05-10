@@ -2,7 +2,7 @@ import {NodoAst, NodoAstPro} from "../NodoAst";
 import {ZAmbito} from "../../types/ZAmbito";
 import {Codigo} from "../Codigo";
 import {FileLocation} from "../FileLocation";
-import {esIgualValor} from "../TypeDefinition";
+import {codigoIgualacionXValor} from "../TypeDefinition";
 
 
 export class NodoIgualdadValor extends NodoAstPro{
@@ -22,7 +22,7 @@ export class NodoIgualdadValor extends NodoAstPro{
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
 
-        return esIgualValor(this.e1, this.symbol, this.e2, ambito);
+        return codigoIgualacionXValor(this.e1, this.symbol, this.e2, ambito);
 
 
     }

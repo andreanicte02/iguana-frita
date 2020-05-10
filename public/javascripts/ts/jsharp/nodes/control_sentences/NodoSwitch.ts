@@ -20,36 +20,33 @@ export class NodoSwitch extends NodoAstPro{
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
+
         const codigo = new Codigo();
-
-        const codigoExp = desenvolver(this.expression.generarCodigo(ambito));
-
-        const codigoExpAux = codigoExp.tipo=== nTipoBooleanConEtiqueta ?
-            deBooleanoEtiquetaANormal(codigoExp): codigoExp;
-
-        codigo.agregarCodigo(codigoExpAux);
-        codigo.comentar('inicio switch');
+        const codigoCondiciones = new Codigo();
+        const codigoBloques = new Codigo();
+        const etiquetaDefault = generarEtiqueta();
         const etiquetaSalida = generarEtiqueta();
-        const ambitoSwitch = new ZAmbito(ambito);
-        ambitoSwitch.labelFin = etiquetaSalida;
+
+        const ambitSwtich = new ZAmbito(ambito);
+        ambitSwtich.labelFin = etiquetaSalida;
 
         this.cases.forEach(value => {
-                value.setApuntadorOriginal(codigoExpAux.apuntador);
-                codigo.agregarCodigo(value.generarCodigo(ambitoSwitch));
-            }
-        )
+            codigoCondiciones.agregarCodigo(value.generarCodigoCondicion(this.expression,ambitSwtich))
+            codigoBloques.agregarCodigo(value.generarCodigo(ambitSwtich));
+        })
 
-        const etiquetaDef = generarEtiqueta();
+        codigo.agregarCodigo(codigoCondiciones);
+        codigo.agregar(`goto ${etiquetaDefault};`);
 
-        codigo.agregar(`${etiquetaDef} :`)
-        codigo.comentar('default:')
-        codigo.agregarCodigo(codigoGenerarBloque(this.defaultSentences,ambitoSwitch));
+        codigo.agregarCodigo(codigoBloques);
+        codigo.agregar(`${etiquetaDefault} :`)
+
+        codigo.agregarCodigo(codigoGenerarBloque(this.defaultSentences,ambitSwtich));
 
         codigo.agregar(`${etiquetaSalida} :`)
-        codigo.comentar('fin switch')
-
 
         return codigo;
+
     }
 
 }

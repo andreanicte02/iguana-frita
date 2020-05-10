@@ -190,7 +190,7 @@ export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
     }
     return codigo;
 }
-export function esIgualValor(e1: NodoAst, symbol: string , e2: NodoAst, ambito: ZAmbito): Codigo {
+export function codigoIgualacionXValor(e1: NodoAst, symbol: string , e2: NodoAst, ambito: ZAmbito): Codigo {
 
 
     const c1 = desenvolver(e1.generarCodigo(ambito));
