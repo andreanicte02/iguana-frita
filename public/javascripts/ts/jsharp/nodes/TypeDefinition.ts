@@ -151,6 +151,15 @@ export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
     return codigo;
 }
 
+export function esPrimitivo(codigo: Codigo): boolean {
+
+    if(esNumero(codigo) || esBoleano(codigo) ){
+        return true;
+    }
+
+    return false;
+}
+
 export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
     if (codigo.tipo == nTipoBooleanConEtiqueta) {
         return deBooleanoEtiquetaANormal(codigo);
@@ -169,7 +178,7 @@ export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     codigo.guardarEtiquetaFalsa(etiquetaF);
 
     codigo.agregar(`if (${c1.apuntador} == 1) goto ${etiquetaV} ;`)
-    codigo.agregar(`go to ${etiquetaF} ;`)
+    codigo.agregar(`goto ${etiquetaF} ;`)
 
 
     codigo.comentar('de bool etiqueta a normal')

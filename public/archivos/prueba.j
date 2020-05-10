@@ -11,6 +11,18 @@ void println(integer entero){
     #print(c, '\n');
 }
 
+void print(char caracter){
+    #print(c, caracter);
+}
+
+void println(char caracter){
+
+       #print(c, '>');
+       #print(c, ' ');
+       #print(c, caracter);
+       #print(c, '\n');
+}
+
 
 void principal() {
 
@@ -42,6 +54,82 @@ void sent_control(){
             continue;
          }
     }
+    
+    integer b;
+    
+    println('w');
+    
+    while(b<5){
+        
+        println(b);
+        
+        b=b+1;
+    }
+
+    integer contador = 0;
+    do{
+       println(contador);
+       contador = contador + 1;
+
+
+    }while(contador<5)
+
+    do{
+
+        println('X');
+
+        println('D');
+
+    }while(4> 5  || 3> 6+12  || false)
+
+
+    if(b>2 && false){
+
+         println('1');
+
+    }else if(false){
+
+        println('2');
+
+    }else if(true){
+
+        println('3');
+
+        if(false){
+
+                 println('3');
+
+            if(true){
+
+                println('3');
+
+            }
+
+        }else{
+
+            println('4');
+
+            if(true){
+
+                println('4');
+                                 
+            }else{
+                println('4');
+            }
+
+        }
+
+    }else{
+        println('5');
+
+        if(true){
+
+            println('5');
+
+        }
+
+    }
+    
 }
 
 define Vector as [

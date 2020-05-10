@@ -109,6 +109,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "("                   return '('
 ")"                   return ')'
 
+"==="                    return '==='
 "=="                    return '=='
 "="                     return '='
 
@@ -137,7 +138,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 %left '||'
 %left '&&'
 %left '^'
-%left '==' '!='
+%left '==' '!=' '==='
 %left '<' '>' '<=' '>='
 %left '+' '-'
 %left '*' '/' '%'
@@ -375,6 +376,7 @@ expression
     | 'strc' type '(' ')'                       { $$ = new ast.NodoInstanciar( ast.fl(yy, @1), $2 ); }
     //| 'new' type fixedArrayInit                 {  }
     | casting                                   { $$ = $1; }
+    | expression '===' expression               { $$ = new ast.NodoIgualdadReferencia(ast.fl(yy, @1), $1, $3); }
     ;
 
 casting
