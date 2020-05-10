@@ -42,7 +42,7 @@ export class NodoWhile extends NodoAstPro{
         codigo.agregarCodigo(codigoCondicionAuxiliar);
 
         codigo.comentar(`LInicio while`);
-        codigo.agregar(`if ${codigoCondicionAuxiliar.apuntador} == 0 goto ${etiquetaSalida};`);
+        codigo.agregar(`if (${codigoCondicionAuxiliar.apuntador} == 0) goto ${etiquetaSalida};`);
         codigo.comentar(`LInicio while`);
 
         codigo.agregarCodigo(codigoGenerarBloque(this.sentencias, ambitoWhile));

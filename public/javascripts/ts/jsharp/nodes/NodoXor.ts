@@ -47,7 +47,7 @@ export class NodoXor extends NodoAstPro{
         codigo.guardarEtiquetaFalsa(eFalsa);
 
 
-        codigo.agregar(`if ${aux1.apuntador} <> ${aux2.apuntador} goto ${eVerdadera};`);
+        codigo.agregar(`if (${aux1.apuntador} <> ${aux2.apuntador}) goto ${eVerdadera};`);
         codigo.agregar(`goto ${eFalsa};`);
 
         codigo.extra = `if ${aux1.extra} ^ ${aux2.extra}`;

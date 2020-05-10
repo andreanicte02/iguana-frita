@@ -44,7 +44,7 @@ export class NodoOr extends NodoAstPro{
         codigo.pasarEtiquetasFalsas(aux2.eFalse);
 
         codigo.agregarCodigo(aux1);
-        codigo.agregar(`${aux1.eFalse.reduce((a,x)=> a += "," + x )} :`);
+        codigo.agregar(`${aux1.eFalse.reduce((a,x)=> a += ":\n" + x )}:`);
         codigo.agregarCodigo(aux2);
 
 

@@ -51,7 +51,7 @@ export class NodoDoWhile extends NodoAstPro{
         codigo.agregarCodigo(codigoCondicionAuxiliar);
 
 
-        codigo.agregar(`if ${codigoCondicionAuxiliar.apuntador} == 1 goto ${etiquetaInicio};`);
+        codigo.agregar(`if (${codigoCondicionAuxiliar.apuntador} == 1) goto ${etiquetaInicio};`);
         codigo.comentar(`doWhile ${codigoCondicionAuxiliar.extra}`);
 
         codigo.agregar(`goto ${etiquetaSalida} ;`)
