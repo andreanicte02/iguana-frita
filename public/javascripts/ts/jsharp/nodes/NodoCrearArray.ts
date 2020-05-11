@@ -19,7 +19,7 @@ export class NodoCrearArray extends NodoAstPro {
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
         const { tipo } = this.nodoObtenerTipo.generarCodigo(ambito);
         const codigoValor = desenvolver(this.nodoValor.generarCodigo(ambito));
-        return codigoCrearArray(tipo, codigoValor);
+        return codigoCrearArray(tipo, codigoValor, []);
     }
 
 }

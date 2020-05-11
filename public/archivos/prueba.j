@@ -1,4 +1,7 @@
 
+
+import "api.j";
+
 integer w, v = 4;
 
 void print(integer entero){
@@ -25,6 +28,8 @@ void println(char caracter){
 
 
 void principal() {
+    
+    comida();
 
     integer[] panza = strc integer[9];
     panza[0] = 2001;

@@ -11,8 +11,9 @@ import {
   obtenerTipoDesdeBancoArray
 } from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
-import {nTipoChar, nTipoEntero, nTipoVoid} from "./TiposPrimitivos";
-import {deBooleanoEtiquetaANormalCondicional} from "../nodes/TypeDefinition";
+import {nTipoChar, nTipoEntero, nTipoNull, nTipoVoid} from "./TiposPrimitivos";
+import {deBooleanoEtiquetaANormalCondicional, esPrimitivo, esTipoPrimitivo} from "../nodes/TypeDefinition";
+import {codigoCrearEntero} from "../nodes/NodoCrearInteger.js";
 
 
 /**
@@ -268,7 +269,7 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
   return codigo;
 }
 
-export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo): Codigo {
+export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo, codigos: Codigo[]): Codigo {
 
   if (codigoValor.tipo !== nTipoEntero)
   {
@@ -279,19 +280,62 @@ export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo): Cod
   codigo.tipo = obtenerTipoDesdeBancoArray(tipoContenido);
 
   codigo.apuntador = generarTemporal();
+  codigo.agregarCodigos(codigos);
   codigo.agregarCodigo(codigoValor);
+
   codigo.agregar(`${codigo.apuntador} = H;`);
   codigo.comentar(`captura de direccion`);
+
   const temp = generarTemporal();
   codigo.agregar(`${temp} = ${codigoValor.apuntador} + 1;`);
   codigo.comentar(`array.legth espacio`);
+
   codigo.agregar(`H = H + ${temp}; `);
   codigo.comentar(`(${codigoValor.extra}) bloques reservados`);
+
   codigo.agregar(`heap[${codigo.apuntador}] = ${codigoValor.apuntador};`);
+  codigo.comentar(`se popula la propiedad length`);
+
   codigo.extra = `[new ${tipoContenido.nombre}(${codigoValor.extra}) ]`;
 
-  return codigo;
+  if (codigos.length) {
+    codigo.agregar(`${temp} = ${codigo.apuntador};`);
+    codigo.comentar(`temporal para asignar valores`)
+  }
 
+  codigos.forEach((c, index) => {
+    codigo.agregar(`${temp} = ${temp} + 1;`)
+    codigo.agregar(`heap[${temp}] = ${c.apuntador};`);
+    codigo.comentar(`[${index}] = ${c.extra}`);
+  });
+
+  return codigo;
+}
+
+export function codigoCrearArrayConValores(codigos: Codigo[]) {
+
+  if (codigos.length === 0)
+    throw new SemanticError(`No se puede crear un arreglo sin ningun valor`);
+
+  const tipos = codigos.map(c => c.tipo);
+
+  const tipoContenido = tipos
+      .find(t => t !== nTipoNull);
+
+  if (tipoContenido === undefined)
+    throw new SemanticError(`al menos un elemento del arreglo tiene que ser diferente de nulo`);
+
+  // se tiene un tipo valido, que puede ser primitivo o no
+  if (esTipoPrimitivo(tipoContenido)) {
+    const todosMismoTipo = tipos.every(t => t === tipoContenido);
+    if (!todosMismoTipo) throw new SemanticError(`Todos los elementos del array deben de ser de tipo '${tipoContenido.nombre}'`);
+  }
+  else {
+    const todosTiposCompatibles = tipos.every(t => t === tipoContenido || t === nTipoNull);
+    if (!todosTiposCompatibles) throw new SemanticError(`Los elementos del array deben de ser de tipo '${tipoContenido.nombre}'`);
+  }
+
+  return codigoCrearArray(tipoContenido, codigoCrearEntero(codigos.length), codigos);
 }
 
 function esNumerico(tipo: NTipo): boolean {

@@ -21,12 +21,18 @@ export function esBoleano(tipo: Codigo): boolean {
     return false;
 }
 
-export function esNumero(tipo: Codigo): boolean {
+export function esTipoPrimitivo(tipo: NTipo): boolean {
+    return [
+        nTipoDouble,
+        nTipoEntero,
+        nTipoChar,
+        nTipoBooleanConEtiqueta,
+        nTipoBooleanNormal
+    ].includes(tipo);
+}
 
-    if(tipo.tipo === nTipoDouble || tipo.tipo === nTipoEntero || tipo.tipo === nTipoChar){
-        return true;
-    }
-    return false;
+export function esNumero(tipo: Codigo): boolean {
+    return tipo.tipo === nTipoDouble || tipo.tipo === nTipoEntero || tipo.tipo === nTipoChar;
 }
 
 export function esCadena(tipo: Codigo): boolean {

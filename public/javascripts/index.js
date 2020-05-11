@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 // cambio reciente
 // $("#errorsDiv").toggle();
@@ -397,26 +398,82 @@ compileButton.click(()=>{
     else {
 
         const jText = editor.getValue(); // or session.getValue
-        //const relativePath = getPublicPath(currenOpenFile.path);
-        //console.log(relativePath)
 
+        parser.yy.paths = [];
+        parser.yy.last = () => { return parser.yy.paths[parser.yy.paths.length - 1]; };
+        const relativePath = getPublicPath(currenOpenFile.path);
 
+        // const nodos = parser.parse(jText);
+        // const texto = ast.generar3d(nodos);
+        // editor3d.setValue(texto);
+        // editor3d.clearSelection();
 
-            const nodos = parser.parse(jText);
-            const texto = ast.generar3d(nodos);
+        try {
+            const nodes = getSentencesWithLocation(relativePath, jText);
+            const texto = ast.generar3d(nodes);
             editor3d.setValue(texto);
             editor3d.clearSelection();
+        }
+        catch (e) {
+            if (e._semanticError){
+                console.log(e._semanticError);
+                alert(e.message);
+
+                addErrorRow("Semantico", relativePath, e._p.first_line, e._p.first_column, e._semanticError.message);
+            }
+            else {
+                console.log(e);
+                alert(e.message);
+                jj = e;
+
+                if (e.hash) {
+                    addErrorRow("Sintactico", relativePath, e.hash.line, 0, e.message);
+                }
+                else {
+                    addErrorRow("?Sintactico", relativePath, 0, 0, e.message);
+                }
+            }
+        }
+
 
 
     }
 });
 
+function importNodes(currentFile, filePathToImport) {
+    const lastIndex1 = currentFile.lastIndexOf('/');
+    const lastIndex2 = currentFile.lastIndexOf('\\');
+    const lastIndex = lastIndex1 < lastIndex2? lastIndex2: lastIndex1;
+    const newFileRelativePath = currentFile.substring(0, lastIndex) + "/" + filePathToImport;
+
+    console.log('a importar:', newFileRelativePath);
+
+    let fileContent = ""
+    $.get({
+        url: newFileRelativePath,
+        async: false
+    })
+    .done((data) => fileContent = data )
+    .fail( (e, textStatus) => {
+        console.log("Fallo al obtener archivo");
+        console.log(e);
+        if (e.status === 404) {
+            throw new ast.SemanticError("No se encontro el import");
+        }
+        else {
+            throw new ast.SemanticError("Fallo al importar archivo: " + textStatus);
+        }
+    });
+
+    console.log("Se encontro el archivo");
+    return getSentencesWithLocation(newFileRelativePath, fileContent);
+}
 
 function getSentencesWithLocation(relativePath, content) {
-    //javaParser.yy.paths.push(relativePath);
-    //const sentences = javaParser.parse(content);
-    //javaParser.yy.paths.pop(relativePath);
-    //return sentences;
+    parser.yy.paths.push(relativePath);
+    const sentences = parser.parse(content);
+    parser.yy.paths.pop(relativePath);
+    return sentences;
 }
 
 const saveButton = $("#saveButton");

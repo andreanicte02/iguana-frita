@@ -167,10 +167,10 @@ globalSentenceList
 globalSentences
     : globalSentences globalSentence    { $$ = $1.concat($2); }
     | globalSentence                    { $$ = [$1];          }
+    | importSentence ";"                { $$ = $1; }
     ;
 globalSentence
-    : importSentence ";"                { $$ = $1; }
-    | classLevelVarDeclaration ';'      { $$ = $1; }
+    : classLevelVarDeclaration ';'      { $$ = $1; }
     | classLevelFunDeclaration          { $$ = $1; }
     | structureDeclaration ';'          { $$ = $1; }
     ;
@@ -207,7 +207,14 @@ funSentence
 /* ********************** Sentences ************************* */
 
 importSentence
-    : 'import' STRING                           {  }
+    : 'import' imports          { $$ = $2; }
+    ;
+imports
+    : imports ',' importPath    { $$ = $1.push(...$3); }
+    | importPath                { $$ = $1; }
+    ;
+importPath
+    : STRING                    { $$ = importNodes(yy.last(), JSON.parse($1)); }
     ;
 
 structureDeclaration
@@ -356,6 +363,7 @@ expression
     | 'strc' type '[' expression ']'            { $$ = new ast.NodoCrearArray( ast.fl(yy, @1), $2, $4 ); }
     | casting                                   { $$ = $1; }
     | expression '===' expression               { $$ = new ast.NodoIgualdadReferencia(ast.fl(yy, @1), $1, $3); }
+    | '{' expressionList '}'                    { $$ = new ast.NodoCrearArrayConValores( ast.fl(yy, @2), $2 ); }
     ;
 
 casting

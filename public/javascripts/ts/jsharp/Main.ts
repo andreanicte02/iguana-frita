@@ -49,7 +49,7 @@ export { NodoSwitch } from './nodes/control_sentences/NodoSwitch';
 export { NodoCase } from './nodes/control_sentences/NodoCase';
 export { NodoBreak } from  './nodes/control_sentences/NodoBreak';
 export { NodoContinue } from './nodes/control_sentences/NodoContinue';
-
+export { NodoCrearArrayConValores } from './nodes/NodoCrearArrayConValores';
 export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia';
 export { NodoIgualdadValor } from './nodes/equal_operations/NodoIgualdadValor';
 export { NodoDesigualdadValor } from './nodes/equal_operations/NodoDesigualdadValor';
@@ -93,8 +93,9 @@ export function generar3d(sentencias: NodoAst[]): string {
 // Nos va a ayudar a crear el FileLocation de manera mas simplificada
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function fl(yy: any, pos: any): FileLocation {
-    const filePath = 'path';
+    const filePath = yy.last();
     const x = pos.first_column;
     const y = pos.first_line;
     return new FileLocation(filePath, x, y);
 }
+

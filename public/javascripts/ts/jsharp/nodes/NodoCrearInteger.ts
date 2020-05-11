@@ -4,6 +4,14 @@ import { Codigo } from "./Codigo.js";
 import { nTipoEntero } from "../types/TiposPrimitivos.js";
 import { ZAmbito } from "../types/ZAmbito.js";
 
+export function codigoCrearEntero(valor: number): Codigo {
+  const codigo = new Codigo();
+  codigo.tipo = nTipoEntero;
+  codigo.apuntador = `${valor}`;
+  codigo.extra = `${valor}`;
+  return codigo;
+}
+
 export class NodoCrearInteger extends NodoAstPro {
   private valor: number;
 
@@ -13,10 +21,6 @@ export class NodoCrearInteger extends NodoAstPro {
   }
 
   generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
-    const codigo = new Codigo();
-    codigo.tipo = nTipoEntero;
-    codigo.apuntador = `${this.valor}`;
-    codigo.extra = `${this.valor}`;
-    return codigo;
+    return codigoCrearEntero(this.valor);
   }
 }
