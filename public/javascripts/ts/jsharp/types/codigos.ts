@@ -3,7 +3,7 @@ import {SemanticError} from "./SemanticError.js";
 import {NTipo, NTipoArreglo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
 import {
-  desenvolver,
+  desenvolver, generarNombreConstructor,
   generarNombreProc,
   generarTemporal,
   obtenerEspacioOcupadoEnFuncion,
@@ -14,6 +14,7 @@ import {NFuncion} from "./NFuncion.js";
 import {nTipoChar, nTipoEntero, nTipoNull, nTipoVoid} from "./TiposPrimitivos";
 import {deBooleanoEtiquetaANormalCondicional, esPrimitivo, esTipoPrimitivo} from "../nodes/TypeDefinition";
 import {codigoCrearEntero} from "../nodes/NodoCrearInteger.js";
+import {codigoCrearChar} from "../nodes/NodoCrearChar.js";
 
 
 /**
@@ -89,7 +90,7 @@ function codigoObtenerVarDeHeapConTuplaExclusivo(nombre: string, apuntadorOrigen
 //
 //   return codigoObtenerVarDeHeapConTupla(nombreAtributo, apuntadorOrigen, tupla);
 // }
-export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: string): Codigo {
+export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: string, exclusivo = false): Codigo {
 
   if (codigoOrigen.tipo.ambito === undefined) throw new Error('ambito de tipo no fue inicializado');
   const tupla = codigoOrigen.tipo.ambito.buscarPropiedadConDireccionRelativa(nombreAtributo);
@@ -99,7 +100,9 @@ export function codigoObtenerPropiedad(codigoOrigen: Codigo, nombreAtributo: str
   const codigoHeap = codigoObtenerVarDeHeapConTuplaExclusivo(nombreAtributo, codigoOrigen.apuntador, tupla);
 
   const codigo = new Codigo();
-  codigo.agregarCodigo(codigoOrigen);
+  if (!exclusivo) {
+    codigo.agregarCodigo(codigoOrigen);
+  }
   codigo.agregarCodigo(codigoHeap);
 
   codigo.tipo = codigoHeap.tipo;
@@ -371,3 +374,48 @@ export function codigoAccessoIndice(codigoArreglo: Codigo, codigoIndice: Codigo)
 
   return codigo;
 }
+
+export function codigoObtenerInstanciaVacia(tipo: NTipo): Codigo {
+  if (tipo.ambito === undefined) throw new Error(`ambito de tipo no inicializado`);
+  const codigo = new Codigo();
+  codigo.tipo = tipo;
+  codigo.apuntador = generarTemporal();
+  codigo.agregar(`${codigo.apuntador} = H;`);
+  codigo.comentar("captura de direccion");
+  codigo.agregar(`H = H + ${tipo.ambito.espacioEnMemoria};`);
+  codigo.comentar(`(new ${tipo.nombre})`);
+  codigo.extra = `new ${tipo.nombre}`;
+  return codigo;
+}
+
+export function codigoCrearString(ambito: ZAmbito, texto: string): Codigo {
+
+  const tipoString = buscarEnCadenaAmbito<NTipo>(ambito, a => a.buscarTipo('string'));
+  if (tipoString === undefined) throw new Error(`No has declarado el tipo String`);
+
+  const codigoIstanciaString = codigoObtenerInstanciaVacia(tipoString);
+
+  // se asigna el vector de chars a la propiedad `chars` de la instancia String
+  const codigosChar = [...texto].map(c => codigoCrearChar(c));
+  const codigoArregloChars = codigoCrearArrayConValores(codigosChar);
+  const codigoPropiedadChars = codigoObtenerPropiedad(codigoIstanciaString, 'chars', true);
+  const codigoAsignarPropiedad = codigoAsignar(codigoPropiedadChars, codigoArregloChars);
+
+  const codigo = new Codigo();
+  codigo.agregarCodigo(codigoIstanciaString);
+  codigo.agregarCodigo(codigoAsignarPropiedad);
+
+  codigo.tipo = codigoIstanciaString.tipo;
+  codigo.apuntador = codigoIstanciaString.apuntador;
+  codigo.extra = JSON.stringify(texto);
+
+  return codigo;
+
+}
+
+
+
+
+
+
+

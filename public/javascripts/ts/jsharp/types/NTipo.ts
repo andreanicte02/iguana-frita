@@ -7,7 +7,7 @@ export class NTipo {
   public readonly _nombre: string;
   private readonly declaraciones: NodoAst[];
   public ambito: ZAmbito | undefined;
-  public id = inicio.contadorEstructuras++;
+  public id = ++(inicio.contadorEstructuras);
 
   public get nombre(): string {
     return this._nombre;

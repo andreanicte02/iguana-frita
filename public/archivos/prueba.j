@@ -29,6 +29,9 @@ void println(char caracter){
 
 void principal() {
     
+    String comida = "tamales";
+    println(comida);
+    
     comida();
 
     integer[] panza = strc integer[9];

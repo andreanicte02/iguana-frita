@@ -1,4 +1,21 @@
 
+
+define String as [
+    char[] chars
+    ];
+
+
+
+void println(String texto){
+    #print(c, '>');
+    #print(c, ' ');
+    for(integer i = 0; i < texto.chars.length; i = i + 1){
+        #print(c, texto.chars[i]);
+    }
+    #print(c, '\n');
+}
+
+
 void comida() {
     
     

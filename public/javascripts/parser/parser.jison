@@ -231,15 +231,23 @@ attribute
                                                         asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
                                                     };
                                                 }
-    | type IDENTIFIER                           { $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) }; }
+    | type IDENTIFIER                           { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) }; }
     | type '[' ']' IDENTIFIER '=' expression    {
 
                                                     $$ = {
-                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2, true),
-                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
+                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $4, true),
+                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $4, $6),
                                                     };
                                                 }
-    | type '[' ']' IDENTIFIER                   { $$ = { declaracion: ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2, true) }; }
+    | type '[]' IDENTIFIER '=' expression    {
+
+                                                        $$ = {
+                                                            declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $3, true),
+                                                            asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $3, $5),
+                                                        };
+                                                    }
+    | type '[' ']' IDENTIFIER                   { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $4, true) }; }
+    | type '[]' IDENTIFIER                      { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $3, true) }; }
     ;
 
 
@@ -345,7 +353,7 @@ expression
     | expression '.' IDENTIFIER             { $$ = new ast.NodoAccesoPunto( ast.fl(yy, @2), $1, $3 );  }
     | dotInvoke                             { $$ = $1; }
     | normalInvoke                          { $$ = $1; }
-    | STRING                                { $$ = new ast.CreateStringNode(yy.last(), @1, JSON.parse($1) ); }
+    | STRING                                { $$ = new ast.NodoCrearString( ast.fl(yy, @1), JSON.parse($1) ); }
     | CHAR                                  { $$ = new ast.NodoCrearChar( ast.fl(yy, @1), JSON.parse('"' + $1.slice(1, -1) + '"') ); }
     | DOUBLE                                { $$ = new ast.NodoCrearDouble(ast.fl(yy, @1), $1 ); }
     | INTEGER                               { $$ = new ast.NodoCrearInteger(ast.fl(yy, @1), $1 ); }

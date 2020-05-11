@@ -4,21 +4,9 @@ import {Codigo} from "./Codigo.js";
 import {FileLocation} from "./FileLocation.js";
 import {generarNombreConstructor, generarTemporal} from "../Utilidades.js";
 import {NTipo} from "../types/NTipo.js";
-import {codigoInvocar} from "../types/codigos.js";
+import {codigoInvocar, codigoObtenerInstanciaVacia} from "../types/codigos.js";
 
 
-function codigoObtenerInstanciaVacia(tipo: NTipo): Codigo {
-    if (tipo.ambito === undefined) throw new Error(`ambito de tipo no inicializado`);
-    const codigo = new Codigo();
-    codigo.tipo = tipo;
-    codigo.apuntador = generarTemporal();
-    codigo.agregar(`${codigo.apuntador} = H;`);
-    codigo.comentar("captura de direccion");
-    codigo.agregar(`H = H + ${tipo.ambito.espacioEnMemoria};`);
-    codigo.comentar(`(new ${tipo.nombre})`);
-    codigo.extra = `new ${tipo.nombre}`;
-    return codigo;
-}
 
 export class NodoInstanciar extends NodoAstPro {
     private nodoTipo: NodoAst;
@@ -35,7 +23,6 @@ export class NodoInstanciar extends NodoAstPro {
         const codigoInstanciaVacia = codigoObtenerInstanciaVacia(codigoTipo.tipo);
         const nombreConstructor = generarNombreConstructor(codigoTipo.tipo);
         const codigoInvocarConstructor = codigoInvocar(ambito, nombreConstructor, [codigoInstanciaVacia], true);
-
         const codigo = new Codigo();
         codigo.agregarCodigo(codigoInvocarConstructor);
 

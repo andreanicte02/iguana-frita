@@ -53,7 +53,7 @@ export { NodoCrearArrayConValores } from './nodes/NodoCrearArrayConValores';
 export { NodoIgualdadReferencia } from './nodes/equal_operations/NodoIgualdadReferencia';
 export { NodoIgualdadValor } from './nodes/equal_operations/NodoIgualdadValor';
 export { NodoDesigualdadValor } from './nodes/equal_operations/NodoDesigualdadValor';
-
+export { NodoCrearString } from './nodes/NodoCrearString';
 export { NodoCrearArray } from './nodes/NodoCrearArray';
 export { NodoAccessoArray } from './nodes/NodoAccessoArray';
 
