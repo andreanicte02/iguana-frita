@@ -6,6 +6,8 @@ export const nTipoDouble = new NTipo('Double', []);
 export const nTipoBooleanConEtiqueta = new NTipo('Boolean Etiqueta', []);
 export const nTipoBooleanNormal = new NTipo('Boolean', []);
 //----------------
+export const nTipoNull = new NTipo('Null', []);
+//----------------
 export const nTipoChar = new NTipo('Char', []);
 export const nTipoVoid = new NTipo('Void', []);
 

@@ -340,9 +340,9 @@ expression
     | normalInvoke                          { $$ = $1; }
     | STRING                                { $$ = new ast.CreateStringNode(yy.last(), @1, JSON.parse($1) ); }
     | CHAR                                  { $$ = new ast.NodoCrearChar( ast.fl(yy, @1), JSON.parse('"' + $1.slice(1, -1) + '"') ); }
-    | DOUBLE                                {  }
+    | DOUBLE                                { $$ = new ast.NodoCrearDouble(ast.fl(yy, @1), $1 ); }
     | INTEGER                               { $$ = new ast.NodoCrearInteger(ast.fl(yy, @1), $1 ); }
-    | NULL                                  {  }
+    | NULL                                  { $$ = new ast.NodoCrearNull(ast.fl(yy, @1)); }
     | 'true'                                { $$ = new ast.NodoCrearTrue (ast.fl(yy, @1)); }
     | 'false'                               { $$ = new ast.NodoCrearFalse(ast.fl(yy, @1)); }
     | IDENTIFIER                            { $$ = new ast.NodoObtenerVar(ast.fl(yy, @1), $1 ); }

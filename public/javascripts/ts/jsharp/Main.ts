@@ -57,6 +57,9 @@ export { NodoDesigualdadValor } from './nodes/equal_operations/NodoDesigualdadVa
 export { NodoCrearArray } from './nodes/NodoCrearArray';
 export { NodoAccessoArray } from './nodes/NodoAccessoArray';
 
+export { NodoCrearDouble } from './nodes/NodoCrearDouble';
+export { NodoCrearNull } from './nodes/NodoCrearNull';
+
 
 export function generar3d(sentencias: NodoAst[]): string {
 
