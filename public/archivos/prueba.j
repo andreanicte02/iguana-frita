@@ -42,7 +42,32 @@ void principal() {
     println(panza.length);
 
     sent_control();
+    
+    println("factorial:");
+    
+    integer numero = factorial(5);
+    println(numero);
+
+    
+
 }
+
+integer factorial(integer num){
+    
+    if(num == 0){
+        
+        return 1 ;
+        
+    }else{
+        
+        return  num * factorial(num-1);
+
+        
+    }
+    
+}
+
+
 
 void sent_control(){
     for(integer x = 0; x< 5; x = x + 1 ){
@@ -149,6 +174,8 @@ void sent_control(){
     }
 
 
+     return ; 
+
     println('S');
 
     println('W');
@@ -166,6 +193,8 @@ void sent_control(){
         default:
             println(8);
     }
+    
+   
 }
 
 define Vector as [

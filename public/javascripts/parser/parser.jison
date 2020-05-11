@@ -474,8 +474,8 @@ ifBody
 
 
 returnControl
-    : 'return' expression   { $$ = new ast.ReturnNode(yy.last(), @1, $2); }
-    | 'return'              { $$ = new ast.ReturnNode(yy.last(), @1, undefined); }
+    : 'return' expression   { $$ = new ast.NodoReturn(ast.fl(yy, @1), $2); }
+    | 'return'              { $$ = new ast.NodoReturn(ast.fl(yy, @1), undefined); }
     ;
 
 breakControl
