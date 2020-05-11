@@ -4,7 +4,7 @@ import {
     nTipoBooleanNormal,
     nTipoChar,
     nTipoDouble,
-    nTipoEntero
+    nTipoEntero, nTipoNull
 } from "../types/TiposPrimitivos";
 import {Codigo} from "./Codigo";
 import {desenvolver, generarEtiqueta, generarTemporal} from "../Utilidades";
@@ -136,7 +136,54 @@ export function obtenerTipoIgualdadRelacionalxValor(c1: Codigo , c2: Codigo): NT
 
     return undefined;
 
+}
 
+
+export function obtenerTipoIgualdadxReferencia(c1: Codigo, c2: Codigo): NTipo | undefined {
+
+    //primer caso
+    if(esPrimitivo(c1)){
+        //comparar que sean del mismo tipo
+
+        if(esPrimitivo(c2)) {
+
+            if (c1.tipo === c2.tipo) {
+
+                return nTipoBooleanConEtiqueta;
+            }
+
+        }
+
+        return undefined;
+
+    }
+
+    //segundo caso
+    if(!esPrimitivo(c1)){
+
+        if(!esPrimitivo(c2)) {
+
+
+            if (c1.tipo === c2.tipo) {
+
+                return nTipoBooleanConEtiqueta;
+
+            }
+
+            if (c1.tipo === nTipoNull) {
+
+                return nTipoBooleanConEtiqueta;
+            }
+
+            if (c2.tipo === nTipoNull) {
+
+                return nTipoBooleanConEtiqueta;
+            }
+
+        }
+    }
+
+    return undefined;
 
 }
 
