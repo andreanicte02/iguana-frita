@@ -1,6 +1,8 @@
 import {Codigo} from "./Codigo.js";
 import {FileLocation} from "./FileLocation.js";
 import {ZAmbito} from "../types/ZAmbito.js";
+import {SemanticError} from "../types/SemanticError";
+import {LocatedSemanticException} from "../types/LocatedSemanticException";
 
 export interface NodoAst {
     generarCodigo(ambito: ZAmbito): Codigo;
@@ -14,8 +16,13 @@ export abstract class NodoAstPro implements NodoAst {
     }
 
     generarCodigo(ambito: ZAmbito): Codigo {
-        // TODO: manejo correcto de errores como en el proyecto pasado
-        return this.generacionSeguraDeCodigo(ambito);
+
+        try{
+            return this.generacionSeguraDeCodigo(ambito);
+        }catch (e) {
+            throw new LocatedSemanticException(e.message,this.fileLocation);
+        }
+
     }
 
     public abstract generacionSeguraDeCodigo(ambito: ZAmbito): Codigo;
