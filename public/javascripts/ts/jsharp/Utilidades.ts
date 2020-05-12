@@ -149,7 +149,8 @@ export function generarNombreConstructor(tipo: NTipo): string {
     return `init_${tipo.id}_${tipo.nombre}`.toLowerCase();
 }
 
-export function generarNombreProc(nombre: string, tipos: NTipo[]): string {
+export function generarNombreProc(nombre: string, tipos: NTipo[], especial: boolean): string {
     const parametros = tipos.map(tipo => tipo.nombre).join("_");
-    return `fun_${nombre}_${parametros}`.toLowerCase();
+    const prefijo = especial? `nat` : `fun`;
+    return `${prefijo}_${nombre}_${parametros}`.toLowerCase();
 }

@@ -6,6 +6,7 @@ import {desenvolver} from "../../Utilidades";
 import {buscarEnCadenaAmbito, codigoAsignar, codigoObtenerVar} from "../../types/codigos";
 import {NTipoVar} from "../../types/NTipo";
 import {SemanticError} from "../../types/SemanticError";
+import {NFuncion} from "../../types/NFuncion.js";
 
 
 export class NodoReturn  extends  NodoAstPro{
@@ -21,7 +22,7 @@ export class NodoReturn  extends  NodoAstPro{
         //verificar si existe
         const tupla = buscarEnCadenaAmbito<{indice: number; nTipoVar: NTipoVar}>(
             ambito,
-            a =>  a.buscarPropiedadConDireccionRelativa('return')
+            a =>  a.buscarPropiedadConDireccionRelativa(NFuncion.RETURN)
 
         );
 
@@ -46,7 +47,7 @@ export class NodoReturn  extends  NodoAstPro{
         //si existe la variable return se espera una expression
         if( tupla !== undefined && this.expression !== undefined){
 
-            const codigoDestino = codigoObtenerVar(ambito,'return');
+            const codigoDestino = codigoObtenerVar(ambito,NFuncion.RETURN);
             const codigoValor = desenvolver(this.expression.generarCodigo(ambito));
 
             codigo.agregarCodigo(codigoAsignar(codigoDestino, codigoValor));

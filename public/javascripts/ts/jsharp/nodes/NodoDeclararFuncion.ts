@@ -12,6 +12,7 @@ export class NodoDeclararFuncion extends NodoAstPro {
     private readonly nodosParametro: NodoAst[];
     private readonly sentencias: NodoAst[];
     private readonly esArray: boolean;
+    private readonly especial: boolean;
 
     constructor(
         fileLocation: FileLocation,
@@ -20,6 +21,7 @@ export class NodoDeclararFuncion extends NodoAstPro {
         nodosParametro: NodoAst[],
         sentencias: NodoAst[],
         esArray = false,
+        especial = false
     ) {
         super(fileLocation);
         this.nodoTipoRetorno = nodoTipoRetorno;
@@ -27,6 +29,7 @@ export class NodoDeclararFuncion extends NodoAstPro {
         this.nodosParametro = nodosParametro;
         this.sentencias = sentencias;
         this.esArray = esArray;
+        this.especial = especial;
     }
 
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
@@ -40,7 +43,7 @@ export class NodoDeclararFuncion extends NodoAstPro {
         hola(int a){}       --> hola_INT
         hola(bool z, int c) --> hola_BOOL_INT
          */
-        const nombreProc = generarNombreProc(this.nombre, nFuncion.obtenerParametrosTipos());
+        const nombreProc = generarNombreProc(this.nombre, nFuncion.obtenerParametrosTipos(), this.especial);
         ambito.declararFuncion(nombreProc, nFuncion);
 
         // Las funciones solo se declaran, el contenido de ellas se genera despues

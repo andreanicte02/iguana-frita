@@ -5,7 +5,12 @@ define String as [
     ];
 
 
-//#####prints
+
+
+@integer size(String texto) {
+    return texto.chars.length;
+}
+
 
 void println(String texto){
     #print(c, '>');
@@ -140,6 +145,9 @@ String __intToString(integer num){
 //###########
 void comida() {
     
+    String comida = "pozole";
+    println(comida);
+    println(comida.size());
     
     integer[] numeros = {1, 3, 4, 1993};
     
