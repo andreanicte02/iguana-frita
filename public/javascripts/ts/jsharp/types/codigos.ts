@@ -11,7 +11,14 @@ import {
   obtenerTipoDesdeBancoArray
 } from "../Utilidades.js";
 import {NFuncion} from "./NFuncion.js";
-import {nTipoChar, nTipoEntero, nTipoNull, nTipoVoid} from "./TiposPrimitivos";
+import {
+  nTipoBooleanConEtiqueta,
+  nTipoBooleanNormal,
+  nTipoChar,
+  nTipoEntero,
+  nTipoNull,
+  nTipoVoid
+} from "./TiposPrimitivos";
 import {deBooleanoEtiquetaANormalCondicional, esPrimitivo, esTipoPrimitivo} from "../nodes/TypeDefinition";
 import {codigoCrearEntero} from "../nodes/NodoCrearInteger.js";
 import {codigoCrearChar} from "../nodes/NodoCrearChar.js";
@@ -161,7 +168,8 @@ export function codigoAsignar(
   exclusivo = false,
 ): Codigo {
 
-  const codigoValorAux = exclusivo? codigoValor: deBooleanoEtiquetaANormalCondicional(codigoValor);
+  const codigoValorAux = (exclusivo || codigoValor.tipo === nTipoBooleanNormal)
+      ? codigoValor: deBooleanoEtiquetaANormalCondicional(codigoValor);
 
   if (!(codigoDestino.tipo instanceof NTipoVar))
     throw new SemanticError(

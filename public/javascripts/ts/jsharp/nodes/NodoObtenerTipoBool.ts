@@ -6,7 +6,7 @@ import {FileLocation} from "./FileLocation";
 
 export class NodoObtenerTipoBool extends NodoAstPro{
 
-    constructor(fileLocation: FileLocation, e1: NodoAst, e2: NodoAst) {
+    constructor(fileLocation: FileLocation) {
         super(fileLocation);
     }
 

@@ -4,29 +4,6 @@ import "api.j";
 
 integer w, v = 4;
 
-void print(integer entero){
-    #print(e, entero);
-}
-void println(integer entero){
-    #print(c, '>');
-    #print(c, ' ');
-    #print(e, entero);
-    #print(c, '\n');
-}
-
-void print(char caracter){
-    #print(c, caracter);
-}
-
-void println(char caracter){
-
-       #print(c, '>');
-       #print(c, ' ');
-       #print(c, caracter);
-       #print(c, '\n');
-}
-
-
 void principal() {
     
     String comida = "tamales";
@@ -41,14 +18,17 @@ void principal() {
     println(panza[1]);
     println(panza.length);
 
-    sent_control();
-    
+
     println("factorial:");
     
     integer numero = factorial(5);
-    println(numero);
-
-    
+    println(factorial(5));
+    println(potencia(2,3));
+    println(concatenar("concatenear ", "comida"));
+    println(concatenar(true, " comida"));
+    double d = 2/3;
+    boolean a = 5> 2;
+    println(a);
 
 }
 

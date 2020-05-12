@@ -339,7 +339,7 @@ expression
     : expression '-' expression             { $$ = new ast.NodoResta(ast.fl(yy, @1), $1, $3); }
     | expression '+' expression             { $$ = new ast.NodoSuma(ast.fl(yy, @1), $1, $3); }
     | expression '*' expression             { $$ = new ast.NodoMulti(ast.fl(yy, @1), $1, $3); }
-    | expression '/' expression             {  }
+    | expression '/' expression             { $$ = new ast.NodoDivision(ast.fl(yy, @1), $1, $3); }
     | expression '%' expression             { $$ = new ast.NodoModular(ast.fl(yy, @1), $1, $3); }
     | expression '!=' expression            { $$ = new ast.NodoDesigualdadValor(ast.fl(yy, @1), $1, $3); }
     | expression '==' expression            { $$ = new ast.NodoIgualdadValor(ast.fl(yy, @1), $1, $3); }
@@ -377,7 +377,7 @@ expression
 casting
     : '(' 'int' ')' expression %prec UINT              { $$ = new ast.IntCastNode(yy.last(), @2, $4); }
     | '(' 'double' ')' expression %prec UDOUBLE           { $$ = new ast.DoubleCastNode(yy.last(), @2, $4); }
-    | '(' 'char'  ')' expression %prec UCHAR            { $$ = new ast.CharCastNode(yy.last(), @2, $4); }
+    | '(' 'char'  ')' expression %prec UCHAR            { $$ = new ast.NodoCharCast( ast.fl(yy, @1), $4); }
     ;
 
 
