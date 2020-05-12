@@ -383,8 +383,8 @@ expression
     ;
 
 casting
-    : '(' 'integer' ')' expression %prec UINT              { $$ = new ast.NodoIntegerCast(ast.fl(yy, @1) , $4); }
-    | '(' 'double' ')' expression %prec UDOUBLE        { $$ = new ast.DoubleCastNode(yy.last(), @2, $4); }
+    : '(' 'integer' ')' expression %prec UINT          { $$ = new ast.NodoIntegerCast(ast.fl(yy, @1) , $4); }
+    | '(' 'double' ')' expression %prec UDOUBLE        { $$ = new ast.NodoDoubleCast( ast.fl(yy, @1) , $4); }
     | '(' 'char'  ')' expression %prec UCHAR           { $$ = new ast.NodoCharCast( ast.fl(yy, @1), $4); }
     ;
 

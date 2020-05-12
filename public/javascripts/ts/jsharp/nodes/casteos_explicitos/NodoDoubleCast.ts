@@ -19,7 +19,7 @@ export class NodoDoubleCast extends NodoAstPro{
         const codigoExpresion = desenvolver(this.e1.generarCodigo(ambito));
 
         if(!esNumero(codigoExpresion)){
-            throw new SemanticError('no se puede aplicar un casteo explicto char a un tipo no numerico')
+            throw new SemanticError('no se puede aplicar un casteo explicto double a un tipo no numerico')
         }
 
         const codigo = new Codigo();
