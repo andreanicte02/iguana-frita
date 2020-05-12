@@ -299,8 +299,16 @@ arrayElement
 classLevelFunDeclaration
     : type  IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7 ); }
+    | '@' type  IDENTIFIER '(' paramDeclarationList ')'
+          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @3), $2, $3, $5, $8, false, true); }
     | type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
-      '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $2, $4, $7, true ); }
+      '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $4, $6, $9, true ); }
+    | '@' type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
+          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $5, $7, $10, true ); }
+    | type '[]' IDENTIFIER '(' paramDeclarationList ')'
+      '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $3, $5, $8, true ); }
+    | '@' type '[]' IDENTIFIER '(' paramDeclarationList ')'
+          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $4, $6, $9, true ); }
     ;
 
 
@@ -388,7 +396,7 @@ normalInvoke
 
 
 dotInvoke
-    : expression '.' IDENTIFIER '(' expressionList ')'  { $$ = new ast.DotInvokeNode(yy.last(), @2, $1, $3, $5); }
+    : expression '.' IDENTIFIER '(' expressionList ')'  { $$ = new ast.NodoInvocacionPunto( ast.fl(yy, @1), $1, $3, $5); }
     ;
 
 increment

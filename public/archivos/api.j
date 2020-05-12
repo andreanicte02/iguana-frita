@@ -5,6 +5,9 @@ define String as [
     ];
 
 
+@integer size(String texto) {
+    return texto.chars.length;
+}
 
 void println(String texto){
     #print(c, '>');
@@ -18,6 +21,9 @@ void println(String texto){
 
 void comida() {
     
+    String comida = "pozole";
+    println(comida);
+    println(comida.size());
     
     integer[] numeros = {1, 3, 4, 1993};
     

@@ -22,7 +22,7 @@ export { NodoResta } from './nodes/arithmetic_operations/NodoResta';
 export { NodoMulti } from './nodes/arithmetic_operations/NodoMulti';
 export { NodoModular } from  './nodes/arithmetic_operations/NodoModular';
 export { NodoUnarioMenos } from  './nodes/arithmetic_operations/NodoUnarioMenos';
-export { NodoInvocar } from './nodes/NodoInvocar';
+export { NodoInvocar, NodoInvocacionPunto } from './nodes/NodoInvocar';
 export { NodoRelacional } from './nodes/NodoRelacional';
 export { NodoObtenerTipoVoid } from './nodes/NodoObtenerTipoVoid';
 export { NodoAsignar } from './nodes/NodoAsignar';
@@ -56,7 +56,6 @@ export { NodoDesigualdadValor } from './nodes/equal_operations/NodoDesigualdadVa
 export { NodoCrearString } from './nodes/NodoCrearString';
 export { NodoCrearArray } from './nodes/NodoCrearArray';
 export { NodoAccessoArray } from './nodes/NodoAccessoArray';
-
 export { NodoCrearDouble } from './nodes/NodoCrearDouble';
 export { NodoCrearNull } from './nodes/NodoCrearNull';
 export { NodoReturn } from './nodes/control_sentences/NodoReturn';
