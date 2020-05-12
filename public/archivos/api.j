@@ -5,8 +5,6 @@ define String as [
     ];
 
 
-
-
 @integer size(String texto) {
     return texto.chars.length;
 }
@@ -120,6 +118,44 @@ String concatenar(boolean s1, String s2){
 
 }
 
+String concatenar(integer i1, String s2){
+
+    return concatenar(__intToString(i1), s2);
+
+}
+
+String concatenar(String s1, integer i2){
+
+    return concatenar(s1, __intToString(i2));
+
+}
+
+String concatenar(double d1, String s2){
+
+    return concatenar(__doubleToString(d1), s2);
+
+}
+
+String concatenar(String s1, double d2){
+
+    return concatenar(s1, __doubleToString(d2));
+
+}
+
+String concatenar(char c1, String s2){
+
+    return concatenar(__charToString(c1), s2);
+
+}
+
+
+String concatenar(String s1, char c2){
+
+    return concatenar(s1, __charToString(c2));
+
+}
+
+
 
 String __boolToString(boolean b){
 
@@ -133,13 +169,75 @@ String __boolToString(boolean b){
 
 String __intToString(integer num){
 
-    boolean a;
+    if(num == 0){
+        return "0";
+    }
 
-    a= num > 0;
+    boolean esNegativo = num < 0;
+    integer copiaNumero;
 
+    if(esNegativo){
+        copiaNumero = num * -1;
+    }else{
+        copiaNumero = num;
+    }
 
+    integer size = 0;
 
-    return "asdf";
+    while(copiaNumero> 0){
+        copiaNumero = (integer) (copiaNumero/10);
+        size = size +1;
+    }
+
+    if(esNegativo){
+        size = size + 1;
+        copiaNumero = num * -1;
+    }else{
+        copiaNumero = num;
+    }
+
+    char [] cadena = strc char[size];
+
+    if(esNegativo){
+        cadena[0]  = '-';
+    }
+
+    while(copiaNumero> 0){
+
+        size = size - 1;
+        cadena[size] = (char) (copiaNumero % 10)+'0';
+        copiaNumero = (integer) (copiaNumero/10);
+
+    }
+
+    String cadenaFinal = strc String();
+    cadenaFinal.chars = cadena;
+    return cadenaFinal;
+}
+
+String __doubleToString(double num){
+
+    boolean esNegativo = num < 0 ;
+
+    integer entero = (integer) num;
+    integer decimal = (integer) ((num-entero)*100);
+
+    if(esNegativo){
+
+        decimal = decimal * -1;
+
+    }
+
+    return concatenar(__intToString(entero), concatenar(".", decimal));
+
+}
+
+String __charToString(char charmander){
+    String cadena = strc String();
+    char [] charizard = {charmander};
+
+    cadena.chars = charizard;
+    return cadena;
 }
 
 //###########

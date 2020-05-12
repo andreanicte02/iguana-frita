@@ -31,6 +31,11 @@ void principal() {
     integer f = (integer) 2.1; 
     println(a);
     println(f);
+    println(concatenar("asdf",-1));
+    println(concatenar("--------------->df",20.14));
+    println(concatenar(-20.548465,"asd"));
+    println(concatenar('5',"asd"));
+        println(concatenar("asdfas", '-'));
 
 }
 
