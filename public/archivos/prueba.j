@@ -28,7 +28,9 @@ void principal() {
     println(concatenar(true, " comida"));
     double d = 2/3;
     boolean a = 5> 2;
+    integer f = (integer) 2.1; 
     println(a);
+    println(f);
 
 }
 
