@@ -63,6 +63,10 @@ export class ZAmbito {
     public buscarNFuncion(nombreProc: string): NFuncion | undefined {
         return this.funciones.get(nombreProc.toLowerCase());
     }
+    public obtenerNFuncionesEntradas(): [string, NFuncion][] | undefined {
+        const entradas = [...this.funciones.entries()]
+        return entradas.length? entradas: undefined;
+    }
     public buscarTipo(nombre: string): NTipo | undefined {
         return this.tipos.get(nombre.toLowerCase());
     }

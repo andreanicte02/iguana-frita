@@ -34,21 +34,17 @@ export class NFuncion {
             nodoParametro.generarCodigo(this.ambito);
         })
 
-    }
-
-    obtenerParametrosTipos(): NTipo[] {
-        const entradas = this.ambito.obtenerEntradas();
-        return entradas
+        this.parametrosTipos = this.ambito.obtenerEntradas()
             .filter(([nombre,]) => nombre !== NFuncion.RETURN)
             .map(([, valor]) => valor.tipoContenido);
-    }
 
-    get nombresParametro(): string[] {
-        const entradas = this.ambito.obtenerEntradas();
-        return entradas
+        this.nombresParametro = this.ambito.obtenerEntradas()
             .filter(([nombre,]) => nombre !== NFuncion.RETURN)
             .map(([nombre,]) => nombre);
     }
+
+    public readonly parametrosTipos: NTipo[];
+    public readonly nombresParametro: string[];
 
     /**
      * Solo genera el codigo que esta dentro del bloque de la funcion

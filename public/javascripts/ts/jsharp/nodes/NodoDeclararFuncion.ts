@@ -43,7 +43,7 @@ export class NodoDeclararFuncion extends NodoAstPro {
         hola(int a){}       --> hola_INT
         hola(bool z, int c) --> hola_BOOL_INT
          */
-        const nombreProc = generarNombreProc(this.nombre, nFuncion.obtenerParametrosTipos(), this.especial);
+        const nombreProc = generarNombreProc(this.nombre, nFuncion.parametrosTipos, this.especial);
         ambito.declararFuncion(nombreProc, nFuncion);
 
         // Las funciones solo se declaran, el contenido de ellas se genera despues
