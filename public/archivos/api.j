@@ -83,7 +83,7 @@ integer potencia(integer a, integer n){
 }
 
 //####strings
-
+//todo: el null esta pendiente
 @String concatenar(String s1, String s2){
 
     char [] cadena  =  strc char[s1.chars.length + s2.chars.length];
@@ -244,6 +244,104 @@ integer potencia(integer a, integer n){
 
     cadena.chars = charizard;
     return cadena;
+}
+//#cadenas por valor
+//todo: el null esta pendiente
+
+@boolean cadenaEquals(String s1, String s2){
+
+    if(s1.chars.length != s2.chars.length){
+        return false;
+    }
+
+    for(integer x = 0; x< s1.chars.length; x = x+1){
+        if(s1.chars[x]!= s2.chars[x]){
+            return false;
+        }
+    }
+    return true;
+}
+
+@boolean cadenaNoEquals(String s1, String s2){
+
+   return(!@cadenaEquals(s1,s2));
+
+}
+
+//##funciones del string
+@char[] toCharArray(String s1){
+
+    return s1.chars;
+
+}
+@integer length(String s1){
+
+    return s1.chars.length;
+
+}
+
+@char charArt(String s1, integer numero){
+
+    if(numero >= s1.chars.length || numero < 0){
+        return '0';
+    }
+
+    return s1.chars[numero];
+}
+
+@String toLowerCase(String s1){
+
+    char[] result = strc char [s1.chars.length];
+    for(integer x = 0; x<s1.chars.length; x = x + 1){
+        result[x] = @toLowerChar(s1.chars[x]);
+    }
+
+    String cadena = strc String();
+    cadena.chars = result;
+    return cadena;
+}
+
+@char toLowerChar(char c1){
+
+    if(c1 >= 'A' && c1 <= 'Z' ){
+
+        integer int = c1 + 32;
+        return (char) int;
+    }
+
+    if(c1 == 'Ñ'){
+        return 'ñ';
+    }
+
+    return c1;
+}
+@String toUpperCase(String s1){
+
+    char[] result = strc char [s1.chars.length];
+    for(integer x = 0; x<s1.chars.length; x = x + 1){
+        result[x] = @toUpperChar(s1.chars[x]);
+    }
+
+    String cadena = strc String();
+    cadena.chars = result;
+    return cadena;
+}
+
+
+@char toUpperChar(char c1){
+
+
+    if(c1 >= 'a' && c1 <= 'z' ){
+
+        integer int = c1 - 32;
+        return (char) int;
+    }
+
+    if(c1 == 'Ñ'){
+        return 'ñ';
+    }
+
+    return c1;
 }
 
 //###########
