@@ -145,49 +145,12 @@ export function obtenerTipoOperacionUnarioMenos(c1: Codigo): NTipo | undefined {
 
 export function obtenerTipoIgualdadxReferencia(c1: Codigo, c2: Codigo): NTipo | undefined {
 
-    //primer caso
-    if(esPrimitivo(c1)){
-        //comparar que sean del mismo tipo
-
-        if(esPrimitivo(c2)) {
-
-            if (c1.tipo === c2.tipo) {
-
-                return nTipoBooleanConEtiqueta;
-            }
-
-        }
-
+    if(esPrimitivo(c1) || esPrimitivo(c2)){
         return undefined;
-
+        //no se permiten tipos primitivos
     }
 
-    //segundo caso
-    if(!esPrimitivo(c1)){
-
-        if(!esPrimitivo(c2)) {
-
-
-            if (c1.tipo === c2.tipo) {
-
-                return nTipoBooleanConEtiqueta;
-
-            }
-
-            if (c1.tipo === nTipoNull) {
-
-                return nTipoBooleanConEtiqueta;
-            }
-
-            if (c2.tipo === nTipoNull) {
-
-                return nTipoBooleanConEtiqueta;
-            }
-
-        }
-    }
-
-    return undefined;
+    return nTipoBooleanConEtiqueta;
 
 }
 
@@ -333,22 +296,18 @@ export function codigoIgualacionXValor(e1: NodoAst, symbol: string , e2: NodoAst
     codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
     codigo.guardarEtiquetaFalsa(etiquetaFalsa);
 
-    codigo.tipo = nTipoBooleanConEtiqueta;
 
     if(aux1.tipo === esString && aux2.tipo === esString){
 
         const codigoFuncion = codigoInvocar(ambito,'cadenaEquals',[aux1, aux2],false, true);
-        codigo.agregarCodigo(codigoFuncion);codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+        return codigoFuncion;
 
-        codigo.agregar(`if (${codigoFuncion.apuntador} ${symbol} 1) goto ${etiquetaVerdadera};`);
-        codigo.comentar(`if ${codigoFuncion.apuntador} ${symbol} 1 - etiquetas true: ${codigo.eTrue.join(',')}`)
-        codigo.agregar(`goto ${etiquetaFalsa};`)
-        codigo.comentar(`${codigoFuncion.apuntador} ${symbol} 1 - etiquetas false: ${codigo.eFalse.join(',')}`)
-        codigo.extra+=`if ${codigoFuncion.apuntador} ${symbol} 1`;
 
 
     }else{
+        debugger;
         //se genera el codigo normal
+        codigo.tipo = nTipoBooleanConEtiqueta;
         codigo.agregarCodigo(aux1);
         codigo.agregarCodigo(aux2);
         codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);

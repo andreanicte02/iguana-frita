@@ -10,6 +10,8 @@ import {
     obtenerTipoIgualdadValor
 } from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
+import {buscarEnCadenaAmbito, codigoInvocar} from "../../types/codigos";
+import {NTipo} from "../../types/NTipo";
 
 export class NodoCase extends NodoAstPro{
 
@@ -63,19 +65,28 @@ export class NodoCase extends NodoAstPro{
         const aux1 = c1.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c1): c1;
         const aux2 = c2.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c2): c2;
 
-
+        const codigo = new Codigo();
         const etiquetaVerdadera = generarEtiqueta();
         this.etiquetaV = etiquetaVerdadera;
-
-
-        const codigo = new Codigo();
+        codigo.tipo = nTipoBooleanConEtiqueta;
         codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
 
-        codigo.agregarCodigo(aux1);
-        codigo.agregarCodigo(aux2);
-        codigo.tipo = nTipoBooleanConEtiqueta;
+        const esString = buscarEnCadenaAmbito<NTipo>(ambito, a=>a.buscarTipo('string'));
 
-        codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+        if(aux1.tipo === esString && aux2.tipo === esString){
+
+            const codigoFuncion = codigoInvocar(ambito,'cadenaEquals',[aux1, aux2],false, true);
+            codigo.agregarCodigo(codigoFuncion);
+            codigo.agregar(`if (${codigoFuncion.apuntador} ${symbol} 1) goto ${etiquetaVerdadera};`);
+
+
+        }else{
+
+            codigo.agregarCodigo(aux1);
+            codigo.agregarCodigo(aux2);
+            codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+
+        }
 
         return codigo;
 
