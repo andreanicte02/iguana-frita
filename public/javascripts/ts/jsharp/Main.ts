@@ -59,7 +59,10 @@ export { NodoAccessoArray } from './nodes/NodoAccessoArray';
 export { NodoCrearDouble } from './nodes/NodoCrearDouble';
 export { NodoCrearNull } from './nodes/NodoCrearNull';
 export { NodoReturn } from './nodes/control_sentences/NodoReturn';
-
+export { NodoDivision } from './nodes/arithmetic_operations/NodoDivision';
+export { NodoCharCast } from './nodes/casteos_explicitos/NodoCharCast';
+export { NodoIntegerCast } from './nodes/casteos_explicitos/NodoIntegerCast';
+export { NodoDoubleCast } from './nodes/casteos_explicitos/NodoDoubleCast';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

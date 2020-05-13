@@ -5,6 +5,8 @@ import {NodoDeclararVar} from "./NodoDeclararVar";
 import {FileLocation} from "./FileLocation";
 import {desenvolver} from "../Utilidades.js";
 import {codigoAsignar, codigoObtenerVar} from "../types/codigos.js";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
 
 export class NodoDeclararVarTipo1 extends NodoAstPro{
 
@@ -41,11 +43,14 @@ export class NodoDeclararVarTipo1 extends NodoAstPro{
 
         // se asigna el mismo valor a todas las variables declaradas
         const codigo = new Codigo();
-        codigo.agregarCodigo(codigoValor);
+        const codigoValorAux = codigoValor.tipo === nTipoBooleanConEtiqueta ?
+            deBooleanoEtiquetaANormal(codigoValor): codigoValor;
+
+        codigo.agregarCodigo(codigoValorAux);
         const codigosAsignacion = this.listId.map(nodoDeclarar => {
             // debugger;
             const codigoVar = codigoObtenerVar(ambito, nodoDeclarar.nombre);
-            return codigoAsignar(codigoVar, codigoValor, true);
+            return codigoAsignar(codigoVar, codigoValorAux, true);
         });
 
         codigo.agregarCodigos(codigosAsignacion);
