@@ -24,6 +24,7 @@ void principal() {
     String dato;
     
     println(@toLowerCase("Aasdf ADF"));
+    println("asd"=="a2sd");
 
 }
 

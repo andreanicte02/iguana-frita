@@ -11,7 +11,7 @@ import {desenvolver, generarEtiqueta, generarTemporal} from "../Utilidades";
 import {SemanticError} from "../types/SemanticError";
 import {NodoAst} from "./NodoAst";
 import {ZAmbito} from "../types/ZAmbito";
-import {buscarEnCadenaAmbito} from "../types/codigos";
+import {buscarEnCadenaAmbito, codigoInvocar} from "../types/codigos";
 
 export function esBoleano(tipo: Codigo): boolean {
 
@@ -141,21 +141,6 @@ export function obtenerTipoOperacionUnarioMenos(c1: Codigo): NTipo | undefined {
     return undefined;
 }
 
-export function obtenerTipoIgualdadRelacionalxValor(c1: Codigo , c2: Codigo): NTipo | undefined {
-
-    if(esNumero(c1) && esNumero(c2)){
-        return nTipoBooleanConEtiqueta;
-    }
-
-    if(esBoleano(c1) && esBoleano(c2)){
-        return nTipoBooleanConEtiqueta;
-    }
-
-    //todo falta el manejo de strings
-
-    return undefined;
-
-}
 
 
 export function obtenerTipoIgualdadxReferencia(c1: Codigo, c2: Codigo): NTipo | undefined {
@@ -258,49 +243,6 @@ export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
     }
     return codigo;
 }
-export function codigoIgualacionXValor(e1: NodoAst, symbol: string , e2: NodoAst, ambito: ZAmbito): Codigo {
-
-
-    const c1 = desenvolver(e1.generarCodigo(ambito));
-    const c2 = desenvolver(e2.generarCodigo(ambito));
-
-    //TODO falta el manejo de strings
-    const tipo = obtenerTipoIgualdadRelacionalxValor(c1,c2);
-
-    if(tipo === undefined){
-
-        throw new SemanticError(`No se permiten tipos no primitivos  ${c1.tipo.nombre} ${symbol} ${c2.tipo.nombre}`)
-
-    }
-
-    const aux1 = c1.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c1): c1;
-    const aux2 = c2.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c2): c2;
-
-
-    const etiquetaVerdadera = generarEtiqueta();
-    const etiquetaFalsa = generarEtiqueta();
-
-    const codigo = new Codigo();
-    codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
-    codigo.guardarEtiquetaFalsa(etiquetaFalsa);
-
-    codigo.agregarCodigo(aux1);
-    codigo.agregarCodigo(aux2);
-    codigo.tipo = nTipoBooleanConEtiqueta;
-
-    codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
-    codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
-
-
-    codigo.agregar(`goto ${etiquetaFalsa};`)
-    codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas false: ${codigo.eFalse.join(',')}`)
-
-
-    codigo.extra+=`if ${aux1.apuntador} ${symbol} ${aux2.apuntador}`;
-
-    return codigo;
-
-}
 export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     const  codigo = new Codigo();
     codigo.tipo = nTipoBooleanConEtiqueta;
@@ -323,5 +265,101 @@ export function deBolleanoNormalAEtiqueta(c1: Codigo): Codigo {
     return codigo;
 }
 
+export function esNulo(tipo:NTipo):boolean {
+    return tipo === nTipoNull;
+}
 
+export function obtenerTipoIgualdadValor(c1: Codigo , c2: Codigo, ambito: ZAmbito): NTipo | undefined {
+
+    const esString = buscarEnCadenaAmbito<NTipo>(ambito, a=>a.buscarTipo('string'));
+
+    if(esNumero(c1) && esNumero(c2)){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(esBoleano(c1) && esBoleano(c2)){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(c1.tipo === esString && c2.tipo === esString){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(!esPrimitivo(c1) && esNulo(c2.tipo)){
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(esNulo(c1.tipo) && !esPrimitivo(c2) ){
+
+        return nTipoBooleanConEtiqueta;
+    }
+
+    if(esNulo(c1.tipo) && esNulo(c2.tipo)){
+
+        return nTipoBooleanConEtiqueta;
+
+    }
+
+
+    return undefined;
+
+}
+
+export function codigoIgualacionXValor(e1: NodoAst, symbol: string , e2: NodoAst, ambito: ZAmbito): Codigo {
+
+
+    const c1 = desenvolver(e1.generarCodigo(ambito));
+    const c2 = desenvolver(e2.generarCodigo(ambito));
+
+    const esString = buscarEnCadenaAmbito<NTipo>(ambito, a=>a.buscarTipo('string'));
+
+
+    const aux1 = c1.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c1): c1;
+    const aux2 = c2.tipo === nTipoBooleanConEtiqueta ?deBooleanoEtiquetaANormal(c2): c2;
+
+    const tipo = obtenerTipoIgualdadValor(aux1,aux2, ambito);
+
+    if(tipo === undefined){
+
+        throw new SemanticError(`Error de tipos operacion ${c1.tipo.nombre} ${symbol} ${c2.tipo.nombre} `);
+
+    }
+
+    const codigo = new Codigo();
+
+    const etiquetaVerdadera = generarEtiqueta();
+    const etiquetaFalsa = generarEtiqueta();
+
+    codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
+    codigo.guardarEtiquetaFalsa(etiquetaFalsa);
+
+    codigo.tipo = nTipoBooleanConEtiqueta;
+
+    if(aux1.tipo === esString && aux2.tipo === esString){
+
+        const codigoFuncion = codigoInvocar(ambito,'cadenaEquals',[aux1, aux2],false, true);
+        codigo.agregarCodigo(codigoFuncion);codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+
+        codigo.agregar(`if (${codigoFuncion.apuntador} ${symbol} 1) goto ${etiquetaVerdadera};`);
+        codigo.comentar(`if ${codigoFuncion.apuntador} ${symbol} 1 - etiquetas true: ${codigo.eTrue.join(',')}`)
+        codigo.agregar(`goto ${etiquetaFalsa};`)
+        codigo.comentar(`${codigoFuncion.apuntador} ${symbol} 1 - etiquetas false: ${codigo.eFalse.join(',')}`)
+        codigo.extra+=`if ${codigoFuncion.apuntador} ${symbol} 1`;
+
+
+    }else{
+        //se genera el codigo normal
+        codigo.agregarCodigo(aux1);
+        codigo.agregarCodigo(aux2);
+        codigo.agregar(`if (${aux1.apuntador} ${symbol} ${aux2.apuntador}) goto ${etiquetaVerdadera};`);
+        codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas true: ${codigo.eTrue.join(',')}`)
+        codigo.agregar(`goto ${etiquetaFalsa};`)
+        codigo.comentar(`if ${aux1.apuntador} ${symbol} ${aux2.apuntador} - etiquetas false: ${codigo.eFalse.join(',')}`)
+        codigo.extra+=`if ${aux1.apuntador} ${symbol} ${aux2.apuntador}`;
+
+    }
+
+    return codigo;
+
+}
 

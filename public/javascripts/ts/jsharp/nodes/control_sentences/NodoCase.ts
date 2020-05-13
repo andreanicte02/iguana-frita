@@ -7,7 +7,7 @@ import {nTipoBooleanConEtiqueta} from "../../types/TiposPrimitivos";
 import {
     codigoIgualacionXValor,
     deBooleanoEtiquetaANormal,
-    obtenerTipoIgualdadRelacionalxValor
+    obtenerTipoIgualdadValor
 } from "../TypeDefinition";
 import {SemanticError} from "../../types/SemanticError";
 
@@ -52,7 +52,7 @@ export class NodoCase extends NodoAstPro{
         const symbol = '==';
 
         //TODO falta el manejo de strings
-        const tipo = obtenerTipoIgualdadRelacionalxValor(c1,c2);
+        const tipo = obtenerTipoIgualdadValor(c1,c2, ambito);
 
         if(tipo === undefined){
 
