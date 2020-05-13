@@ -185,11 +185,44 @@ export function codigoAsignar(
   return codigo;
 }
 
-function buscarNFuncion(ambito: ZAmbito, nombreProc: string): NFuncion | undefined {
-  return buscarEnCadenaAmbito<NFuncion>(
+
+
+/**
+ * Verifica si dos tipos son compatibles
+ * @param tipoA viene de NFUncion
+ * @param tipoB viene de un argumento
+ */
+function tiposCompatibles(tipoA: NTipo, tipoB: NTipo): boolean {
+  if (tipoB === nTipoNull) {
+    return !esTipoPrimitivo(tipoA);
+  }
+
+  return tipoA === tipoB;
+}
+
+function tiposCompatibleConFuncion(nFuncion: NFuncion, tipos: NTipo[]): boolean {
+  const functionTipos = nFuncion.parametrosTipos;
+  if (functionTipos.length !== tipos.length) {
+    return false;
+  }
+  return functionTipos.every((ft, indice) => tiposCompatibles(ft, tipos[indice]));
+}
+
+function buscarNFuncion(ambito: ZAmbito, nombreProc: string, tipos: NTipo[]): NFuncion | undefined {
+
+  const nombreSinTipos  = nombreProc.split('_', 2).join('_');
+
+  const entradas = buscarEnCadenaAmbito<[string, NFuncion][]>(
       ambito,
-      a => a.buscarNFuncion(nombreProc),
+      a => a.obtenerNFuncionesEntradas(),
   );
+  if (entradas === undefined) return undefined;
+
+  const entradasConCasiMismoNombre = entradas.filter(([nombre, ]) => nombre.startsWith(nombreSinTipos));
+
+  return entradasConCasiMismoNombre
+      .map(([, nFuncion]) => nFuncion)
+      .find(nFuncion => tiposCompatibleConFuncion(nFuncion, tipos));
 }
 
 
@@ -197,7 +230,7 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
 
   const tiposArgumento = codigosArgumentos.map(c => c.tipo);
   const nombreProc = esConstructor? nombreFuncion: generarNombreProc(nombreFuncion, tiposArgumento, especial);
-  const nFuncion = buscarNFuncion(ambito, nombreProc);
+  const nFuncion = buscarNFuncion(ambito, nombreProc, tiposArgumento);
 
   if (nFuncion === undefined) {
     const nombreBonito = `${nombreFuncion}(${tiposArgumento.map(t => t.nombre).join(", ")})`;
@@ -315,7 +348,7 @@ export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo, codi
   return codigo;
 }
 
-export function codigoCrearArrayConValores(codigos: Codigo[]) {
+export function codigoCrearArrayConValores(codigos: Codigo[]): Codigo {
 
   if (codigos.length === 0)
     throw new SemanticError(`No se puede crear un arreglo sin ningun valor`);
