@@ -84,7 +84,7 @@ integer potencia(integer a, integer n){
 
 //####strings
 
-String concatenar(String s1, String s2){
+@String concatenar(String s1, String s2){
 
     char [] cadena  =  strc char[s1.chars.length + s2.chars.length];
 
@@ -106,58 +106,63 @@ String concatenar(String s1, String s2){
 
 }
 
-String concatenar(String s1, boolean s2){
+@String concatenar(String s1, boolean s2){
 
-    return concatenar(s1, __boolToString(s2));
-
-}
-
-String concatenar(boolean s1, String s2){
-
-    return concatenar(__boolToString(s1), s2);
+    return @concatenar(s1, @__boolToString(s2));
 
 }
 
-String concatenar(integer i1, String s2){
+@String concatenar(boolean s1, String s2){
 
-    return concatenar(__intToString(i1), s2);
-
-}
-
-String concatenar(String s1, integer i2){
-
-    return concatenar(s1, __intToString(i2));
+    return @concatenar(@__boolToString(s1), s2);
 
 }
 
-String concatenar(double d1, String s2){
+@String concatenar(integer i1, String s2){
 
-    return concatenar(__doubleToString(d1), s2);
-
-}
-
-String concatenar(String s1, double d2){
-
-    return concatenar(s1, __doubleToString(d2));
+    return @concatenar(@__intToString(i1), s2);
 
 }
 
-String concatenar(char c1, String s2){
+@String concatenar(String s1, integer i2){
 
-    return concatenar(__charToString(c1), s2);
+    return @concatenar(s1, @__intToString(i2));
 
 }
 
+@String concatenar(double d1, String s2){
 
-String concatenar(String s1, char c2){
+    return @concatenar(@__doubleToString(d1), s2);
 
-    return concatenar(s1, __charToString(c2));
+}
+
+@String concatenar(String s1, double d2){
+
+    return @concatenar(s1, @__doubleToString(d2));
+
+}
+
+@String concatenar(char c1, String s2){
+
+    return @concatenar(@__charToString(c1), s2);
 
 }
 
 
+@String concatenar(String s1, char c2){
 
-String __boolToString(boolean b){
+    return @concatenar(s1, @__charToString(c2));
+
+}
+
+@String concatenar(char c1, char c2){
+
+    return @concatenar(@__charToString(c1), @__charToString(c2));
+
+}
+
+
+@String __boolToString(boolean b){
 
     if(b){
         return "true";
@@ -167,7 +172,7 @@ String __boolToString(boolean b){
 
 }
 
-String __intToString(integer num){
+@String __intToString(integer num){
 
     if(num == 0){
         return "0";
@@ -205,7 +210,8 @@ String __intToString(integer num){
     while(copiaNumero> 0){
 
         size = size - 1;
-        cadena[size] = (char) (copiaNumero % 10)+'0';
+        //cambio
+        cadena[size] = (char) ((copiaNumero % 10)+48);
         copiaNumero = (integer) (copiaNumero/10);
 
     }
@@ -215,7 +221,7 @@ String __intToString(integer num){
     return cadenaFinal;
 }
 
-String __doubleToString(double num){
+@String __doubleToString(double num){
 
     boolean esNegativo = num < 0 ;
 
@@ -228,11 +234,11 @@ String __doubleToString(double num){
 
     }
 
-    return concatenar(__intToString(entero), concatenar(".", decimal));
+    return @concatenar(@__intToString(entero), @concatenar(".", decimal));
 
 }
 
-String __charToString(char charmander){
+@String __charToString(char charmander){
     String cadena = strc String();
     char [] charizard = {charmander};
 

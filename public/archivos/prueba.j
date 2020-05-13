@@ -24,18 +24,19 @@ void principal() {
     integer numero = factorial(5);
     println(factorial(5));
     println(potencia(2,3));
-    println(concatenar("concatenear ", "comida"));
-    println(concatenar(true, " comida"));
+    println(@concatenar("concatenear ", "comida"));
+    println(@concatenar(true, " comida"));
     double d = 2/3;
     boolean a = 5> 2;
     integer f = (integer) 2.1; 
     println(a);
     println(f);
-    println(concatenar("asdf",-1));
-    println(concatenar("--------------->df",20.14));
-    println(concatenar(-20.548465,"asd"));
-    println(concatenar('5',"asd"));
-        println(concatenar("asdfas", '-'));
+    println(@concatenar("asdf",-1));
+    println(@concatenar("--------------->df",20.14));
+    println(@concatenar(-20.548465,"asd"));
+    println(@concatenar('5',"asd"));
+    println(@concatenar("asdfas", '-'));
+    println(1+"asdf"+false+ 2.54 + 's');
 
 }
 

@@ -11,6 +11,7 @@ import {desenvolver, generarEtiqueta, generarTemporal} from "../Utilidades";
 import {SemanticError} from "../types/SemanticError";
 import {NodoAst} from "./NodoAst";
 import {ZAmbito} from "../types/ZAmbito";
+import {buscarEnCadenaAmbito} from "../types/codigos";
 
 export function esBoleano(tipo: Codigo): boolean {
 
@@ -74,28 +75,46 @@ export function obtenerTipoAritmeticoModular(c1: Codigo, c2: Codigo) {
 
 }
 
-export function obtenerTipoOperacionAritmeticaSuma(c1: Codigo, c2: Codigo ): NTipo  | undefined{
+export function obtenerTipoOperacionAritmeticaSuma(c1: Codigo, c2: Codigo, ambito: ZAmbito): NTipo  | undefined{
 
-    if(!(esNumero(c1))){
+    const esString = buscarEnCadenaAmbito<NTipo>(ambito, a=>a.buscarTipo('string'));
+
+    if(!esPrimitivo(c1) && esString !== c1.tipo){
+        return undefined;
+    }
+
+
+    if(!esPrimitivo(c2) && esString !== c2.tipo){
         return  undefined;
     }
 
-    if(!(esNumero(c2))){
+    if(esBoleano(c1) && esBoleano(c2)){
+
         return  undefined;
+
     }
 
-    //solo faltaria la excuslion para el tipo cadena
+    if(c1.tipo === esString || c2.tipo ===esString){
+
+        return esString;
+
+    }
+
     if(c1.tipo=== nTipoDouble || c2.tipo === nTipoDouble){
         return nTipoDouble;
     }
 
-    if(c1.tipo === nTipoEntero || c2.tipo == nTipoEntero){
+    if(c1.tipo === nTipoEntero || c2.tipo === nTipoEntero){
 
         return nTipoEntero;
     }
 
-    return nTipoChar;
+    if(c1.tipo === nTipoChar && c2.tipo === nTipoChar){
 
+        return esString;
+    }
+
+    return undefined;
 }
 
 
@@ -230,11 +249,7 @@ export function deBooleanoEtiquetaANormal(c1: Codigo): Codigo {
 
 export function esPrimitivo(codigo: Codigo): boolean {
 
-    if(esNumero(codigo) || esBoleano(codigo) ){
-        return true;
-    }
-
-    return false;
+    return esNumero(codigo) || esBoleano(codigo) ;
 }
 
 export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {

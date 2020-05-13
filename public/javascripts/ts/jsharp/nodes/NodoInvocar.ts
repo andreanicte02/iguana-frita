@@ -46,3 +46,24 @@ export class NodoInvocacionPunto extends NodoAstPro {
     }
 
 }
+
+export class NodiInvocarSayajin extends NodoAstPro{
+
+    private nombreFuncion: string;
+    private nodosArgumento: NodoAst[];
+
+
+    constructor(fileLocation: FileLocation, nombreFuncion: string, nodosArgumento: NodoAst[]) {
+        super(fileLocation);
+        this.nombreFuncion = nombreFuncion;
+        this.nodosArgumento = nodosArgumento;
+    }
+
+    generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
+        const codigosArgumento = this.nodosArgumento
+            .map(n => deBooleanoEtiquetaANormalCondicional(desenvolver(n.generarCodigo(ambito))));
+        return codigoInvocar(ambito, this.nombreFuncion, codigosArgumento, false, true);
+    }
+
+    
+}

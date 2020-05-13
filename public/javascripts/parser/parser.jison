@@ -392,6 +392,7 @@ casting
 // separar las sentencias
 normalInvoke
     : IDENTIFIER '(' expressionList ')'     { $$ = new ast.NodoInvocar( ast.fl(yy, @1), $1, $3); }
+    | '@' IDENTIFIER '(' expressionList ')' { $$ = new ast.NodiInvocarSayajin( ast.fl(yy, @1), $2, $4); }
     ;
 
 
