@@ -16,6 +16,7 @@ void principal() {
     }else{
          println("nel");
     }
+    println(2^^2);
 
 }
 

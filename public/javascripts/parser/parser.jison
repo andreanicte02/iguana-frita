@@ -12,8 +12,8 @@ SingleCharacter                 [^'\\]
 StringCharacter                 [^"\\] | {EscapeSequence}
 StringCharacters                {StringCharacter}+
 
-JavaCharacterLiteral            ('\''{SingleCharacter}'\'')|('\''{EscapeSequence}'\'')
-JavaStringLiteral               '"' {StringCharacters}? '"'
+JSharpCharacterLiteral            ('\''{SingleCharacter}'\'')|('\''{EscapeSequence}'\'')
+JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 
 
@@ -83,8 +83,8 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 
 [0-9]+"."[0-9]+         return 'DOUBLE'
 [0-9]+                  return 'INTEGER'
-{JavaCharacterLiteral}  return 'CHAR';
-{JavaStringLiteral}     return 'STRING';
+{JSharpCharacterLiteral}  return 'CHAR';
+{JSharpStringLiteral}     return 'STRING';
 
 
 "."                     return '.'
@@ -92,7 +92,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 
 "||"                    return '||'
 "&&"                    return '&&'
-"^"                     return '^'
+
 "!="                    return '!='
 "!"                     return '!'
 
@@ -103,6 +103,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 "-"                   return '-'
 "++"                  return '++'
 "+"                   return '+'
+"^^"                  return '^^'
 "^"                   return '^'
 "!"                   return '!'
 "%"                   return '%'
@@ -142,6 +143,7 @@ JavaStringLiteral               '"' {StringCharacters}? '"'
 %left '<' '>' '<=' '>='
 %left '+' '-'
 %left '*' '/' '%'
+%left '^^'
 
 %right UMINUS
 %right 'strc' UCHAR UINT UDOUBLE
@@ -357,6 +359,7 @@ expression
     | expression '>=' expression            { $$ = new ast.NodoRelacional(ast.fl(yy, @1), $1, $2, $3); }
     | expression '||' expression            { $$ = new ast.NodoOr(ast.fl(yy, @2), $1, $3); }
     | expression '&&' expression            { $$ = new ast.NodoAnd(ast.fl(yy, @2), $1, $3); }
+    | expression '^^' expression            { $$ = new ast.NodoPotencia(ast.fl(yy, @1), $1, $3); }
     | expression '^' expression             { $$ = new ast.NodoXor(ast.fl(yy, @2), $1, $3); }
     | expression '.' IDENTIFIER             { $$ = new ast.NodoAccesoPunto( ast.fl(yy, @2), $1, $3 );  }
     | dotInvoke                             { $$ = $1; }

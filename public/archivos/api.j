@@ -70,13 +70,13 @@ void print(char caracter){
 
 //####potencia
 
-integer potencia(integer a, integer n){
+@integer potencia(integer a, integer n){
     integer result;
 
     if(n==0){
         result =1;
     }else{
-        result = a * potencia(a, n-1);
+        result = a * @potencia(a, n-1);
     }
     return result;
 

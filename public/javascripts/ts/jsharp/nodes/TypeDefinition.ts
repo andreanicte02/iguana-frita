@@ -57,12 +57,18 @@ export function obtenerTipoOperacionAritmeticaSimple(c1: Codigo, c2: Codigo ) {
         return nTipoDouble;
     }
 
-    if(c1.tipo === nTipoEntero || c2.tipo == nTipoEntero){
+    if(c1.tipo === nTipoEntero || c2.tipo === nTipoEntero){
 
         return nTipoEntero;
     }
 
-    return nTipoChar;
+    if(c1.tipo === nTipoChar && c2.tipo === nTipoChar){
+
+        return nTipoEntero;
+    }
+
+
+    return undefined;
 
 
 }
@@ -149,6 +155,9 @@ export function obtenerTipoIgualdadxReferencia(c1: Codigo, c2: Codigo): NTipo | 
         return undefined;
         //no se permiten tipos primitivos
     }
+    //null tipo
+    //tipo null
+    //tipo tipo si
 
     return nTipoBooleanConEtiqueta;
 
