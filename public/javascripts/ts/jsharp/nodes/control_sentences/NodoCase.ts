@@ -72,7 +72,7 @@ export class NodoCase extends NodoAstPro{
         codigo.guardarEtiquetaVerdadera(etiquetaVerdadera);
 
         const esString = buscarEnCadenaAmbito<NTipo>(ambito, a=>a.buscarTipo('string'));
-
+        codigo.comentar('inicio case');
         if(aux1.tipo === esString && aux2.tipo === esString){
 
             const codigoFuncion = codigoInvocar(ambito,'cadenaEquals',[aux1, aux2],false, true);
@@ -88,6 +88,7 @@ export class NodoCase extends NodoAstPro{
 
         }
 
+        codigo.comentar('fin case');
         return codigo;
 
 
