@@ -75,8 +75,8 @@ export class ZAmbito {
         return [...this.propiedades.entries()];
     }
 
-    public inicializarTipos(): void {
-        this.tipos.forEach(value => value.declararPropiedades());
+    public inicializarTipos = (): void => {
+        this.tipos.forEach(value => value.declararPropiedades(this));
     }
 
     public generarCodigoFunciones(): Codigo {
