@@ -31,7 +31,7 @@ export class NodoDeclararVarTipo5 extends NodoAstPro{
 
         const codigo= new Codigo();
         const codigosAsignacion = this.listId.map(nodoDeclarar => {
-            debugger;
+            //debugger;
             const codigoValorAux  = new Codigo();
             codigoValorAux.apuntador = '0';
 

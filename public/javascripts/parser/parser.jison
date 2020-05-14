@@ -136,9 +136,10 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 /* operator associations and precedence */
 
 %right '?'
+%left '++'
+%left '^'
 %left '||'
 %left '&&'
-%left '^'
 %left '==' '!=' '==='
 %left '<' '>' '<=' '>='
 %left '+' '-'
@@ -404,10 +405,8 @@ dotInvoke
     ;
 
 increment
-    : '++' expression                       { $$ = new ast.PreIncrementNode(yy.last(), @1, $2); }
-    | '--' expression                       { $$ = new ast.PreDecrementNode(yy.last(), @1, $2); }
-    | expression '++'                       { $$ = new ast.PostIncrementNode(yy.last(), @2, $1); }
-    | expression '--'                       { $$ = new ast.PostDecrementNode(yy.last(), @2, $1); }
+    : expression '++'                       { $$ = new ast.NodoAumento(ast.fl(yy, @2), $1, '+'); }
+    | expression '--'                       { $$ = new ast.NodoAumento(ast.fl(yy, @2), $1, '-'); }
     ;
 
 
