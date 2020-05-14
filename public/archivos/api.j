@@ -10,7 +10,7 @@ define String as [
 }
 
 
-void println(String texto){
+void print(String texto){
     #print(c, '>');
     #print(c, ' ');
     for(integer i = 0; i < texto.chars.length; i = i + 1){
@@ -19,21 +19,21 @@ void println(String texto){
     #print(c, '\n');
 }
 
-void println(double decimal){
+void print(double decimal){
     #print(c, '>');
     #print(c, ' ');
     #print(d, decimal);
     #print(c, '\n');
 }
 
-void println(integer entero){
+void print(integer entero){
     #print(c, '>');
     #print(c, ' ');
     #print(e, entero);
     #print(c, '\n');
 }
 
-void println(char caracter){
+void print(char caracter){
 
        #print(c, '>');
        #print(c, ' ');
@@ -42,29 +42,29 @@ void println(char caracter){
 
 }
 
-void println(boolean bool){
+void print(boolean bool){
 
     if(bool){
-        println("true");
+        print("true");
         return ;
     }
 
-    println("false");
+    print("false");
 
 }
 
 
-void print(double decimal){
+void printt(double decimal){
     #print(d, decimal);
 }
 
 
-void print(integer entero){
+void printt(integer entero){
     #print(e, entero);
 }
 
 
-void print(char caracter){
+void printt(char caracter){
     #print(c, caracter);
 }
 
@@ -348,15 +348,15 @@ void print(char caracter){
 void comida() {
     
     String comida = "pozole";
-    println(comida);
-    println(comida.size());
+    print(comida);
+    print(comida.size());
     
     integer[] numeros = {1, 3, 4, 1993};
     
-    println(numeros[3]);
+    print(numeros[3]);
     
     print('h');
     print('o');
     print('l');
-    println('a');
+    print('a');
 }

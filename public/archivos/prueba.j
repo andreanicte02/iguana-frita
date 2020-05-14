@@ -8,16 +8,16 @@ integer w, v = 4;
 void principal() {
     
     
-    println("asdf");
+    print("asdf");
    
     Vector nulo;
     if(nulo == null){
-        println("funciona");
+        print("funciona");
     }else{
-         println("nel");
+         print("nel");
     }
     integer a =0;
-    println(a++);
+    print(a++);
 
 }
 

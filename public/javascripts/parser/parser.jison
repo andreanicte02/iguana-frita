@@ -204,6 +204,7 @@ funSentence
     | continueControl ';'           { $$ = $1; }
     | throwControl ';'              { $$ = $1; }
     | structureDeclaration ';'      { $$ = $1; }
+    | ';'                           { $$ = new ast.NodoCrearNull(ast.fl(yy, @1)); }
     ;
 
 /* ********************************************************** */
