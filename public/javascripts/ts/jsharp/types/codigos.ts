@@ -19,7 +19,12 @@ import {
   nTipoNull,
   nTipoVoid
 } from "./TiposPrimitivos";
-import {deBooleanoEtiquetaANormalCondicional, esPrimitivo, esTipoPrimitivo} from "../nodes/TypeDefinition";
+import {
+  deBooleanoEtiquetaANormalCondicional,
+  esPrimitivo,
+  esPrimitivoTipo,
+  esTipoPrimitivo
+} from "../nodes/TypeDefinition";
 import {codigoCrearEntero} from "../nodes/NodoCrearInteger.js";
 import {codigoCrearChar} from "../nodes/NodoCrearChar.js";
 
@@ -177,10 +182,17 @@ export function codigoAsignar(
       `Lado izquierdo de asignacion no es una variable: ${codigoDestino.tipo.nombre}`
     );
   const variableTipo = codigoDestino.tipo.tipoContenido;
-  if (variableTipo !== codigoValorAux.tipo && !clean)
-    throw new SemanticError(
-      `No se puede guardar tipo ${codigoValorAux.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
-    );
+
+  if (variableTipo !== codigoValorAux.tipo && !clean){
+
+    if(!esPrimitivoTipo(variableTipo) && codigoValorAux.tipo === nTipoNull){
+
+    }else {
+      throw new SemanticError(
+          `No se puede guardar tipo ${codigoValorAux.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
+      );
+    }
+  }
 
   const codigo = new Codigo();
   codigo.agregarCodigo(codigoDestino);

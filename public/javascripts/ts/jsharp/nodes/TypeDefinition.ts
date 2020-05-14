@@ -209,6 +209,12 @@ export function esPrimitivo(codigo: Codigo): boolean {
     return esNumero(codigo) || esBoleano(codigo) ;
 }
 
+export function esPrimitivoTipo(tipo: NTipo):boolean {
+    const codigo = new Codigo();
+    codigo.tipo = tipo;
+    return esNumero(codigo) || esBoleano(codigo);
+}
+
 export function deBooleanoEtiquetaANormalCondicional(codigo: Codigo): Codigo {
     if (codigo.tipo == nTipoBooleanConEtiqueta) {
         return deBooleanoEtiquetaANormal(codigo);
