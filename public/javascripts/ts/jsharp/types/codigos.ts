@@ -166,6 +166,7 @@ export function codigoAsignar(
   codigoDestino: Codigo,
   codigoValor: Codigo,
   exclusivo = false,
+  clean = false,
 ): Codigo {
 
   const codigoValorAux = (exclusivo || codigoValor.tipo === nTipoBooleanNormal)
@@ -176,7 +177,7 @@ export function codigoAsignar(
       `Lado izquierdo de asignacion no es una variable: ${codigoDestino.tipo.nombre}`
     );
   const variableTipo = codigoDestino.tipo.tipoContenido;
-  if (variableTipo !== codigoValorAux.tipo)
+  if (variableTipo !== codigoValorAux.tipo && !clean)
     throw new SemanticError(
       `No se puede guardar tipo ${codigoValorAux.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
     );

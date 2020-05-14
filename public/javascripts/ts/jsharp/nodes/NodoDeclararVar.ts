@@ -4,11 +4,13 @@ import {Codigo} from "./Codigo.js";
 import {NTipoVar} from "../types/NTipo.js";
 import {ZAmbito} from "../types/ZAmbito.js";
 import {obtenerTipoDesdeBancoArray} from "../Utilidades.js";
+import {codigoAsignar} from "../types/codigos";
 
 export class NodoDeclararVar extends NodoAstPro {
     public readonly nombre: string;
     private nodoObtenerTipo: NodoAst | undefined;
     private esArray: boolean | undefined;
+    private clean = false;
 
     constructor(fileLocation: FileLocation, nombre: string) {
         super(fileLocation);

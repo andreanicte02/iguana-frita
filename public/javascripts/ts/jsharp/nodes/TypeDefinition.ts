@@ -305,7 +305,7 @@ export function codigoIgualacionXValor(e1: NodoAst, symbol: string , e2: NodoAst
 
 
     }else{
-        debugger;
+        //debugger;
         //se genera el codigo normal
         codigo.tipo = nTipoBooleanConEtiqueta;
         codigo.agregarCodigo(aux1);
