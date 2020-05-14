@@ -63,7 +63,8 @@ export { NodoDivision } from './nodes/arithmetic_operations/NodoDivision';
 export { NodoCharCast } from './nodes/casteos_explicitos/NodoCharCast';
 export { NodoIntegerCast } from './nodes/casteos_explicitos/NodoIntegerCast';
 export { NodoDoubleCast } from './nodes/casteos_explicitos/NodoDoubleCast';
-export { NodiInvocarSayajin } from './nodes/NodoInvocar'
+export { NodiInvocarSayajin } from './nodes/NodoInvocar';
+export { NodoPotencia } from './nodes/arithmetic_operations/NodoPotencia';
 
 export function generar3d(sentencias: NodoAst[]): string {
 
