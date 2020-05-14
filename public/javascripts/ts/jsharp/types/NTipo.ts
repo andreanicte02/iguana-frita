@@ -18,8 +18,8 @@ export class NTipo {
     this.declaraciones = declaraciones;
   }
 
-  public declararPropiedades(): void {
-    const a = new ZAmbito(undefined, false);
+  public declararPropiedades(ambito?: ZAmbito): void {
+    const a = new ZAmbito(ambito, false);
     this.declaraciones.forEach(declaracion => {
       declaracion.generarCodigo(a);
     })
