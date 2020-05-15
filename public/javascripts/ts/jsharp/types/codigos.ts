@@ -189,7 +189,7 @@ export function codigoAsignar(
 
     }else {
       throw new SemanticError(
-          `No se puede guardar tipo ${codigoValorAux.tipo.nombre} en variable de tipo ${variableTipo.nombre}`
+          `No se puede guardar tipo ${codigoValorAux.tipo.nombre} (${codigoValorAux.extra}) en variable de tipo ${variableTipo.nombre} (${codigoDestino.extra})`
       );
     }
   }
@@ -229,7 +229,7 @@ function tiposCompatibleConFuncion(nFuncion: NFuncion, tipos: NTipo[]): boolean 
   return functionTipos.every((ft, indice) => tiposCompatibles(ft, tipos[indice]));
 }
 
-function buscarNFuncion(ambito: ZAmbito, nombreProc: string, tipos: NTipo[]): NFuncion | undefined {
+function buscarNFuncion(ambito: ZAmbito, nombreProc: string, tipos: NTipo[]): [ string, NFuncion] | undefined {
 
   const nombreSinTipos  = nombreProc.split('_', 2).join('_');
 
@@ -241,9 +241,17 @@ function buscarNFuncion(ambito: ZAmbito, nombreProc: string, tipos: NTipo[]): NF
 
   const entradasConCasiMismoNombre = entradas.filter(([nombre, ]) => nombre.startsWith(nombreSinTipos));
 
+  if (nombreSinTipos.toLowerCase().includes('nat_linealize') && entradasConCasiMismoNombre.length) {
+    // cuando es la funcion linealize no se realiza verificacion de tipos
+    const [nombre, nFuncion] = entradasConCasiMismoNombre[0];
+    if (tipos.length === 0) throw new SemanticError('se esta invocando a linealize con 0 argumentos');
+    // de esta formma retorna el tipo del argumento 0
+    nFuncion.sobreescribirTipoRetorno(tipos[0]);
+    return [nombre, nFuncion];
+  }
+
   return entradasConCasiMismoNombre
-      .map(([, nFuncion]) => nFuncion)
-      .find(nFuncion => tiposCompatibleConFuncion(nFuncion, tipos));
+      .find(([, nFuncion]) => tiposCompatibleConFuncion(nFuncion, tipos));
 }
 
 
@@ -251,12 +259,14 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
 
   const tiposArgumento = codigosArgumentos.map(c => c.tipo);
   const nombreProc = esConstructor? nombreFuncion: generarNombreProc(nombreFuncion, tiposArgumento, especial);
-  const nFuncion = buscarNFuncion(ambito, nombreProc, tiposArgumento);
+  const tupla = buscarNFuncion(ambito, nombreProc, tiposArgumento);
 
-  if (nFuncion === undefined) {
+  if (tupla === undefined) {
     const nombreBonito = `${nombreFuncion}(${tiposArgumento.map(t => t.nombre).join(", ")})`;
     throw new SemanticError(`Funcion ${nombreBonito} no declarado`);
   }
+
+  const [nombre3d, nFuncion] = tupla;
 
   const codigo = new Codigo();
   codigo.tipo = nFuncion.tipoRetorno;
@@ -289,14 +299,15 @@ export function codigoInvocar(ambito: ZAmbito, nombreFuncion: string, codigosArg
   // paso de parametros
   codigosArgumentos.forEach((codigoArgumento, indice) => {
     const codigoDestino = codigoObtenerVar(nFuncion.ambito, nFuncion.nombresParametro[indice])
-    const codigoAsignacion = codigoAsignar(codigoDestino, codigoArgumento, true);
+    // se desactiva la verificacion de tipos, debido a que este ya se realizo en la busqueda de funcion
+    const codigoAsignacion = codigoAsignar(codigoDestino, codigoArgumento, true, true);
     codigo.agregarCodigo(codigoAsignacion);
     codigo.comentar(` (argumento)`);
   });
 
   // invocacion
-  codigo.agregar(`call ${nombreProc};`);
-  codigo.comentar(`call ${nombreProc};`);
+  codigo.agregar(`call ${nombre3d};`);
+  codigo.comentar(`call ${nombre3d};`);
 
   // captura de retorno
   if (nFuncion.tipoRetorno !== nTipoVoid)

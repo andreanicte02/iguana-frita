@@ -11,12 +11,17 @@ export class NFuncion {
     public static readonly INSTANCIA = '@instancia';
 
     public readonly ambito: ZAmbito;
-    public readonly tipoRetorno: NTipo;
+    private _tipoRetorno: NTipo;
     public readonly sentencias: NodoAst[];
+
+    get tipoRetorno(): NTipo {
+        return this._tipoRetorno;
+    }
+
 
     constructor(ambitoPadre: ZAmbito, tipoRetorno: NTipo, nodosParametro: NodoAst[], sentencias: NodoAst[], esConstructor: boolean) {
         this.ambito = new ZAmbito(ambitoPadre, true);
-        this.tipoRetorno = esConstructor? nTipoVoid: tipoRetorno;
+        this._tipoRetorno = esConstructor? nTipoVoid: tipoRetorno;
         this.sentencias = sentencias;
 
         // se declara en la tabla de simbolos el 'return'
@@ -45,6 +50,10 @@ export class NFuncion {
 
     public readonly parametrosTipos: NTipo[];
     public readonly nombresParametro: string[];
+
+    public sobreescribirTipoRetorno(tipo: NTipo): void {
+        this._tipoRetorno = tipo;
+    }
 
     /**
      * Solo genera el codigo que esta dentro del bloque de la funcion
