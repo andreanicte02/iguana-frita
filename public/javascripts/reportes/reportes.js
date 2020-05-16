@@ -34,10 +34,10 @@ function tabla_body(arreglo) {
     txt+= '<tr>'
     txt+=  `<th> nombre </th>`
     txt+=  `<th> tipo </th>`
+    txt+=  `<th> es arreglo </th>`
     txt+=  `<th> fila </th>`
     txt+=  `<th> columna </th>`
     txt+=  `<th> path </th>`
-    txt+=  `<th> arreglo </th>`
     txt+= '</tr>'
 
     arreglo.forEach(value=>{
@@ -45,11 +45,51 @@ function tabla_body(arreglo) {
 
         txt+=  `<th> ${value.nombre} </th>`
         txt+=  `<th> ${value.tipo} </th>`
+        txt+=  `<th> ${value.arreglo} </th>`
         txt+=  `<th> ${value.fila} </th>`
         txt+=  `<th> ${value.columna} </th>`
         txt+=  `<th> ${value.otro} </th>`
-        txt+=  `<th> ${value.arreglo} </th>`
+        txt+= '</tr>'
+    });
 
+
+    txt+= '</table>'
+    txt+= '201404104-Andrea Vicente'
+    return txt;
+}
+
+
+
+function funciones_body_reporte(arreglo) {
+    let txt = '<table class="egt">';
+    txt += `<style>
+                    table, th, td {
+                    border: 1px solid black;
+                }
+            </style>`;
+
+    txt+= '<tr>'
+    txt+=  `<th> nombre </th>`
+    txt+=  `<th> tipo </th>`
+    txt+=  `<th> rol </th>`
+    txt+=  `<th> es arreglo </th>`
+    txt+=  `<th> cant parametros </th>`
+    txt+=  `<th> fila </th>`
+    txt+=  `<th> columna </th>`
+    txt+=  `<th> path </th>`
+    txt+= '</tr>'
+
+    arreglo.forEach(value=>{
+        txt+= '<tr>'
+
+        txt+=  `<th> ${value.nombre} </th>`
+        txt+=  `<th> ${value.tipo} </th>`
+        txt+=  `<th> ${value.rol} </th>`
+        txt+=  `<th> ${value.arreglo} </th>`
+        txt+=  `<th> ${value.cantParmetros} </th>`
+        txt+=  `<th> ${value.fila} </th>`
+        txt+=  `<th> ${value.columna} </th>`
+        txt+=  `<th> ${value.path} </th>`
         txt+= '</tr>'
     });
 

@@ -3,7 +3,7 @@ import {ZAmbito} from "../types/ZAmbito.js";
 import {Codigo} from "./Codigo.js";
 import {FileLocation} from "./FileLocation.js";
 import {NFuncion} from "../types/NFuncion.js";
-import {generarNombreProc, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
+import {generarNombreProc, guardarTablaFunciones, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
 
 
 export class NodoDeclararFuncion extends NodoAstPro {
@@ -67,6 +67,11 @@ export class NodoDeclararFuncion extends NodoAstPro {
         Si solo se declaran primero todas las funciones, y hasta despues se generan el codigo de las funciones
         no tendra problema, por que `dos` ya estara declarado
          */
+
+        //
+        guardarTablaFunciones(this.nombre,tipo.nombre,this.getX(), this.getY(), this.getPath(),
+            'funcion',this.nodosParametro.length,this.esArray+'');
+        //
         return Codigo.vacio;
     }
 

@@ -382,6 +382,7 @@ function process3d(sentences){
 
 
 let arregloTS= undefined;
+let arregloFunction= undefined;
 const compileButton = $("#compileButton");
 compileButton.click(()=>{
 
@@ -407,7 +408,9 @@ compileButton.click(()=>{
         try {
             const nodes = getSentencesWithLocation(relativePath, jText);
             const texto = ast.generar3d(nodes);
+
             arregloTS = ast.getTS();
+            arregloFunction = ast.getFunctions();
             editor3d.setValue(texto);
             editor3d.clearSelection();
         }
@@ -619,7 +622,13 @@ function hasFile(files, path){
 const tablaSimbolos = $("#tablaSimbolos");
 tablaSimbolos.click(()=>{
     let cuerpo = create_html(tabla_body(arregloTS));
-    download('TablaSimbolo.html',cuerpo);
+    download('reporte_tabla_simbolos.html',cuerpo);
+});
+
+const tablaFunciones = $("#tablaFunciones");
+tablaFunciones.click(()=>{
+    let cuerpo = create_html(funciones_body_reporte(arregloFunction));
+    download('reporte_tabla_funciones.html',cuerpo);
 });
 
 

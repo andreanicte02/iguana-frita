@@ -7,6 +7,7 @@ import {NodoDeclararEstructura} from "./nodes/NodoDeclararEstructura.js";
 import {NodoDeclararFuncion} from "./nodes/NodoDeclararFuncion.js";
 import {nTipoEntero} from "./types/TiposPrimitivos.js";
 import {NombreVars} from "./NombreVars";
+import {NombreFunciones} from "./NombreFunciones";
 
 
 export const inicio = {
@@ -20,12 +21,25 @@ export  const tablaSimbolos: NombreVars[] = [];
 
 export const bancoTiposArray: NTipoArreglo[] = [];
 
-export function guardarTablaSimbolos(nombre: string, tipo: string, fila: number, columna: number, path: string, array='') {
+export function guardarTablaSimbolos(
+    nombre: string, tipo: string,
+    fila: number, columna: number, path: string, array=''): void {
 
     tablaSimbolos.push(new NombreVars(nombre,
         tipo,fila, columna,path,array));
 
 }
+
+export const tablaFunciones: NombreFunciones [] = [];
+
+export function guardarTablaFunciones
+    (nombre: string,tipo: string ,fila: number,
+     columna: number,path: string, rol: string, cantParms: number = 0,  arreglo: string=''): void {
+
+    tablaFunciones.push(new NombreFunciones(nombre, tipo, fila, columna, path, arreglo, rol, cantParms));
+
+}
+
 
 export function obtenerTipoDesdeBancoArray(tipoContenido: NTipo): NTipoArreglo
 {

@@ -2,12 +2,13 @@ import {NodoAst} from "./nodes/NodoAst.js";
 import {ZAmbito} from "./types/ZAmbito.js";
 import {Codigo} from "./nodes/Codigo.js";
 import {FileLocation} from "./nodes/FileLocation.js";
-import {codigoGenerarBloque, getTextoDeclaracionTemporales, reiniciarContadores} from "./Utilidades.js";
+import {codigoGenerarBloque, getTextoDeclaracionTemporales, reiniciarContadores, tablaFunciones} from "./Utilidades.js";
 import { NTipoVar } from "./types/NTipo.js";
 import {nTipoVoid} from "./types/TiposPrimitivos.js";
 import {codigoInvocar} from "./types/codigos.js";
 import { tablaSimbolos } from './Utilidades'
 import {NombreVars} from "./NombreVars";
+import {NombreFunciones} from "./NombreFunciones";
 
 export { NodoObtenerTipoInteger, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
@@ -111,3 +112,6 @@ export function getTS(): NombreVars[] {
     return tablaSimbolos;
 }
 
+export function getFunctions(): NombreFunciones []{
+    return tablaFunciones;
+}
