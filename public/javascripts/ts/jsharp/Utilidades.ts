@@ -65,15 +65,24 @@ export function reiniciarContadores(): void {
 
 
 export function getTextoDeclaracionTemporales(): string {
-    let cont = 0;
-    const arreglo: string[] = [];
-    while (cont<= inicio.contadorTemporales){
 
-        arreglo.push(`t${cont}`);
-        cont+=1;
+    const lineas: string[] = [];
+
+    let linea = '';
+    let separador = '';
+    for (let i = 0; i <= inicio.contadorTemporales; i++) {
+        if (linea.length > 50) {
+            lineas.push(linea);
+            linea = '';
+        }
+        linea += separador + `t${i}`;
+        separador = ', ';
     }
+    lineas.push(linea);
 
-    return arreglo.join(',');
+    if (inicio.contadorTemporales < 0) return '';
+
+    return `var ${lineas.join('\n')};`;
 }
 
 export function generarTemporal(): string {

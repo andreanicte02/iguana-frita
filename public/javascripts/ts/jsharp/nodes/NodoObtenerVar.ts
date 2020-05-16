@@ -6,7 +6,7 @@ import {ZAmbito} from "../types/ZAmbito.js";
 
 
 export class NodoObtenerVar extends NodoAstPro {
-    private nombre: string;
+    public readonly nombre: string;
 
     constructor(fileLocation: FileLocation, nombre: string) {
         super(fileLocation);
