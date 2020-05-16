@@ -94,7 +94,7 @@ export function generar3d(sentencias: NodoAst[]): string {
     const codigoInvocarMain = codigoInvocar(ambito, 'principal', []);
     codigo.agregarCodigo(codigoInvocarMain);
 
-    codigo.declararTemporales(`var ${getTextoDeclaracionTemporales()};`);
+    codigo.declararTemporales(`${getTextoDeclaracionTemporales()}`);
     return codigo.texto;
 }
 

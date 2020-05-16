@@ -7,6 +7,29 @@ integer w, v = 4;
 
 void principal() {
     
+    Vector v0 = strc Vector();
+    Vector v1 = strc Vector();
+    
+    PRINT("SIZE");
+    PRINT(v1.size());
+    prINT("Reference:");
+    print(v1.getReference());
+    
+    if (v1.instanceof(Vector)){
+        print("v1 es instancia de Vector");
+    }
+    else {
+        print("v1 no es instancia de vector");
+    }
+    
+    if (v1.instanceof(String)){
+        print("v1 es instancia de String");
+    }
+    else {
+        print("v1 no es instancia de String");
+    }
+    
+    
     print("inicio");
     
     String uno = "hola";
@@ -47,5 +70,6 @@ void principal() {
 
 define Vector as [
     integer x = 94,
-    integer y = 93
+    integer y = 93,
+    integer z = 24
     ];

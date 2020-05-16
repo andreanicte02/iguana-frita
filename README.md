@@ -78,13 +78,13 @@ Arreglos
 [/] Inicializacion especial
 [/] AccesoArreglos
 [/] length
-[ ] linealize
+[/] linealize
 
 Estrucths
 [/] Acceso Structs
-[] Size
-[] getReference
-[] InstanceOf
+[/] Size
+[/] getReference
+[/] InstanceOf
 
 Reportes
 []Reportes tabla simbolos
