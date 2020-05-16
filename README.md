@@ -75,7 +75,7 @@ String
 
 Arreglos
 [/] Arreglos
-[ ] Inicializacion especial
+[/] Inicializacion especial
 [/] AccesoArreglos
 [/] length
 [ ] linealize

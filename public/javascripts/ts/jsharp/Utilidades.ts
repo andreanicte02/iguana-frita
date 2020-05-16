@@ -6,6 +6,7 @@ import { buscarEnCadenaAmbito } from "./types/codigos.js";
 import {NodoDeclararEstructura} from "./nodes/NodoDeclararEstructura.js";
 import {NodoDeclararFuncion} from "./nodes/NodoDeclararFuncion.js";
 import {nTipoEntero} from "./types/TiposPrimitivos.js";
+import {NombreVars} from "./NombreVars";
 
 
 export const inicio = {
@@ -14,9 +15,17 @@ export const inicio = {
     contadorEstructuras: -1,
 };
 
+export  const tablaSimbolos: NombreVars[] = [];
 //private static Dictionary<string, ZEntorno> _bancoTiposArray = new Dictionary<string, ZEntorno>();
 
 export const bancoTiposArray: NTipoArreglo[] = [];
+
+export function guardarTablaSimbolos(nombre: string, tipo: string, fila: number, columna: number, path: string, array='') {
+
+    tablaSimbolos.push(new NombreVars(nombre,
+        tipo,fila, columna,path,array));
+
+}
 
 export function obtenerTipoDesdeBancoArray(tipoContenido: NTipo): NTipoArreglo
 {

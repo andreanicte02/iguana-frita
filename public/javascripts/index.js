@@ -17,11 +17,7 @@ $("#symbolsButton").click(function () {
     window.open('/symbols');
 });
 
-function addSintaxError(hash) {
 
-
-
-}
 function addErrorRow(tipo = "-", archivo = "-", linea = "-", columna= "-", mensaje = "-"){
 
     console.log("a agregar un error");
@@ -385,7 +381,7 @@ function process3d(sentences){
 }
 
 
-
+let arregloTS= undefined;
 const compileButton = $("#compileButton");
 compileButton.click(()=>{
 
@@ -411,6 +407,7 @@ compileButton.click(()=>{
         try {
             const nodes = getSentencesWithLocation(relativePath, jText);
             const texto = ast.generar3d(nodes);
+            arregloTS = ast.getTS();
             editor3d.setValue(texto);
             editor3d.clearSelection();
         }
@@ -617,6 +614,13 @@ function hasFile(files, path){
     return null;
 }
 
+//tabla de simbolos
+
+const tablaSimbolos = $("#tablaSimbolos");
+tablaSimbolos.click(()=>{
+    let cuerpo = create_html(tabla_body(arregloTS));
+    download('TablaSimbolo.html',cuerpo);
+});
 
 
 

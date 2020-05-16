@@ -6,6 +6,8 @@ import {codigoGenerarBloque, getTextoDeclaracionTemporales, reiniciarContadores}
 import { NTipoVar } from "./types/NTipo.js";
 import {nTipoVoid} from "./types/TiposPrimitivos.js";
 import {codigoInvocar} from "./types/codigos.js";
+import { tablaSimbolos } from './Utilidades'
+import {NombreVars} from "./NombreVars";
 
 export { NodoObtenerTipoInteger, NodoObtenerTipoDouble } from './nodes/NodoObtenerTipoInteger.js'
 export { NodoObtenerTipoBool } from './nodes/NodoObtenerTipoBool';
@@ -103,5 +105,9 @@ export function fl(yy: any, pos: any): FileLocation {
     const x = pos.first_column;
     const y = pos.first_line;
     return new FileLocation(filePath, x, y);
+}
+
+export function getTS(): NombreVars[] {
+    return tablaSimbolos;
 }
 

@@ -26,4 +26,19 @@ export abstract class NodoAstPro implements NodoAst {
     }
 
     public abstract generacionSeguraDeCodigo(ambito: ZAmbito): Codigo;
+
+    public getX(): number{
+        return this.fileLocation.x;
+    }
+
+    public getY(): number{
+        return this.fileLocation.y;
+    }
+
+    public getPath(): string{
+        if(this.fileLocation.filePath === undefined){
+            return '';
+        }
+        return this.fileLocation.filePath;
+    }
 }

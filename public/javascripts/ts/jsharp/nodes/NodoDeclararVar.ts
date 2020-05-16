@@ -3,7 +3,7 @@ import {FileLocation} from "./FileLocation.js";
 import {Codigo} from "./Codigo.js";
 import {NTipoVar} from "../types/NTipo.js";
 import {ZAmbito} from "../types/ZAmbito.js";
-import {obtenerTipoDesdeBancoArray} from "../Utilidades.js";
+import {guardarTablaSimbolos, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
 import {codigoAsignar} from "../types/codigos";
 
 export class NodoDeclararVar extends NodoAstPro {
@@ -32,6 +32,10 @@ export class NodoDeclararVar extends NodoAstPro {
         
         const tipoContenido = this.esArray? obtenerTipoDesdeBancoArray(codigoTipo.tipo): codigoTipo.tipo;
         ambito.declararPropiedad(this.nombre, new NTipoVar(tipoContenido));
+
+        //
+        guardarTablaSimbolos(this.nombre, codigoTipo.tipo.nombre,this.getY(), this.getX(), this.getPath(),this.esArray+'');
+        //
 
         return Codigo.vacio;
     }

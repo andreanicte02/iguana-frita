@@ -4,7 +4,7 @@ import { ZAmbito } from "../types/ZAmbito.js";
 import {FileLocation} from "./FileLocation.js";
 import {NTipo} from "../types/NTipo.js";
 import {NFuncion} from "../types/NFuncion.js";
-import { generarNombreConstructor } from "../Utilidades.js";
+import {generarNombreConstructor, guardarTablaSimbolos} from "../Utilidades.js";
 
 
 export class NodoDeclararEstructura extends NodoAstPro {
@@ -34,6 +34,7 @@ export class NodoDeclararEstructura extends NodoAstPro {
         const nombreConstructor = generarNombreConstructor(nTipo);
         ambito.declararFuncion(nombreConstructor, nFuncion);
 
+        guardarTablaSimbolos(this.nombre, 'struct',this.getY(), this.getX(), this.getPath());
         return Codigo.vacio;
     }
 }
