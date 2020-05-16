@@ -159,7 +159,7 @@ export function generarNombreConstructor(tipo: NTipo): string {
 }
 
 export function generarNombreProc(nombre: string, tipos: NTipo[], especial: boolean): string {
-    const parametros = tipos.map(tipo => tipo.nombre).join("_");
+    const parametros = tipos.map(tipo => tipo.nombrePlano).join("_");
     const prefijo = especial? `nat` : `fun`;
     return `${prefijo}_${nombre}_${parametros}`.toLowerCase();
 }

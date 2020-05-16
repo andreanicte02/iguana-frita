@@ -7,6 +7,28 @@ integer w, v = 4;
 
 void principal() {
     
+    print("inicio");
+    
+    String uno = "hola";
+    String dos = uno;
+    String tres = uno.linealize();
+    
+    print(dos);
+    print(tres);
+    
+    if (uno === dos) {
+        print("misma referencia");
+    }
+    if (uno === tres) {
+        print("misma referencia");
+    }
+    else {
+        print("diferente referencia");
+    }
+    
+    print("fin");
+
+    
     
     print("asdf");
    

@@ -344,6 +344,16 @@ void printt(char caracter){
     return c1;
 }
 
+
+@void[] linealize(void[ ] algo) {
+    void[] nuevo = strc void[algo.length];
+    for (integer i = 0; i < algo.length; i = i+1) {
+        nuevo[i] = algo[i];
+    }
+    return nuevo;
+}
+
+
 //###########
 void comida() {
     

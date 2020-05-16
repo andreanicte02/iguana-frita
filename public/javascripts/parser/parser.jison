@@ -308,11 +308,11 @@ classLevelFunDeclaration
     | type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $4, $6, $9, true ); }
     | '@' type '[' ']' IDENTIFIER '(' paramDeclarationList ')'
-          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $5, $7, $10, true ); }
+          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $5, $7, $10, true, true ); }
     | type '[]' IDENTIFIER '(' paramDeclarationList ')'
       '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $1, $3, $5, $8, true ); }
     | '@' type '[]' IDENTIFIER '(' paramDeclarationList ')'
-          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $4, $6, $9, true ); }
+          '{' funSentenceList '}'                       { $$ = new ast.NodoDeclararFuncion( ast.fl(yy, @2), $2, $4, $6, $9, true, true ); }
     ;
 
 
@@ -325,7 +325,8 @@ paramDeclarations
     | paramDeclaration                          { $$ = [$1]; }
     ;
 paramDeclaration
-    : type '[' ']' IDENTIFIER       { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $2, true ); }
+    : type '[' ']' IDENTIFIER       { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $4, true ); }
+    | type '[]' IDENTIFIER       { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $3, true ); }
     | type IDENTIFIER               { $$ = new ast.NodoDeclararParametro( ast.fl(yy, @2), $1, $2, false); }
     ;
 

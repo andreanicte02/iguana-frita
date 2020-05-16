@@ -13,6 +13,10 @@ export class NTipo {
     return this._nombre;
   }
 
+  public get nombrePlano(): string {
+    return this._nombre;
+  }
+
   constructor(nombre: string, declaraciones: NodoAst[]) {
     this._nombre = nombre;
     this.declaraciones = declaraciones;
@@ -42,6 +46,10 @@ export class NTipoArreglo extends NTipo {
 
   public get nombre(): string {
     return `${this.tipoContenido.nombre}[]`;
+  }
+
+  public get nombrePlano(): string {
+    return `${this.tipoContenido.nombre}__`;
   }
 
   constructor(tipoContenido: NTipo) {
