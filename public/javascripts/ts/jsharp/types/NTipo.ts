@@ -8,6 +8,8 @@ export class NTipo {
   private readonly declaraciones: NodoAst[];
   public ambito: ZAmbito | undefined;
   public id = ++(inicio.contadorEstructuras);
+  public isConst=false;
+
 
   public get nombre(): string {
     return this._nombre;
@@ -20,6 +22,7 @@ export class NTipo {
   constructor(nombre: string, declaraciones: NodoAst[]) {
     this._nombre = nombre;
     this.declaraciones = declaraciones;
+    this.isConst = false;
   }
 
   public declararPropiedades(ambito?: ZAmbito): void {

@@ -6,6 +6,7 @@ import {FileLocation} from "./FileLocation.js";
 import {desenvolver} from "../Utilidades";
 import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
 import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
+import {SemanticError} from "../types/SemanticError";
 
 
 //linea 2016
@@ -24,6 +25,10 @@ export class NodoAsignar extends NodoAstPro {
 
         const codigo1 = this.c1.generarCodigo(ambito);
         const codigo2 = desenvolver(this.c2.generarCodigo(ambito));
+
+        if(codigo1.tipo.isConst){
+            throw new SemanticError('no se puede cambiarle el valor a una constante');
+        }
 
         //paso de boleans etiquetas a bollean normal si es que existe
         return codigoAsignar(codigo1,codigo2);

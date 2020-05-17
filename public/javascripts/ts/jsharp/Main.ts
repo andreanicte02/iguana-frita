@@ -71,7 +71,7 @@ export { NodoPotencia } from './nodes/arithmetic_operations/NodoPotencia';
 export { NodoAumento } from  './nodes/arithmetic_operations/NodoAumento';
 export { NodoDeclararVarTipo2 } from  './nodes/NodoDeclararVarTipo2';
 export { NodoDeclararVarTipo4 } from  './nodes/NodoDeclararVarTipo4';
-
+export { NodoDeclararVarTipo3 } from  './nodes/NodoDeclararVarTipo3';
 export function generar3d(sentencias: NodoAst[]): string {
 
     console.log('sentencias:');

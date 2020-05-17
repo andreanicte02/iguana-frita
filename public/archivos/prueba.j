@@ -68,7 +68,8 @@ void principal() {
     print(f);
     prueba();
     prueba2();
-
+    const cadenaConstante := "asdfasd";
+    print(cadenaConstante);
     
 }
 

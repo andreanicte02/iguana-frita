@@ -280,7 +280,7 @@ funLevelVarDeclaration
 
 otherDeclaration
     : 'var' IDENTIFIER ':=' expression { $$ = new ast.NodoDeclararVarTipo2(ast.fl(yy, @1), $2, $4 ); }
-    | 'const' IDENTIFIER ':=' expression { $$ = new ast.NodoDeclararVarTipo2(ast.fl(yy, @1), $2, $4 ); }
+    | 'const' IDENTIFIER ':=' expression { $$ = new ast.NodoDeclararVarTipo3(ast.fl(yy, @1), $2, $4 ); }
     | 'global' IDENTIFIER ':=' expression { $$ = new ast.NodoDeclararVarTipo4(ast.fl(yy, @1), $2, $4 ); }
 
     ;
