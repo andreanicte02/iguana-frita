@@ -3,7 +3,7 @@ import {FileLocation} from "./FileLocation.js";
 import {Codigo} from "./Codigo.js";
 import {NTipoVar} from "../types/NTipo.js";
 import {ZAmbito} from "../types/ZAmbito.js";
-import {guardarTablaSimbolos, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
+import {generarTemporal, guardarTablaSimbolos, obtenerTipoDesdeBancoArray} from "../Utilidades.js";
 import {codigoAsignar} from "../types/codigos";
 
 export class NodoDeclararVar extends NodoAstPro {
@@ -22,22 +22,34 @@ export class NodoDeclararVar extends NodoAstPro {
         if(this.nodoObtenerTipo === undefined){
             throw new Error(`Estas ejecutando esto sin haber definido 'nodoObtenerTipo'`);
         }
-        
         const codigoTipo = this.nodoObtenerTipo.generarCodigo(ambito) ;
-
         if (codigoTipo.tipo === undefined) {
             // ojo: este no es un SemanticError, se lanza para proteger durante desarrollo
             throw new Error('Nodo suministrado no posee tipo');
         }
-        
+
         const tipoContenido = this.esArray? obtenerTipoDesdeBancoArray(codigoTipo.tipo): codigoTipo.tipo;
-        ambito.declararPropiedad(this.nombre, new NTipoVar(tipoContenido));
 
-        //
         guardarTablaSimbolos(this.nombre, codigoTipo.tipo.nombre,this.getY(), this.getX(), this.getPath(),this.esArray+'');
-        //
 
-        return Codigo.vacio;
+        const esGlobal = ambito.padre === undefined;
+
+        if (esGlobal) {
+            const accesoDirecto = generarTemporal();
+            ambito.declararPropiedad(this.nombre, new NTipoVar(tipoContenido, accesoDirecto));
+
+            const codigo = new Codigo();
+            codigo.apuntador = accesoDirecto;
+            codigo.agregar(`${codigo.apuntador} = H;`);
+            codigo.comentar("captura de direccion");
+            codigo.agregar(`H = H + 1;`);
+            codigo.comentar(`variable ${this.nombre}`);
+            return codigo;
+        }
+        else {
+            ambito.declararPropiedad(this.nombre, new NTipoVar(tipoContenido));
+            return Codigo.vacio;
+        }
     }
 
     definirTipo(nodoObtenerTipo: NodoAst, esArray: boolean): void{

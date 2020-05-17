@@ -66,7 +66,7 @@ export function codigoObtenerTipo(ambito: ZAmbito, nombre: string): Codigo {
 
 function codigoObtenerVarGlobalConTupla(nombre: string, tupla: {indice: number; nTipoVar: NTipoVar}): Codigo {
   const codigo = new Codigo();
-  codigo.acceso = `heap[${tupla.indice + 1}]`;
+  codigo.acceso = `heap[${tupla.nTipoVar.accesoDirecto}]`;
   codigo.tipo = tupla.nTipoVar;
   codigo.extra = `${nombre}`;
   return codigo;

@@ -37,10 +37,12 @@ export class NTipo {
 //es una variable del tipo que guarda andentro
 export class NTipoVar extends NTipo {
   public readonly tipoContenido: NTipo;
+  public readonly accesoDirecto: string;
 
-  constructor(tipoContenido: NTipo) {
+  constructor(tipoContenido: NTipo, accesoDirecto?: string) {
     super("NTipoVar", []);
     this.tipoContenido = tipoContenido;
+    this.accesoDirecto = accesoDirecto || '';
   }
 }
 

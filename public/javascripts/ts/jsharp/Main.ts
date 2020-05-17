@@ -91,7 +91,7 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.agregarCodigo(codigoAmbitoGlobal);
     codigo.agregarCodigo(codigoFunciones);
 
-    codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
+
     codigo.agregar('//////////////////////////////');
     codigo.agregar('// ejecucion de main');
     const codigoInvocarMain = codigoInvocar(ambito, 'principal', []);
