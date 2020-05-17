@@ -2,7 +2,13 @@ import {NodoAst} from "./nodes/NodoAst.js";
 import {ZAmbito} from "./types/ZAmbito.js";
 import {Codigo} from "./nodes/Codigo.js";
 import {FileLocation} from "./nodes/FileLocation.js";
-import {codigoGenerarBloque, getTextoDeclaracionTemporales, reiniciarContadores, tablaFunciones} from "./Utilidades.js";
+import {
+    codigoGenerarBloque,
+    generarEtiqueta,
+    getTextoDeclaracionTemporales,
+    reiniciarContadores,
+    tablaFunciones
+} from "./Utilidades.js";
 import { NTipoVar } from "./types/NTipo.js";
 import {nTipoVoid} from "./types/TiposPrimitivos.js";
 import {codigoInvocar} from "./types/codigos.js";
@@ -88,8 +94,15 @@ export function generar3d(sentencias: NodoAst[]): string {
     const codigoAmbitoGlobal = codigoGenerarBloque(sentencias, ambito);
     const codigoFunciones = ambito.generarCodigoFunciones();
     console.log(ambito);
+    const etiqutaInicio = generarEtiqueta();
     codigo.agregarCodigo(codigoAmbitoGlobal);
+
+    codigo.agregar(`goto ${etiqutaInicio};`);
+    codigo.comentar('etiqueta inicio');
     codigo.agregarCodigo(codigoFunciones);
+
+    codigo.agregar(`${etiqutaInicio}:`);
+    codigo.comentar('etiqueta inicio llamda a main');
 
     codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
     codigo.agregar('//////////////////////////////');

@@ -1,0 +1,211 @@
+//METODOS STRING
+import "api.j";
+String [ ] cadenas = strc String[10];
+void principal(){
+	
+	for(Integer i = 0; i < cadenas.length; i++){
+		getCadenas(cadenas, i);
+	}
+
+	imprimir(cadenas, "tolowercase");
+	imprimir(cadenas, "touppercase");
+	imprimir(cadenas, "charat");
+	imprimir(cadenas, "length");
+	
+	
+}
+
+
+String [] getCadenas(String [] cadenas, Integer i){
+	
+
+	cadenas[i] = getNewCadena(i);
+	
+	return cadenas;
+}
+
+String getNewCadena(Integer i){
+
+	return "Cadenita_"+(i+1);
+
+}
+
+String Imprimir(String [] arreglo, String tipo){
+	switch ( tipo.toLowerCase() ){
+
+		case "tolowercase":
+			for(Integer i = 0; i < arreglo.length; i++){
+				print(arreglo[i].tolowercase());
+			}
+			break;
+		
+		case "touppercase":
+			for(Integer i = 0; i < arreglo.length; i++){
+				print(arreglo[i].toUppercase());
+			}
+			break;
+		
+		case "charat":
+		
+			for(Integer i = 0; i < arreglo.length; i++){
+				print(arreglo[i]);
+				for(Integer j = 0; j < arreglo[i].length(); j++){
+					print(arreglo[i].charAt(j));
+				}
+			}
+			break;
+		
+		case "length":
+		
+			for(Integer i = 0; i < arreglo.length; i++){
+				print("Length cadena: "+arreglo[i]+" es: "+arreglo[i].length());
+			}
+			break;
+		
+	}
+
+}
+
+/*
+cadenita_1
+cadenita_2
+cadenita_3
+cadenita_4
+cadenita_5
+cadenita_6
+cadenita_7
+cadenita_8
+cadenita_9
+cadenita_10
+CADENITA_1
+CADENITA_2
+CADENITA_3
+CADENITA_4
+CADENITA_5
+CADENITA_6
+CADENITA_7
+CADENITA_8
+CADENITA_9
+CADENITA_10
+Cadenita_1
+C
+a
+d
+e
+n
+i
+t
+a
+_
+1
+Cadenita_2
+C
+a
+d
+e
+n
+i
+t
+a
+_
+2
+Cadenita_3
+C
+a
+d
+e
+n
+i
+t
+a
+_
+3
+Cadenita_4
+C
+a
+d
+e
+n
+i
+t
+a
+_
+4
+Cadenita_5
+C
+a
+d
+e
+n
+i
+t
+a
+_
+5
+Cadenita_6
+C
+a
+d
+e
+n
+i
+t
+a
+_
+6
+Cadenita_7
+C
+a
+d
+e
+n
+i
+t
+a
+_
+7
+Cadenita_8
+C
+a
+d
+e
+n
+i
+t
+a
+_
+8
+Cadenita_9
+C
+a
+d
+e
+n
+i
+t
+a
+_
+9
+Cadenita_10
+C
+a
+d
+e
+n
+i
+t
+a
+_
+1
+0
+Length cadena: Cadenita_1 es: 10
+Length cadena: Cadenita_2 es: 10
+Length cadena: Cadenita_3 es: 10
+Length cadena: Cadenita_4 es: 10
+Length cadena: Cadenita_5 es: 10
+Length cadena: Cadenita_6 es: 10
+Length cadena: Cadenita_7 es: 10
+Length cadena: Cadenita_8 es: 10
+Length cadena: Cadenita_9 es: 10
+Length cadena: Cadenita_10 es: 11
+*/

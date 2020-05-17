@@ -383,6 +383,7 @@ function process3d(sentences){
 
 let arregloTS= undefined;
 let arregloFunction= undefined;
+let codigoFinal = undefined;
 const compileButton = $("#compileButton");
 compileButton.click(()=>{
 
@@ -411,6 +412,8 @@ compileButton.click(()=>{
 
             arregloTS = ast.getTS();
             arregloFunction = ast.getFunctions();
+            codigoFinal = texto;
+
             editor3d.setValue(texto);
             editor3d.clearSelection();
         }
@@ -531,9 +534,6 @@ function openFile(file){
 
             const session = ace.createEditSession(data, "ace/mode/java");
 
-            // $(".tab").removeClass("tab-active");
-
-            // tab-active quitado
 
             // se agrega el tab
             const tab = $("<div></div>", { "class": "tab" } );
@@ -629,6 +629,18 @@ const tablaFunciones = $("#tablaFunciones");
 tablaFunciones.click(()=>{
     let cuerpo = create_html(funciones_body_reporte(arregloFunction));
     download('reporte_tabla_funciones.html',cuerpo);
+});
+
+const aux3D = $("#aux3D");
+aux3D.click(()=>{
+    let salida = `##salida para para los aux XD\n`;
+    salida += `var Stack[];\nvar Heap[];\n`
+    salida += codigoFinal;
+    salida =  salida.split("//").join("##");
+    salida =  salida.split("!=").join("<>");
+    salida =  salida.split("%e").join("%i");
+
+    editor3d.setValue(salida);
 });
 
 
