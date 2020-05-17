@@ -3,7 +3,7 @@ import {SemanticError} from "./SemanticError.js";
 import {NTipo, NTipoArreglo, NTipoVar} from "./NTipo.js";
 import {ZAmbito} from "./ZAmbito.js";
 import {
-  desenvolver, generarNombreConstructor,
+  desenvolver, generarEtiqueta, generarNombreConstructor,
   generarNombreProc,
   generarTemporal,
   obtenerEspacioOcupadoEnFuncion,
@@ -366,16 +366,25 @@ export function codigoCrearArray(tipoContenido: NTipo, codigoValor: Codigo, codi
 
   codigo.extra = `[new ${tipoContenido.nombre}(${codigoValor.extra}) ]`;
 
+
   if (codigos.length) {
     codigo.agregar(`${temp} = ${codigo.apuntador};`);
     codigo.comentar(`temporal para asignar valores`)
-  }
 
-  codigos.forEach((c, index) => {
-    codigo.agregar(`${temp} = ${temp} + 1;`)
-    codigo.agregar(`heap[${temp}] = ${c.apuntador};`);
-    codigo.comentar(`[${index}] = ${c.extra}`);
-  });
+    codigos.forEach((c, index) => {
+      codigo.agregar(`${temp} = ${temp} + 1;`)
+      codigo.agregar(`heap[${temp}] = ${c.apuntador};`);
+      codigo.comentar(`[${index}] = ${c.extra}`);
+    });
+  }
+  else {
+    const salto = generarEtiqueta();
+    codigo.agregar(`${temp} = ${codigo.apuntador};`);
+    codigo.agregar(`${salto}:`);
+    codigo.agregar(`${temp} = ${temp} + 1;`);
+    codigo.agregar(`heap[${temp}] = 0;`);
+    codigo.agregar(`if (${temp} < H) goto ${salto};`);
+  }
 
   return codigo;
 }
