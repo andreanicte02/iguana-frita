@@ -69,6 +69,7 @@ export { NodoDoubleCast } from './nodes/casteos_explicitos/NodoDoubleCast';
 export { NodiInvocarSayajin } from './nodes/NodoInvocar';
 export { NodoPotencia } from './nodes/arithmetic_operations/NodoPotencia';
 export { NodoAumento } from  './nodes/arithmetic_operations/NodoAumento';
+export { NodoDeclararVarTipo2 } from  './nodes/NodoDeclararVarTipo2';
 
 export function generar3d(sentencias: NodoAst[]): string {
 

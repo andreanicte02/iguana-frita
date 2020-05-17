@@ -63,7 +63,8 @@ void principal() {
     }
     integer a =0;
     print(a++);
-
+    var prueba := 1;
+    print(prueba);
 }
 
 

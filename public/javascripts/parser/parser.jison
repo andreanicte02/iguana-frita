@@ -64,7 +64,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 "void"                  return 'void'
 "while"                 return 'while'
-
+"var"                   return 'var'
 
 "//".*                /* skip comments */
 
@@ -77,6 +77,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 "["                     return '['
 "]"                     return ']'
 ";"                     return ';'
+":="                     return ':='
 ":"                     return ':'
 "?"                     return '?'
 ","                     return ','
@@ -204,7 +205,7 @@ funSentence
     | continueControl ';'           { $$ = $1; }
     | throwControl ';'              { $$ = $1; }
     | structureDeclaration ';'      { $$ = $1; }
-    | ';'                           { $$ = new ast.NodoCrearNull(ast.fl(yy, @1)); }
+    | otherDeclaration  ';'         { $$ = $1; }
     ;
 
 /* ********************************************************** */
@@ -272,6 +273,10 @@ funLevelVarDeclaration
     | primitiveType '[' ']' varDeclarations '=' expression  { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $4, $6); }
     | primitiveType '[]' varDeclarations '=' expression     { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $3, $5); }
     | IDENTIFIER '[]' varDeclarations '=' expression        { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), new ast.NodoObtenerTipo(ast.fl(yy,  @1), $1), true, $3, $5); }
+    ;
+
+otherDeclaration
+    : 'var' IDENTIFIER ':=' expression { $$ = new ast.NodoDeclararVarTipo2(ast.fl(yy, @1), $2, $4 ); }
     ;
 
 varDeclarations
