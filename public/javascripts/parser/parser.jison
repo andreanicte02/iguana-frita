@@ -155,8 +155,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 %left '--' '++' '!'
 %left '.' '['
 
-%left HOPE2
-%left HOPE
+
 
 %start withBeingDrunk
 

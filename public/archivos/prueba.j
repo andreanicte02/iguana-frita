@@ -3,8 +3,7 @@
 import "api.j";
 
 integer w, v = 4;
-
-
+var z := 2;
 
 void principal() {
     

@@ -635,7 +635,7 @@ const aux3D = $("#aux3D");
 aux3D.click(()=>{
     let salida = `##salida para para los aux XD\n`;
     salida += `var Stack[];\nvar Heap[];\n`
-    salida += codigoFinal;
+    salida += editor3d.getValue();
     salida =  salida.split("//").join("##");
     salida =  salida.split("!=").join("<>");
     salida =  salida.split("%e").join("%i");
@@ -644,5 +644,8 @@ aux3D.click(()=>{
 });
 
 
-
+const optmizar3d = $("#optmizar3d");
+optmizar3d.click(()=>{
+       optimizar();
+});
 
