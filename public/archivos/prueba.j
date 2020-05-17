@@ -4,6 +4,8 @@ import "api.j";
 
 integer w, v = 4;
 
+var s := 3;
+global f := s;
 
 void principal() {
     
@@ -63,8 +65,22 @@ void principal() {
     }
     integer a =0;
     print(a++);
-    var prueba := 1;
-    print(prueba);
+    print(f);
+    prueba();
+    prueba2();
+
+    
+}
+
+
+void prueba(){
+    global variabeGlobal1 := 2;
+   
+}
+
+void prueba2(){
+     
+      print(variabeGlobal1);
 }
 
 
