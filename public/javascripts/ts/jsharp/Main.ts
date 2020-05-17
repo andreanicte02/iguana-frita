@@ -101,10 +101,12 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.comentar('etiqueta inicio');
     codigo.agregarCodigo(codigoFunciones);
 
+    
     codigo.agregar(`${etiqutaInicio}:`);
     codigo.comentar('etiqueta inicio llamda a main');
 
     codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
+
     codigo.agregar('//////////////////////////////');
     codigo.agregar('// ejecucion de main');
     const codigoInvocarMain = codigoInvocar(ambito, 'principal', []);

@@ -23,9 +23,9 @@ export class NodoDeclararVarTipo5 extends NodoAstPro{
 
         const tipo: NodoAst = this.nodoObtenerTipo;
 
-        this.listId.forEach((value) => {
+        const codigosDeclaraciones = this.listId.map((value) => {
             value.definirTipo(tipo, this.isArray);
-            value.generarCodigo(ambito);
+            return value.generarCodigo(ambito);
         })
 
 
@@ -39,6 +39,7 @@ export class NodoDeclararVarTipo5 extends NodoAstPro{
             return codigoAsignar(codigoVar, codigoValorAux, true,true);
         });
 
+        codigo.agregarCodigos(codigosDeclaraciones);
         codigo.agregarCodigos(codigosAsignacion);
         return codigo;
     }

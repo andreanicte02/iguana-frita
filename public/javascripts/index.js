@@ -365,7 +365,7 @@ function debug3d(sentences){
 function process3d(sentences){
     myConsole.clear();
 
-    const z = new ast3d.ZContainer();
+    z = new ast3d.ZContainer();
     const block  = new ast3d.Block3D(sentences);
     block.execute(z);
 
