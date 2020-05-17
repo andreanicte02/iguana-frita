@@ -1,9 +1,10 @@
 //METODOS STRING
 import "api.j";
-String [ ] cadenas = strc String[10];
+String[] cadenas = strc String[10];
+
 void principal(){
 	
-	for(Integer i = 0; i < cadenas.length; i++){
+	for(integer i = 0; i < cadenas.length; i++){
 		getCadenas(cadenas, i);
 	}
 
@@ -11,12 +12,13 @@ void principal(){
 	imprimir(cadenas, "touppercase");
 	imprimir(cadenas, "charat");
 	imprimir(cadenas, "length");
+
 	
 	
 }
 
 
-String [] getCadenas(String [] cadenas, Integer i){
+String [] getCadenas(String [] cadenas, integer i){
 	
 
 	cadenas[i] = getNewCadena(i);
@@ -24,7 +26,7 @@ String [] getCadenas(String [] cadenas, Integer i){
 	return cadenas;
 }
 
-String getNewCadena(Integer i){
+String getNewCadena(integer i){
 
 	return "Cadenita_"+(i+1);
 
@@ -34,30 +36,30 @@ String Imprimir(String [] arreglo, String tipo){
 	switch ( tipo.toLowerCase() ){
 
 		case "tolowercase":
-			for(Integer i = 0; i < arreglo.length; i++){
+			for(integer i = 0; i < arreglo.length; i++){
 				print(arreglo[i].tolowercase());
 			}
 			break;
 		
 		case "touppercase":
-			for(Integer i = 0; i < arreglo.length; i++){
+			for(integer i = 0; i < arreglo.length; i++){
 				print(arreglo[i].toUppercase());
 			}
 			break;
 		
 		case "charat":
 		
-			for(Integer i = 0; i < arreglo.length; i++){
+			for(integer i = 0; i < arreglo.length; i++){
 				print(arreglo[i]);
-				for(Integer j = 0; j < arreglo[i].length(); j++){
-					print(arreglo[i].charAt(j));
+				for(integer j = 0; j < arreglo[i].length(); j++){
+					print(arreglo[i].charArt(j));
 				}
 			}
 			break;
 		
 		case "length":
 		
-			for(Integer i = 0; i < arreglo.length; i++){
+			for(integer i = 0; i < arreglo.length; i++){
 				print("Length cadena: "+arreglo[i]+" es: "+arreglo[i].length());
 			}
 			break;

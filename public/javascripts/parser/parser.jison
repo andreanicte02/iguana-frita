@@ -261,9 +261,12 @@ attribute
 
 classLevelVarDeclaration
     : type varDeclarations                          { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }
-    | type '[' ']' varDeclarations                  { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $2);  }
+    | type '[' ']' varDeclarations                  { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $4);  }
+    | type '[]' varDeclarations                     { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, true, $3);  }
     | type varDeclarations '=' expression           { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, false, $2, $4);  }
-    | type '[' ']' varDeclarations '=' expression   { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $2, $4);  }
+    | type '[' ']' varDeclarations '=' expression   { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $4, $6);  }
+    | type '[]' varDeclarations '=' expression      { $$ = new ast.NodoDeclararVarTipo1(ast.fl(yy, @1), $1, true, $3, $5);  }
+
     ;
 funLevelVarDeclaration
     : primitiveType varDeclarations                 { $$ = new ast.NodoDeclararVarTipo5(ast.fl(yy, @1), $1, false, $2);  }

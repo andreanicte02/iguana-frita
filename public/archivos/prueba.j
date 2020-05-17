@@ -4,8 +4,7 @@ import "api.j";
 
 integer w, v = 4;
 
-var s := 3;
-global f := s;
+
 
 void principal() {
     
@@ -65,23 +64,25 @@ void principal() {
     }
     integer a =0;
     print(a++);
-    print(f);
+
     prueba();
     prueba2();
     const cadenaConstante := "asdfasd";
     print(cadenaConstante);
+    Vector x = strc Vector();
+    x.x = 95;
+    print(x.x);
     
 }
 
 
 void prueba(){
-    global variabeGlobal1 := 2;
+  
    
 }
 
 void prueba2(){
      
-      print(variabeGlobal1);
 }
 
 
