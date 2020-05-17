@@ -239,7 +239,12 @@ attribute
                                                         asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $2, $4),
                                                     };
                                                 }
-    | type IDENTIFIER                           { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2) }; }
+    | type IDENTIFIER                           {
+                                                    $$ = {
+                                                            declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $2),
+                                                            asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @2), $2, undefined),
+                                                    };
+                                                }
     | type '[' ']' IDENTIFIER '=' expression    {
 
                                                     $$ = {
@@ -254,8 +259,18 @@ attribute
                                                             asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $3, $5),
                                                         };
                                                     }
-    | type '[' ']' IDENTIFIER                   { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $4, true) }; }
-    | type '[]' IDENTIFIER                      { $$ = { declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $3, true) }; }
+    | type '[' ']' IDENTIFIER                   {
+                                                    $$ = {
+                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $4, true),
+                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @4), $4, undefined),
+                                                    };
+                                                }
+    | type '[]' IDENTIFIER                      {
+                                                    $$ = {
+                                                        declaracion: new ast.NodoDeclararAtributo(ast.fl(yy, @2), $1, $3, true),
+                                                        asignacion: new ast.NodoAsignarAtributo(ast.fl(yy, @3), $3, undefined),
+                                                     };
+                                                }
     ;
 
 
