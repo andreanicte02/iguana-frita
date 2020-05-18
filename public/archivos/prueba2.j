@@ -1,10 +1,4 @@
-void print(integer entero){
-    #print(c, '>');
-    #print(c, ' ');
-    #print(e, entero);
-    #print(c, '\n');
-}
-
+import "api.j";
 
 void principal() {
     

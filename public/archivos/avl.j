@@ -15,7 +15,7 @@ String getDot(ArbolAVL arbol) {
 }
 
 String getDotNodosInternos(NodoAVL nodo) {
-  String etiqueta = "";
+  String etiqueta = " ";
   if (nodo.izq == null && nodo.der == null) {
     etiqueta = "nodo" + nodo.valor + " [ label =\"" + nodo.valor + "\"];\n";
   } else {

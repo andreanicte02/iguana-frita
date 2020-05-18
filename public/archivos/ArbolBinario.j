@@ -9,28 +9,28 @@ void principal()
     add(root,45);
   	add(root,34);
   	add(root,9);
-
+	
 	NodoB encontrado = find(root,11);
 	if ( encontrado != null ){
 		print("Encontro el nodo de " + encontrado.value);
 	} else {
 		print("Valor no encontrado");
 	}
-
+	
 	encontrado = find(root,8);
 	if ( encontrado != null ){
 		print("Encontro el nodo de " + encontrado.value);
 	} else {
 		print("Valor no encontrado");
 	}
-
+	
 	print("Print in Order");
 	printInOrder(root);
 	print("Print pos Order");
 	printPosOrder(root);
 	print("Print pre order");
 	printPreOrder(root);
-
+	
 }
 
 // Nodo Binario de valores enteros

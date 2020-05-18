@@ -1,6 +1,7 @@
 
 /* lexical grammar */
 %lex
+%options case-insensitive
 
 
 %s                comment

@@ -1,26 +1,4 @@
-void principal() {
-
-  Lista lista = strc Lista();
-  insertar(lista, 10);
-  // 56 -> 40 -> 1 -> 30 -> 20 -> 10
-  Nodo temp = lista.inicio;
-  
-  if(temp!= null){
-
-    temp = temp.sig;
-  }
-  
-   if(temp== null){
-  
-    
-   
-  }
-  
- 
-  
-  
-}
-
+import "api.j";
 define Nodo as [
   integer dato,
   Nodo sig
@@ -41,9 +19,21 @@ void insertar(Lista lista, integer dato) {
 void imprimirLista(Lista lista) {
   Nodo temp = lista.inicio;
   while(temp != null) {
-
+    print(temp.dato);
     temp = temp.sig;
   }
-
+  print('\n');
 }
 
+void principal() {
+  print("================= LISTA SIMPLE =================\n");
+  Lista lista = strc Lista();
+  insertar(lista, 10);
+  insertar(lista, 20);
+  insertar(lista, 30);
+  insertar(lista, 1);
+  insertar(lista, 40);
+  insertar(lista, 56);
+  // 56 -> 40 -> 1 -> 30 -> 20 -> 10
+  imprimirLista(lista);
+}
