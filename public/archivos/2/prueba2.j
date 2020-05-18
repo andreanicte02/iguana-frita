@@ -1,4 +1,7 @@
 import "../api.j";
+
+string sas ="asdfasdf";
+
 void principal() {
     
   Lista lista = strc Lista();
@@ -14,6 +17,9 @@ void principal() {
          
   }  
   
+  double a =(double) 2;
+  
+  print(sas);
     
 }
 

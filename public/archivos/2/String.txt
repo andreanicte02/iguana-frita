@@ -1,6 +1,7 @@
 //METODOS STRING
 import "../api.j";
 String [] cadenas = strc String[10];
+const cadenLeng := "length";
 void principal(){
 	
 	for(Integer i = 0; i < cadenas.length; i++){
@@ -10,7 +11,8 @@ void principal(){
 	imprimir(cadenas, "tolowercase");
 	imprimir(cadenas, "touppercase");
 	imprimir(cadenas, "charat");
-	imprimir(cadenas, "length");
+	imprimir(cadenas, cadenLeng);
+	print(cadenLeng);
 	
 	
 }

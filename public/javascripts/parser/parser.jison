@@ -67,7 +67,6 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 ";"                     return ';'
 ":="                     return ':='
 ":"                     return ':'
-"?"                     return '?'
 ","                     return ','
 
 [0-9]+"."[0-9]+         return 'DOUBLE'
@@ -113,8 +112,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 /* precedencia */
 
-%right '?'
-%left '++'
+
 %left '^'
 %left '||'
 %left '&&'
@@ -123,10 +121,8 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 %left '+' '-'
 %left '*' '/' '%'
 %left '^^'
-
 %right UMINUS
 %right 'strc' UCHAR UINT UDOUBLE
-
 %left '--' '++' '!'
 %left '.' '['
 
