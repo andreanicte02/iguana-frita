@@ -95,8 +95,6 @@ function refreshFileTree() {
 }
 
 
-
-
 function paintDirectory(directory, contentDiv, indent){
     const directoryDiv = $("<div></div>", { "class" : "tree-element" });
     directoryDiv.append(indent);
@@ -144,38 +142,13 @@ function paintFile(file, contentDiv, indent){
 
 
 const editor3d = ace.edit("editor-3d");
-// editor.setTheme("ace/theme/monokai");
 editor3d.session.setMode("ace/mode/java");
 
-/*
-editor3d.on("guttermousedown", function(e) {
-    var target = e.domEvent.target;
-    if (target.className.indexOf("ace_gutter-cell") === -1)
-        return;
-    if (!editor.isFocused())
-        return;
-    if (e.clientX > 25 + target.getBoundingClientRect().left)
-        return;
 
-    var row = e.getDocumentPosition().row;
-
-    var breakpoints = e.editor.session.getBreakpoints(row, 0);
-    // var row = e.getDocumentPosition().row;
-    if(typeof breakpoints[row] === typeof undefined)
-        e.editor.session.setBreakpoint(row);
-    else
-        e.editor.session.clearBreakpoint(row);
-
-
-    // e.editor.session.setBreakpoint(row);
-    e.stop();
-});
-*/
 
 const editor = ace.edit("tab-content");
-// editor.setTheme("ace/theme/monokai");
 editor.setReadOnly(true);
-// editor.session.setMode("ace/mode/java");
+
 
 
 //editor-3d
@@ -225,141 +198,9 @@ executeButton.click(()=>{
     }
 });
 
-$("#debugButton")
-    .click(()=>{
-
-        clearErrors();
-
-        const text3d = editor3d.getValue();
-        if (text3d.trim().length === 0) {
-            alert("No hay nada que debugear");
-        }
-        else {
-
-            try {
-                const sentences = parser3d.parse(text3d);
-                // ast3d.process(sentences);
-                debug3d(sentences);
-            }
-            catch (e) {
-                if (e._semanticError){
-                    console.log(e._semanticError);
-                    alert(e.message);
-
-                    addErrorRow("Semantico", relativePath, e._p.first_line, e._p.first_column, e._semanticError.message);
-                }
-                else {
-                    console.log(e);
-                    alert(e.message);
-                    jj = e;
-
-                    if (e.hash) {
-                        addErrorRow("Sintactico", relativePath, e.hash.line, 0, e.message);
-                    }
-                    else {
-                        addErrorRow("?Sintactico", relativePath, 0, 0, e.message);
-                    }
 
 
-                }
 
-            }
-        }
-    });
-
-const stepButton = $("#stepButton");
-stepButton.click(()=>{
-    safeStep(stepper);
-});
-
-let stepper = null;
-
-function safeStep(_stepper){
-    if (_stepper) {
-
-        try {
-            return _stepper();
-        }
-        catch (e) {
-            if (e._semanticError){
-                console.log(e._semanticError);
-                alert(e.message);
-            }
-            else {
-                console.log(e);
-                alert(e.message);
-            }
-            return false;
-        }
-    }
-    else {
-        console.log("no se ha iniciado debug");
-        return false;
-    }
-}
-
-function debugToLine(line) {
-
-    while (true) {
-        const result = safeStep(stepper);
-        console.log("result:",result);
-
-        if (result === false) {
-            // dio un error
-            break;
-        }
-        if (result === -1) {
-            // finalizo
-            break;
-        }
-
-        if (result === line){
-            // llegue a la linea que quiero
-            break;
-        }
-
-    }
-}
-
-function debug3d(sentences){
-
-
-    const z = new ast3d.ZContainer();
-    const block  = new ast3d.Block3D(sentences);
-    block.execute(z);
-
-    stepper = function () {
-        if (z.blocks.length) {
-            const lastBlock = z.blocks[z.blocks.length - 1];
-            const sentence = lastBlock.step(z);
-            zz = z;
-            if (sentence){
-
-                const line = sentence._p.first_line - 1;
-
-                editor3d.selection.moveCursorToPosition({row: line, column: 0});
-                // editor.gotoLine(50, 10, true);
-                editor3d.selection.selectLine();
-
-                editor3d.scrollToLine(line, true, true, function () {});
-
-                console.log(z._stack);
-                console.log(z._heap);
-                console.log("P:", z._vars.get("P"), "H:", z._vars.get("H"));
-                console.log(sentence.cutePos());
-
-                return line;
-            }
-        }
-        else {
-            console.log("termino");
-            return -1;
-        }
-        return undefined;
-    };
-
-
-}
 
 
 function process3d(sentences){

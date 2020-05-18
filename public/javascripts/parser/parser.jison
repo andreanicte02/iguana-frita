@@ -4,14 +4,10 @@
 
 
 %s                comment
-
-
-
 EscapeSequence                  ('\\' [btnfr"'\\])
 SingleCharacter                 [^'\\]
 StringCharacter                 [^"\\] | {EscapeSequence}
 StringCharacters                {StringCharacter}+
-
 JSharpCharacterLiteral            ('\''{SingleCharacter}'\'')|('\''{EscapeSequence}'\'')
 JSharpStringLiteral               '"' {StringCharacters}? '"'
 
@@ -32,36 +28,26 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 "as"                    return 'as'
 "define"                return 'define'
 "strc"                  return 'strc'
-
 "break"                 return 'break'
 "boolean"               return 'boolean'
-
 "case"                  return 'case'
 "char"                  return 'char'
 "continue"              return 'continue'
-
 "default"               return 'default'
 "double"                return 'double'
 "do"                    return 'do'
-
 "else"                  return 'else'
 "false"                 return 'false'
 "for"                   return 'for'
-
 "if"                    return 'if'
 "import"                return 'import'
 "integer"               return 'integer'
-
 "null"                  return 'NULL'
-
 "return"                return 'return'
-
 "switch"                return 'switch'
 "str"                   return 'str'
-
 "throw"                 return 'throw'
 "true"                  return 'true'
-
 "void"                  return 'void'
 "while"                 return 'while'
 "var"                   return 'var'
@@ -71,7 +57,6 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 "//".*                /* skip comments */
 
 \s+                   /* skip whitespace */
-
 
 "{"                     return '{'
 "}"                     return '}'
@@ -91,14 +76,10 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 
 "."                     return '.'
-
-
 "||"                    return '||'
 "&&"                    return '&&'
-
 "!="                    return '!='
 "!"                     return '!'
-
 "%"                   return '%'
 "*"                   return '*'
 "/"                   return '/'
@@ -112,11 +93,9 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 "%"                   return '%'
 "("                   return '('
 ")"                   return ')'
-
-"==="                    return '==='
+"==="                   return '==='
 "=="                    return '=='
 "="                     return '='
-
 "<="                    return '<='
 ">="                    return '>='
 "<"                     return '<'
@@ -125,18 +104,13 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 
 
-
 [a-zA-Z_][a-zA-Z0-9_]*    return 'IDENTIFIER';
-
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
 
 /lex
 
-
-
-
-/* operator associations and precedence */
+/* precedencia */
 
 %right '?'
 %left '++'
@@ -154,7 +128,6 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 
 %left '--' '++' '!'
 %left '.' '['
-
 
 
 %start withBeingDrunk
@@ -178,7 +151,10 @@ globalSentence
     : classLevelVarDeclaration ';'      { $$ = $1; }
     | classLevelFunDeclaration          { $$ = $1; }
     | structureDeclaration ';'          { $$ = $1; }
+    | structureDeclaration              { $$ = $1; }
     | otherDeclaration ';'              { $$ = $1; }
+    | otherDeclaration                  { $$ = $1; }
+
     ;
 
 
@@ -204,9 +180,12 @@ funSentence
     | switchControl                 { $$ = $1; }
     | returnControl ';'             { $$ = $1; }
     | breakControl  ';'             { $$ = $1; }
+    | breakControl                  { $$ = $1; }
     | continueControl ';'           { $$ = $1; }
+    | continueControl               { $$ = $1; }
     | throwControl ';'              { $$ = $1; }
     | structureDeclaration ';'      { $$ = $1; }
+    | structureDeclaration          { $$ = $1; }
     | otherDeclaration  ';'         { $$ = $1; }
     ;
 
@@ -531,19 +510,9 @@ throwControl
     : 'throw' expression    { $$ = new ast.ThrowNode(yy.last(), @1, $2); }
     ;
 
-//*************************************************************************************************
 
 nativeFuns
-    : '@' type 'str' '(' paramDeclarationList ')'
-       '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type 'toDouble' '(' paramDeclarationList ')'
-           '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type 'toInt' '(' paramDeclarationList ')'
-           '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type 'toChar' '(' paramDeclarationList ')'
-           '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    | '@' type IDENTIFIER '(' paramDeclarationList ')'
-           '{' funSentenceList '}'               { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
+    : '@' type IDENTIFIER '(' paramDeclarationList ')' '{' funSentenceList '}' { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
     ;
 
 
