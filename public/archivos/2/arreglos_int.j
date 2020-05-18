@@ -1,4 +1,4 @@
-import "api.j";
+import "../api.j";
 integer particion(integer[] arreglo, integer bajo, integer alto) {
   integer pivote = arreglo[alto];
   integer i = (bajo - 1);

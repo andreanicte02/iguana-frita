@@ -1,4 +1,4 @@
-import "api.j";
+import "../api.j";
 define Nodo as [
   integer dato,
   Nodo sig

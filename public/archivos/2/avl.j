@@ -1,4 +1,4 @@
-import "api.j";
+import "../api.j";
 define NodoAVL as [
   integer valor,
   NodoAVL izq,

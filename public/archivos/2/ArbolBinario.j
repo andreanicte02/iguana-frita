@@ -1,4 +1,4 @@
-import "api.j";
+import "../api.j";
 void principal()
 {
 	NodoB root = NodoB(10);

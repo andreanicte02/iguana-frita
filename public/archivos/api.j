@@ -83,8 +83,19 @@ void printt(char caracter){
 }
 
 //####strings
-//todo: el null esta pendiente
+
+
 @String concatenar(String s1, String s2){
+
+    if(s1 == null){
+
+        s1 = "null";
+    }
+
+    if(s2 == null){
+
+        s2 = "null";
+    }
 
     char [] cadena  =  strc char[s1.chars.length + s2.chars.length];
 
@@ -246,7 +257,7 @@ void printt(char caracter){
     return cadena;
 }
 //#cadenas por valor
-//todo: el null esta pendiente
+
 
 @boolean cadenaEquals(String s1, String s2){
 

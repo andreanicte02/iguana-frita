@@ -512,9 +512,7 @@ throwControl
     ;
 
 
-nativeFuns
-    : '@' type IDENTIFIER '(' paramDeclarationList ')' '{' funSentenceList '}' { $$ = new ast.ClassLevelFunDeclaration(yy.last(), @2, [new ast.AddStaticModifier()], $2, undefined, $3, $5, $8); }
-    ;
+
 
 
 simplePrint

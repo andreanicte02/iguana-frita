@@ -1,5 +1,5 @@
 //METODOS STRING
-import "api.j";
+import "../api.j";
 String [] cadenas = strc String[10];
 void principal(){
 	

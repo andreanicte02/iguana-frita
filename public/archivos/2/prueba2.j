@@ -1,5 +1,4 @@
-import "api.j";
-
+import "../api.j";
 void principal() {
     
   Lista lista = strc Lista();
