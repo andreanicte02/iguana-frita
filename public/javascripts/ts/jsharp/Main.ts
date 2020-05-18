@@ -105,7 +105,7 @@ export function generar3d(sentencias: NodoAst[]): string {
     codigo.agregar(`${etiqutaInicio}:`);
     codigo.comentar('etiqueta inicio llamda a main');
 
-    codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
+    // codigo.agregar(`H = ${ambito.espacioEnMemoria};`)
 
     codigo.agregar('//////////////////////////////');
     codigo.agregar('// ejecucion de main');

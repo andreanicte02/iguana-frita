@@ -3,7 +3,7 @@ import {ZAmbito} from "../types/ZAmbito";
 import {Codigo} from "./Codigo";
 import {FileLocation} from "./FileLocation";
 import {NodoDeclararVar} from "./NodoDeclararVar";
-import {desenvolver, guardarTablaSimbolos} from "../Utilidades";
+import {desenvolver, generarTemporal, guardarTablaSimbolos} from "../Utilidades";
 import {NTipoVar} from "../types/NTipo";
 import {codigoAsignar, codigoObtenerVar} from "../types/codigos";
 
@@ -22,19 +22,29 @@ export class NodoDeclararVarTipo2 extends NodoAstPro {
 
         const codigoExp = desenvolver(this.expression.generarCodigo(ambito));
 
-        ambito.declararPropiedad(this.id , new NTipoVar(codigoExp.tipo));
-
         //
         guardarTablaSimbolos(this.id, codigoExp.tipo.nombre,this.getY(), this.getX(), this.getPath(),'');
         //
 
+        const codigo = new Codigo();
+        const esGlobal = ambito.padre === undefined;
+
+        if (esGlobal) {
+            const accesoDirecto = generarTemporal();
+            ambito.declararPropiedad(this.id, new NTipoVar(codigoExp.tipo, accesoDirecto));
+            codigo.apuntador = accesoDirecto;
+            codigo.agregar(`${codigo.apuntador} = H;`);
+            codigo.comentar("captura de direccion");
+            codigo.agregar(`H = H + 1;`);
+            codigo.comentar(`variable ${this.id}`);
+        }
+        else {
+            ambito.declararPropiedad(this.id , new NTipoVar(codigoExp.tipo));
+        }
 
         const codigoVar = codigoObtenerVar(ambito, this.id);
-
-
         const codigoAsignado = codigoAsignar(codigoVar, codigoExp, true);
 
-        const codigo = new Codigo();
         codigo.agregarCodigo(codigoExp);
         codigo.agregarCodigo(codigoAsignado);
         return codigo;

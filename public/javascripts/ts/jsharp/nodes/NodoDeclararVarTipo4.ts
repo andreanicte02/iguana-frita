@@ -2,7 +2,7 @@ import {NodoAst, NodoAstPro} from "./NodoAst";
 import {ZAmbito} from "../types/ZAmbito";
 import {Codigo} from "./Codigo";
 import {FileLocation} from "./FileLocation";
-import {desenvolver, guardarTablaSimbolos} from "../Utilidades";
+import {desenvolver, generarTemporal, guardarTablaSimbolos} from "../Utilidades";
 import {NTipo, NTipoVar} from "../types/NTipo";
 import {buscarEnCadenaAmbito, codigoAsignar, codigoObtenerVar} from "../types/codigos";
 
@@ -32,8 +32,19 @@ export class NodoDeclararVarTipo4 extends NodoAstPro {
         if(global === undefined) {
             throw new Error('no se proporciono el ambito global :(');
         }
-        global.declararPropiedad(this.id, new NTipoVar(codigoExp.tipo));
 
+        const codigo = new Codigo();
+
+
+        const accesoDirecto = generarTemporal();
+
+        global.declararPropiedad(this.id, new NTipoVar(codigoExp.tipo, accesoDirecto));
+
+        codigo.apuntador = accesoDirecto;
+        codigo.agregar(`${codigo.apuntador} = H;`);
+        codigo.comentar("captura de direccion");
+        codigo.agregar(`H = H + 1;`);
+        codigo.comentar(`variable ${this.id}`);
 
         //
         guardarTablaSimbolos(this.id, codigoExp.tipo.nombre, this.getY(), this.getX(), this.getPath(), '');
@@ -43,7 +54,6 @@ export class NodoDeclararVarTipo4 extends NodoAstPro {
         const codigoVar = codigoObtenerVar(global, this.id);
         const codigoAsignado = codigoAsignar(codigoVar, codigoExp, true);
 
-        const codigo = new Codigo();
         codigo.agregarCodigo(codigoExp);
         codigo.agregarCodigo(codigoAsignado);
         return codigo;
