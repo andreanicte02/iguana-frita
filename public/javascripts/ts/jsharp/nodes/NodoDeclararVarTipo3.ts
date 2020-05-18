@@ -6,6 +6,8 @@ import {NodoDeclararVar} from "./NodoDeclararVar";
 import {desenvolver, generarTemporal, guardarTablaSimbolos} from "../Utilidades";
 import {NTipoVar} from "../types/NTipo";
 import {codigoAsignar, codigoObtenerVar} from "../types/codigos";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
 
 
 export class NodoDeclararVarTipo3 extends NodoAstPro {
@@ -22,7 +24,11 @@ export class NodoDeclararVarTipo3 extends NodoAstPro {
 
         const codigoExp = desenvolver(this.expression.generarCodigo(ambito));
 
-        guardarTablaSimbolos(this.id, codigoExp.tipo.nombre, this.getY(), this.getX(), this.getPath(), '');
+
+        const codigoExpAux = codigoExp.tipo === nTipoBooleanConEtiqueta ?
+            deBooleanoEtiquetaANormal(codigoExp): codigoExp;
+
+        guardarTablaSimbolos(this.id, codigoExpAux.tipo.nombre, this.getY(), this.getX(), this.getPath(), '');
         //
         const codigo = new Codigo();
         const esGlobal = ambito.padre === undefined;
@@ -30,7 +36,7 @@ export class NodoDeclararVarTipo3 extends NodoAstPro {
 
         if (esGlobal) {
             const accesoDirecto = generarTemporal();
-            const niuTipo = new NTipoVar(codigoExp.tipo, accesoDirecto);
+            const niuTipo = new NTipoVar(codigoExpAux.tipo, accesoDirecto);
             niuTipo.isConst = true;
             ambito.declararPropiedad(this.id, niuTipo);
             codigo.apuntador = accesoDirecto;
@@ -40,14 +46,14 @@ export class NodoDeclararVarTipo3 extends NodoAstPro {
             codigo.comentar(`variable ${this.id}`);
         }
         else {
-            const niuTipo = new NTipoVar(codigoExp.tipo);
+            const niuTipo = new NTipoVar(codigoExpAux.tipo);
             niuTipo.isConst = true;
             ambito.declararPropiedad(this.id, niuTipo);
         }
 
         const codigoVar = codigoObtenerVar(ambito, this.id);
-        const codigoAsignado = codigoAsignar(codigoVar, codigoExp, true);
-        codigo.agregarCodigo(codigoExp);
+        const codigoAsignado = codigoAsignar(codigoVar, codigoExpAux, true);
+        codigo.agregarCodigo(codigoExpAux);
         codigo.agregarCodigo(codigoAsignado);
         return codigo;
 

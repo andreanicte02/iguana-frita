@@ -6,6 +6,8 @@ import {NodoDeclararVar} from "./NodoDeclararVar";
 import {desenvolver, generarTemporal, guardarTablaSimbolos} from "../Utilidades";
 import {NTipoVar} from "../types/NTipo";
 import {codigoAsignar, codigoObtenerVar} from "../types/codigos";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
 
 
 export class NodoDeclararVarTipo2 extends NodoAstPro {
@@ -22,8 +24,11 @@ export class NodoDeclararVarTipo2 extends NodoAstPro {
 
         const codigoExp = desenvolver(this.expression.generarCodigo(ambito));
 
+        const codigoExpAux = codigoExp.tipo === nTipoBooleanConEtiqueta ?
+            deBooleanoEtiquetaANormal(codigoExp): codigoExp;
+
         //
-        guardarTablaSimbolos(this.id, codigoExp.tipo.nombre,this.getY(), this.getX(), this.getPath(),'');
+        guardarTablaSimbolos(this.id, codigoExpAux.tipo.nombre,this.getY(), this.getX(), this.getPath(),'');
         //
 
         const codigo = new Codigo();
@@ -31,7 +36,7 @@ export class NodoDeclararVarTipo2 extends NodoAstPro {
 
         if (esGlobal) {
             const accesoDirecto = generarTemporal();
-            ambito.declararPropiedad(this.id, new NTipoVar(codigoExp.tipo, accesoDirecto));
+            ambito.declararPropiedad(this.id, new NTipoVar(codigoExpAux.tipo, accesoDirecto));
             codigo.apuntador = accesoDirecto;
             codigo.agregar(`${codigo.apuntador} = H;`);
             codigo.comentar("captura de direccion");
@@ -39,13 +44,13 @@ export class NodoDeclararVarTipo2 extends NodoAstPro {
             codigo.comentar(`variable ${this.id}`);
         }
         else {
-            ambito.declararPropiedad(this.id , new NTipoVar(codigoExp.tipo));
+            ambito.declararPropiedad(this.id , new NTipoVar(codigoExpAux.tipo));
         }
 
         const codigoVar = codigoObtenerVar(ambito, this.id);
-        const codigoAsignado = codigoAsignar(codigoVar, codigoExp, true);
+        const codigoAsignado = codigoAsignar(codigoVar, codigoExpAux, true);
 
-        codigo.agregarCodigo(codigoExp);
+        codigo.agregarCodigo(codigoExpAux);
         codigo.agregarCodigo(codigoAsignado);
         return codigo;
 

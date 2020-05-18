@@ -1,6 +1,6 @@
 import "../api.j";
 
-string sas ="asdfasdf";
+const sas := true != false;
 
 void principal() {
     

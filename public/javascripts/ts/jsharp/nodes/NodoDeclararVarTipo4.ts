@@ -5,6 +5,8 @@ import {FileLocation} from "./FileLocation";
 import {desenvolver, generarTemporal, guardarTablaSimbolos} from "../Utilidades";
 import {NTipo, NTipoVar} from "../types/NTipo";
 import {buscarEnCadenaAmbito, codigoAsignar, codigoObtenerVar} from "../types/codigos";
+import {nTipoBooleanConEtiqueta} from "../types/TiposPrimitivos";
+import {deBooleanoEtiquetaANormal} from "./TypeDefinition";
 
 
 export class NodoDeclararVarTipo4 extends NodoAstPro {
@@ -20,6 +22,9 @@ export class NodoDeclararVarTipo4 extends NodoAstPro {
     generacionSeguraDeCodigo(ambito: ZAmbito): Codigo {
 
         const codigoExp = desenvolver(this.expression.generarCodigo(ambito));
+
+        const codigoExpAux = codigoExp.tipo === nTipoBooleanConEtiqueta ?
+            deBooleanoEtiquetaANormal(codigoExp): codigoExp;
 
         const global = buscarEnCadenaAmbito<ZAmbito>(ambito, a => {
             if(a.padre ===  undefined){
@@ -38,7 +43,7 @@ export class NodoDeclararVarTipo4 extends NodoAstPro {
 
         const accesoDirecto = generarTemporal();
 
-        global.declararPropiedad(this.id, new NTipoVar(codigoExp.tipo, accesoDirecto));
+        global.declararPropiedad(this.id, new NTipoVar(codigoExpAux.tipo, accesoDirecto));
 
         codigo.apuntador = accesoDirecto;
         codigo.agregar(`${codigo.apuntador} = H;`);
@@ -47,14 +52,14 @@ export class NodoDeclararVarTipo4 extends NodoAstPro {
         codigo.comentar(`variable ${this.id}`);
 
         //
-        guardarTablaSimbolos(this.id, codigoExp.tipo.nombre, this.getY(), this.getX(), this.getPath(), '');
+        guardarTablaSimbolos(this.id, codigoExpAux.tipo.nombre, this.getY(), this.getX(), this.getPath(), '');
         //
 
 
         const codigoVar = codigoObtenerVar(global, this.id);
-        const codigoAsignado = codigoAsignar(codigoVar, codigoExp, true);
+        const codigoAsignado = codigoAsignar(codigoVar, codigoExpAux, true);
 
-        codigo.agregarCodigo(codigoExp);
+        codigo.agregarCodigo(codigoExpAux);
         codigo.agregarCodigo(codigoAsignado);
         return codigo;
 

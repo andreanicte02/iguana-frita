@@ -2,8 +2,9 @@
 
 import "../api.j";
 integer w, v = 4;
-
-
+var string := "string";
+var bol := true != false;
+const bol := true != false;
 void principal() {
     
     string f=null;
@@ -12,6 +13,8 @@ void principal() {
     Vector ve = strc Vector();
     prueba2(ve);
     print(ve.x);
+    print(string);
+    print(bol);
 }
 
 
@@ -24,6 +27,7 @@ define Vector as [
     
     
 void prueba2(Vector f){
+    print(a);
     f.x = 0;
      
 }
