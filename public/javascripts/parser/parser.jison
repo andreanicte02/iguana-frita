@@ -68,6 +68,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 ":="                     return ':='
 ":"                     return ':'
 ","                     return ','
+"?"                     return '?'
 
 [0-9]+"."[0-9]+         return 'DOUBLE'
 [0-9]+                  return 'INTEGER'
@@ -111,8 +112,7 @@ JSharpStringLiteral               '"' {StringCharacters}? '"'
 /lex
 
 /* precedencia */
-
-
+%right '?'
 %left '^'
 %left '||'
 %left '&&'
