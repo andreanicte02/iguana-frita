@@ -1,5 +1,5 @@
-
-
+// Ejemplo con error A PROPOSITO: 'bol' se declara dos veces.
+// Al compilar, el error aparece en la tabla de "Errores".
 import "../api.j";
 integer w, v = 4;
 var string := "string";

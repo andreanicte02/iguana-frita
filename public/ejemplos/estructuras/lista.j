@@ -1,3 +1,4 @@
+// Lista simple enlazada: insercion al inicio e impresion.
 import "../api.j";
 define Nodo as [
   integer dato,

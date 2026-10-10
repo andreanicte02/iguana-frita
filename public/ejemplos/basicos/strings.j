@@ -1,3 +1,4 @@
+// Funciones nativas de String: toLowerCase, toUpperCase, charAt, length.
 //METODOS STRING
 import "../api.j";
 String [] cadenas = strc String[10];

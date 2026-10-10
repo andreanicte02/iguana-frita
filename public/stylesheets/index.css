@@ -144,3 +144,8 @@ button {
         #errorsDiv table, #errorsDiv th, #errorsDiv td {
             border: 1px solid black;
         }
+        #intro {
+            padding: 6px 10px;
+            background: #fff8dc;
+            font: 14px "Calibri", "Lucida Grande", Helvetica, Arial, sans-serif;
+        }

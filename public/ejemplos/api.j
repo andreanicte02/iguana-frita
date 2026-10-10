@@ -1,5 +1,5 @@
-
-
+// Biblioteca base: define String y las funciones print().
+// No se ejecuta sola; los demas ejemplos la importan con import "../api.j".
 define String as [
     char[] chars
     ];

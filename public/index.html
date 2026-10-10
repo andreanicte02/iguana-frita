@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>J#</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/index.css' />
 </head>
 <body>
 
 <div id="main">
+    <div id="intro">
+        <strong>J# &rarr; C&oacute;digo de tres direcciones</strong>
+        &mdash; compilador hecho para Organizaci&oacute;n de Lenguajes y Compiladores 2.
+        Abre un ejemplo del panel izquierdo (doble clic), presiona <em>Compilar 3d</em> y luego <em>Ejecutar 3d</em>;
+        la salida aparece en la consola de abajo.
+        <a href="https://github.com/andreanicte02/iguana-frita" target="_blank" rel="noopener">C&oacute;digo fuente</a>
+    </div>
     <div>
-        <a href="/upload-file"><button>Load Files</button></a>
+        <button id="loadButton">Cargar archivos</button>
+        <input id="fileInput" type="file" accept=".j,.txt" multiple hidden>
 
-        <button id="saveButton">Save</button>
+        <button id="saveButton">Descargar</button>
 
     </div>
     <div id="top">
@@ -81,37 +89,26 @@
 
 </div>
 
-<script>
-
-
-
-
-
-
-</script>
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
-<script src="/javascripts/reportes/reportes.js"></script>
-<script src="/javascripts/optmizar/algebracias.js"></script>
-<script src="/javascripts/source.js"></script>
-<script src="/javascripts/language.js"></script>
-<script src="/javascripts/parser/parser.js"></script>
-<script src="/javascripts/3d/parser3d.js"></script> <!-- jison3d -->
-<script src="/javascripts/3d/ast3d.js"></script> <!-- ast3d -->
+<script src="javascripts/reportes/reportes.js"></script>
+<script src="javascripts/optmizar/algebracias.js"></script>
+<script src="javascripts/source.js"></script>
+<script src="javascripts/language.js"></script>
+<script src="javascripts/parser/parser.js"></script>
+<script src="javascripts/3d/parser3d.js"></script> <!-- jison3d -->
+<script src="javascripts/3d/ast3d.js"></script> <!-- ast3d -->
 
-<script src="/javascripts/index.js"></script>
+<script src="javascripts/index.js"></script>
 
 
 <script>
 
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/java");
-    // openFile({ path: '/public/archivos/prueba.j' });
-    console.log('...........');
 
 </script>
 

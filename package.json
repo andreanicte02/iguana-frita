@@ -3,19 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "actualizar": "node jison-generator.js && rollup -c",
-    "monitorear": "node ./bin/www & browser-sync start --proxy 'localhost:3000' --files 'public/javascripts/language.js' 'public/javascripts/parser/parser.js'"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "directory-tree": "^2.2.2",
-    "ejs": "~2.6.1",
-    "express": "^4.16.4",
-    "formidable": "^1.2.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "build": "jison public/javascripts/parser/parser.jison -o public/javascripts/parser/parser.js && rollup -c && node scripts/generar-indice.js",
+    "start": "npm run build && http-server public -c-1 -o"
   },
   "devDependencies": {
     "@types/node": "^13.13.0",
@@ -25,7 +14,10 @@
     "eslint": "^5.14.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
+    "http-server": "^14.1.1",
+    "jison": "^0.4.18",
     "prettier": "^2.0.5",
+    "rollup": "^2.80.0",
     "rollup-plugin-typescript2": "^0.27.0",
     "typescript": "^3.9.2"
   }

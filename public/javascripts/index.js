@@ -81,18 +81,64 @@ const INDENT = "&nbsp;&nbsp; &nbsp;&nbsp;";
 
 
 
+// ejemplos/index.json se genera con scripts/generar-indice.js
+const EJEMPLO_INICIAL = "ejemplos/estructuras/lista.j";
+
+// archivos cargados por el usuario, se guardan solo en memoria (path -> contenido)
+const archivosLocales = {};
+const arbolLocal = { name: "mis-archivos", path: "ejemplos/mis-archivos", type: "directory", children: [] };
+let arbolEjemplos = null;
+
 refreshFileTree();
 
 function refreshFileTree() {
     const fileTreeDiv = $("#file-tree");
     fileTreeDiv.empty();
-    $.getJSON("/get-files", function( data ) {
-        paintDirectory(data, fileTreeDiv, "&nbsp;&nbsp;");
+    $.getJSON("ejemplos/index.json", function( data ) {
+        arbolEjemplos = data;
+        paintFileTree();
 
-        // ESTO ABRE EL ULTIMO ARCHIVO ABIERTO
-        ultimoArchivoPintando.dblclick();
+        if (archivosPorRuta[EJEMPLO_INICIAL]) {
+            openFile(archivosPorRuta[EJEMPLO_INICIAL]);
+        }
     });
 }
+
+const archivosPorRuta = {};
+
+function paintFileTree() {
+    const fileTreeDiv = $("#file-tree");
+    fileTreeDiv.empty();
+    paintDirectory(arbolEjemplos, fileTreeDiv, "&nbsp;&nbsp;");
+    if (arbolLocal.children.length > 0) {
+        paintDirectory(arbolLocal, fileTreeDiv, "&nbsp;&nbsp;");
+    }
+}
+
+// los archivos cargados se ponen dentro de ejemplos/ para que import "../api.j" siga funcionando
+$("#loadButton").click(() => $("#fileInput").click());
+$("#fileInput").change(async function () {
+    let primero = null;
+    for (const archivo of this.files) {
+        const path = arbolLocal.path + "/" + archivo.name;
+        archivosLocales[path] = await archivo.text();
+        if (!arbolLocal.children.some(f => f.path === path)) {
+            arbolLocal.children.push({ name: archivo.name, path: path, type: "file" });
+        }
+        primero = primero || path;
+    }
+    this.value = "";
+    if (arbolEjemplos) {
+        paintFileTree();
+    }
+    if (primero) {
+        const abierto = hasFile(openFiles, primero);
+        if (abierto) {
+            abierto.session.setValue(archivosLocales[primero]);
+        }
+        openFile({ name: primero.split("/").pop(), path: primero });
+    }
+});
 
 
 function paintDirectory(directory, contentDiv, indent){
@@ -125,7 +171,7 @@ function paintDirectory(directory, contentDiv, indent){
 
 function paintFile(file, contentDiv, indent){
     const fileDiv = $("<div></div>", { "class" : "tree-element" });
-    ultimoArchivoPintando = fileDiv;
+    archivosPorRuta[file.path] = file;
     fileDiv.append(indent);
     fileDiv.append(document.createTextNode(file.name));
     
@@ -179,7 +225,7 @@ executeButton.click(()=>{
                 console.log(e._semanticError);
                 alert(e.message);
 
-                addErrorRow("Semantico", relativePath, e._p.first_line, e._p.first_column, e._semanticError.message);
+                addErrorRow("Semantico", "3D", e._p.first_line, e._p.first_column, e._semanticError.message);
             }
             else {
                 console.log(e);
@@ -187,10 +233,10 @@ executeButton.click(()=>{
                 jj = e;
 
                 if (e.hash) {
-                    addErrorRow("Sintactico", relativePath, e.hash.line, 0, e.message);
+                    addErrorRow("Sintactico", "3D", e.hash.line, 0, e.message);
                 }
                 else {
-                    addErrorRow("?Sintactico", relativePath, 0, 0, e.message);
+                    addErrorRow("?Sintactico", "3D", 0, 0, e.message);
                 }
             }
 
@@ -240,7 +286,7 @@ compileButton.click(()=>{
 
         parser.yy.paths = [];
         parser.yy.last = () => { return parser.yy.paths[parser.yy.paths.length - 1]; };
-        const relativePath = getPublicPath(currenOpenFile.path);
+        const relativePath = currenOpenFile.path;
 
         // const nodos = parser.parse(jText);
         // const texto = ast.generar3d(nodos);
@@ -288,13 +334,18 @@ function importNodes(currentFile, filePathToImport) {
     const lastIndex1 = currentFile.lastIndexOf('/');
     const lastIndex2 = currentFile.lastIndexOf('\\');
     const lastIndex = lastIndex1 < lastIndex2? lastIndex2: lastIndex1;
-    const newFileRelativePath = currentFile.substring(0, lastIndex) + "/" + filePathToImport;
+    const newFileRelativePath = normalizarRuta(currentFile.substring(0, lastIndex) + "/" + filePathToImport);
 
     console.log('a importar:', newFileRelativePath);
+
+    if (archivosLocales[newFileRelativePath] !== undefined) {
+        return getSentencesWithLocation(newFileRelativePath, archivosLocales[newFileRelativePath]);
+    }
 
     let fileContent = ""
     $.get({
         url: newFileRelativePath,
+        dataType: "text",
         async: false
     })
     .done((data) => fileContent = data )
@@ -331,15 +382,9 @@ saveButton.click(function () {
     }
 });
 
+// la pagina es estatica: "guardar" descarga el archivo
 function saveFile(content, path) {
-
-    $.post( "/save-file", { content: content, path: path})
-        .done(function( data ) {
-            console.log("Status: ", data);
-            console.log("Guardado: ", path);
-            // alert( "Data Loaded: " + data );
-        });
-
+    download(path.split("/").pop(), content);
 }
 
 
@@ -351,9 +396,18 @@ function saveFile(content, path) {
 //// Methods
 ////////////////////////
 
-function getPublicPath(path){
-    const PUBLIC = "public";
-    return path.slice(path.indexOf(PUBLIC) + PUBLIC.length);
+// resuelve los "." y ".." de una ruta relativa, ej. "ejemplos/basicos/../api.j" -> "ejemplos/api.j"
+function normalizarRuta(path) {
+    const partes = [];
+    for (const parte of path.split("/")) {
+        if (parte === "..") {
+            partes.pop();
+        }
+        else if (parte !== "." && parte !== "") {
+            partes.push(parte);
+        }
+    }
+    return partes.join("/");
 }
 
 function openFile(file){
@@ -362,7 +416,7 @@ function openFile(file){
 
     // Bajando archivo
 
-    const relativeDir = getPublicPath(file.path);
+    const relativeDir = file.path;
     console.log("Archivo:", relativeDir);
 
     const oldFile = hasFile(openFiles, file.path);
@@ -371,7 +425,10 @@ function openFile(file){
         openOldFile(oldFile);
     }
     else {
-        $.get(relativeDir, function (data) {
+        const cargar = archivosLocales[relativeDir] !== undefined
+            ? $.Deferred().resolve(archivosLocales[relativeDir])
+            : $.get({ url: relativeDir, dataType: "text" });
+        cargar.done(function (data) {
 
             const session = ace.createEditSession(data, "ace/mode/java");
 

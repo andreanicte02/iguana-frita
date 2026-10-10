@@ -1,3 +1,4 @@
+// Arbol binario de busqueda (ABB) con recorridos.
 import "../api.j";
 define NodoABB as [
   integer valor,
