@@ -1,3 +1,4 @@
+// Declaraciones con var/const/global, casteo explicito y structs.
 import "../api.j";
 
 const sas := true != false;

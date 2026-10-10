@@ -1,3 +1,4 @@
+// Estructuras (define ... as [...]) anidadas y arreglos de structs.
 import "../api.j";
 Define Profesor as [String nombre, Integer id];
 Define Curso as [Integer codigo, String nombre, char seccion, double nota];

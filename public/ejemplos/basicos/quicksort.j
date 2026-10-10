@@ -1,3 +1,4 @@
+// Arreglos de enteros ordenados con Quicksort.
 import "../api.j";
 integer particion(integer[] arreglo, integer bajo, integer alto) {
   integer pivote = arreglo[alto];

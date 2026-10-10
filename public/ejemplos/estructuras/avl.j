@@ -1,3 +1,4 @@
+// Arbol AVL con rotaciones; imprime el arbol en formato Graphviz (dot).
 import "../api.j";
 define NodoAVL as [
   integer valor,
